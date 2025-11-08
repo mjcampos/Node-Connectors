@@ -44,7 +44,7 @@ public class Node : MonoBehaviour
         }
     }
 
-    public void CreateConnectionLines()
+    public void AdjustEdges()
     {
         List<LineRenderer> connectionLines = new List<LineRenderer>();
         

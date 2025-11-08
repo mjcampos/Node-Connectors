@@ -13,9 +13,9 @@ public class NodeEditor : Editor
         GUILayout.Space(10);
         
         // Show the button only when the object is selected and in Edit Mode
-        if (!Application.isPlaying && GUILayout.Button("Open Node"))
+        if (!Application.isPlaying && GUILayout.Button("Adjust Edges"))
         {
-            node.CreateConnectionLines();
+            node.AdjustEdges();
             EditorUtility.SetDirty(node);
         }
     }
