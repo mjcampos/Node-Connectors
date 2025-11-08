@@ -6,44 +6,8 @@ using UnityEngine;
 [ExecuteAlways]
 public class Node : MonoBehaviour
 {
-    public NodeState state;
     public Node[] adjacentNodes;
     
-    SpriteRenderer _spriteRenderer;
-
-    void OnValidate()
-    {
-        if (_spriteRenderer == null)
-            _spriteRenderer = GetComponent<SpriteRenderer>();
-        
-        UpdateColor();
-    }
-
-    void UpdateColor()
-    {
-        switch (state)
-        {
-            case NodeState.Locked:
-                _spriteRenderer.color = NodeStateColors.Locked;
-                break;
-            case NodeState.Unlocked:
-                _spriteRenderer.color = NodeStateColors.Unlocked;
-                break;
-            case NodeState.Visible:
-                _spriteRenderer.color = NodeStateColors.Visible;
-                break;
-            case NodeState.NonHoverable:
-                _spriteRenderer.color = NodeStateColors.NonHoverable;
-                break;
-            case NodeState.Hidden:
-                _spriteRenderer.color = NodeStateColors.Hidden;
-                break;
-            default:
-                _spriteRenderer.color = Color.white;
-                break;
-        }
-    }
-
     public void AdjustEdges()
     {
         List<LineRenderer> connectionLines = new List<LineRenderer>();
