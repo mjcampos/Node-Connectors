@@ -1,22 +1,22 @@
 using UnityEditor;
 using UnityEngine;
 
-[CustomEditor(typeof(Node))]
+[CustomEditor(typeof(EdgeGenerator))]
 public class NodeEditor : Editor
 {
     public override void OnInspectorGUI()
     {
         DrawDefaultInspector();
         
-        Node node = (Node)target;
+        EdgeGenerator edgeGenerator = (EdgeGenerator)target;
         
         GUILayout.Space(10);
         
         // Show the button only when the object is selected and in Edit Mode
         if (!Application.isPlaying && GUILayout.Button("Adjust Edges"))
         {
-            node.AdjustEdges();
-            EditorUtility.SetDirty(node);
+            edgeGenerator.AdjustEdges();
+            EditorUtility.SetDirty(edgeGenerator);
         }
     }
 }

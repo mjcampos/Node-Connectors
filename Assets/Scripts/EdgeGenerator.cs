@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using Helpers;
 using UnityEngine;
 
-[ExecuteAlways]
-public class Node : MonoBehaviour
+public class EdgeGenerator : MonoBehaviour
 {
-    public Node[] adjacentNodes;
+    public EdgeGenerator[] adjacentNodes;
     
     public void AdjustEdges()
     {
@@ -23,7 +22,7 @@ public class Node : MonoBehaviour
         {
             if (node == null) continue;
             
-            var lineObject = new GameObject($"LineTo_{node.name}");
+            var lineObject = new GameObject($"Edge_To_{node.name}");
             
             lineObject.transform.SetParent(transform);
             
