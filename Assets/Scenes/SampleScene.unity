@@ -393,22 +393,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1003869840}
     m_Modifications:
-    - target: {fileID: 1663370265400641570, guid: df6f5bced9078de458ab40485774b539, type: 3}
-      propertyPath: state
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4609610870895490565, guid: df6f5bced9078de458ab40485774b539, type: 3}
-      propertyPath: m_Color.b
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4609610870895490565, guid: df6f5bced9078de458ab40485774b539, type: 3}
-      propertyPath: m_Color.g
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4609610870895490565, guid: df6f5bced9078de458ab40485774b539, type: 3}
-      propertyPath: m_Color.r
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 5769553210031898519, guid: df6f5bced9078de458ab40485774b539, type: 3}
       propertyPath: m_Name
       value: Node
@@ -452,26 +436,6 @@ PrefabInstance:
     - target: {fileID: 8212402364140038103, guid: df6f5bced9078de458ab40485774b539, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8911150225527894315, guid: df6f5bced9078de458ab40485774b539, type: 3}
-      propertyPath: nodes.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8911150225527894315, guid: df6f5bced9078de458ab40485774b539, type: 3}
-      propertyPath: 'nodes.Array.data[0]'
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 8911150225527894315, guid: df6f5bced9078de458ab40485774b539, type: 3}
-      propertyPath: adjacentNodes.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8911150225527894315, guid: df6f5bced9078de458ab40485774b539, type: 3}
-      propertyPath: 'adjacentNodes.Array.data[0]'
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 8911150225527894315, guid: df6f5bced9078de458ab40485774b539, type: 3}
-      propertyPath: 'adjacentNodes.Array.data[1]'
-      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
