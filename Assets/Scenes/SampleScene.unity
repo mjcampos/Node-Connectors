@@ -382,9 +382,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1003869839}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c0e510cf8057c1942b1ceeececb67926, type: 3}
+  m_Script: {fileID: 11500000, guid: 264b36b7c02d5954698f8e2b89e5107b, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EdgeAdjuster
+  m_EditorClassIdentifier: Assembly-CSharp::AdjustAllEdges
 --- !u!1001 &1345926460
 PrefabInstance:
   m_ObjectHideFlags: 0

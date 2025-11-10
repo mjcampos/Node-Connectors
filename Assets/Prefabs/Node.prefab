@@ -105,7 +105,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NodeStateMachine
   state: 5
-  spriteRenderer: {fileID: 4609610870895490565}
 --- !u!114 &8911150225527894315
 MonoBehaviour:
   m_ObjectHideFlags: 0
