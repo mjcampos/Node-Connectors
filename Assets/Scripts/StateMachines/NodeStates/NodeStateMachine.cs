@@ -6,14 +6,21 @@ public class NodeStateMachine : StateMachine
 {
     public NodeState state;
     
-    public SpriteRenderer spriteRenderer;
+    public SpriteRenderer SpriteRenderer { get; private set; }
+    public AdjacentNodes AdjacentNodes { get; private set; }
 
     void OnValidate()
     {
-        UpdateColor();
+        if (SpriteRenderer == null)
+            SpriteRenderer = GetComponent<SpriteRenderer>();
+        
+        if (AdjacentNodes == null)
+            AdjacentNodes = GetComponent<AdjacentNodes>();
+        
+        UpdateState();
     }
     
-    void UpdateColor()
+    void UpdateState()
     {
         switch (state)
         {
@@ -31,6 +38,9 @@ public class NodeStateMachine : StateMachine
                 break;
             case NodeState.Hidden:
                 SwitchState(new HiddenState(this));
+                break;
+            case NodeState.Default:
+                SwitchState(new DefaultState(this));
                 break;
             default:
                 SwitchState(new DefaultState(this));

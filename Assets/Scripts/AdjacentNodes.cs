@@ -3,22 +3,22 @@ using System.Collections.Generic;
 using Helpers;
 using UnityEngine;
 
-public class EdgeGenerator : MonoBehaviour
+public class AdjacentNodes : MonoBehaviour
 {
-    public EdgeGenerator[] adjacentNodes;
+    public AdjacentNodes[] nodes;
     
     public void AdjustEdges()
     {
         List<LineRenderer> connectionLines = new List<LineRenderer>();
         
         // Check if adjacent nodes exist. If not then do nothing.
-        if (adjacentNodes == null) return;
+        if (nodes == null) return;
         
         // Destroy existing line children
         DestroyConnectionLines();
         
         // Create new line children
-        foreach (var node in adjacentNodes)
+        foreach (var node in nodes)
         {
             if (node == null) continue;
             
@@ -39,12 +39,12 @@ public class EdgeGenerator : MonoBehaviour
         
         for (int i = 0; i < connectionLines.Count; i++)
         {
-            if (adjacentNodes[i] == null) continue;
+            if (nodes[i] == null) continue;
             
             var lr = connectionLines[i];
             
             lr.SetPosition(0, transform.position);
-            lr.SetPosition(1, adjacentNodes[i].transform.position);
+            lr.SetPosition(1, nodes[i].transform.position);
         }
     }
 

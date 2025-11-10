@@ -8,6 +8,7 @@ namespace Helpers
         Unlocked,
         Visible,
         NonHoverable,
-        Hidden
+        Hidden,
+        Default
     }
 }

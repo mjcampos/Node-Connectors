@@ -9,7 +9,7 @@ public class LockedState : NodeBaseState
 
     public override void Enter()
     {
-        StateMachine.spriteRenderer.color = NodeStateColors.Locked;
+        StateMachine.SpriteRenderer.color = NodeStateColors.Locked;
     }
 
     public override void Tick(float deltaTime)

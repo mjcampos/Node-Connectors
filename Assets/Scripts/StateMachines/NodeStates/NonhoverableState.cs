@@ -9,7 +9,7 @@ public class NonhoverableState : NodeBaseState
 
     public override void Enter()
     {
-        StateMachine.spriteRenderer.color = NodeStateColors.NonHoverable;
+        StateMachine.SpriteRenderer.color = NodeStateColors.NonHoverable;
     }
 
     public override void Tick(float deltaTime)

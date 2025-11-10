@@ -1,3 +1,4 @@
+using Helpers;
 using UnityEngine;
 
 public class DefaultState : NodeBaseState
@@ -8,7 +9,7 @@ public class DefaultState : NodeBaseState
 
     public override void Enter()
     {
-        StateMachine.spriteRenderer.color = Color.white;
+        StateMachine.SpriteRenderer.color = NodeStateColors.Default;
     }
 
     public override void Tick(float deltaTime)

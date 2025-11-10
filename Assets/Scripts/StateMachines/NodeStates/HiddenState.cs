@@ -9,7 +9,7 @@ public class HiddenState : NodeBaseState
 
     public override void Enter()
     {
-        StateMachine.spriteRenderer.color = NodeStateColors.Hidden;
+        StateMachine.SpriteRenderer.color = NodeStateColors.Hidden;
     }
 
     public override void Tick(float deltaTime)
