@@ -39,11 +39,8 @@ public class NodeStateMachine : StateMachine
             case NodeState.Hidden:
                 SwitchState(new HiddenState(this));
                 break;
-            case NodeState.Default:
-                SwitchState(new DefaultState(this));
-                break;
             default:
-                SwitchState(new DefaultState(this));
+                SwitchState(new UnlockedState(this));
                 break;
         }
     }
