@@ -1,0 +1,34 @@
+using System;
+using UnityEngine;
+using UnityEngine.InputSystem;
+
+public class InputReader : MonoBehaviour, Controls.IPlayerActions
+{
+    Controls _controls;
+    Camera _camera;
+    
+    void Start()
+    {
+        _controls = new Controls();
+        _camera = Camera.main;
+        
+        _controls.Player.SetCallbacks(this);
+        _controls.Player.Enable();
+    }
+
+    public void OnClick(InputAction.CallbackContext context)
+    {
+        if (!context.performed) return;
+        
+        Vector2 screenPos = Mouse.current.position.ReadValue();
+        Ray ray = _camera.ScreenPointToRay(screenPos);
+
+        RaycastHit2D hit = Physics2D.GetRayIntersection(ray);
+
+        if (hit.collider != null)
+        {
+            //Debug.Log(hit.collider.gameObject.name);
+            Debug.Log(hit.collider.GetComponent<NodeStateMachine>().state);
+        }
+    }
+}
