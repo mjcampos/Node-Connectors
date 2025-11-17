@@ -5,13 +5,18 @@ using Helpers;
 public class NodeStateMachine : StateMachine
 {
     public NodeState state;
+    public bool canBeUnlocked;
     
     public SpriteRenderer SpriteRenderer { get; private set; }
-
+    public AdjacentNodes AdjacentNodes { get; private set; }
+    
     void OnValidate()
     {
         if (SpriteRenderer == null)
             SpriteRenderer = GetComponent<SpriteRenderer>();
+        
+        if (AdjacentNodes == null)
+            AdjacentNodes = GetComponent<AdjacentNodes>();
         
         UpdateState();
     }

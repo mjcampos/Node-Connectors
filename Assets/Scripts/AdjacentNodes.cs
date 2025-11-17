@@ -5,20 +5,20 @@ using UnityEngine;
 
 public class AdjacentNodes : MonoBehaviour
 {
-    public AdjacentNodes[] nodes;
+    public AdjacentNodes[] neighborNodes;
     
     public void AdjustEdges()
     {
         List<LineRenderer> connectionLines = new List<LineRenderer>();
         
         // Check if adjacent nodes exist. If not then do nothing.
-        if (nodes == null) return;
+        if (neighborNodes == null) return;
         
         // Destroy existing line children
         DestroyConnectionLines();
         
         // Create new line children
-        foreach (var node in nodes)
+        foreach (var node in neighborNodes)
         {
             if (node == null) continue;
             
@@ -39,12 +39,12 @@ public class AdjacentNodes : MonoBehaviour
         
         for (int i = 0; i < connectionLines.Count; i++)
         {
-            if (nodes[i] == null) continue;
+            if (neighborNodes[i] == null) continue;
             
             var lr = connectionLines[i];
             
             lr.SetPosition(0, transform.position);
-            lr.SetPosition(1, nodes[i].transform.position);
+            lr.SetPosition(1, neighborNodes[i].transform.position);
         }
     }
 

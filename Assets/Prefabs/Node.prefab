@@ -106,6 +106,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NodeStateMachine
   state: 0
+  canBeUnlocked: 0
 --- !u!114 &8911150225527894315
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -118,7 +119,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 829da86bd89747e49b2d685cf7928c54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EdgeGenerator
-  nodes: []
+  neighborNodes: []
 --- !u!58 &7424639523468317748
 CircleCollider2D:
   m_ObjectHideFlags: 0
