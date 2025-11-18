@@ -18,5 +18,14 @@ public class EdgeEditor : Editor
             adjustAllEdges.TriggerEdgeAdjuster();
             EditorUtility.SetDirty(adjustAllEdges);
         }
+        
+        GUILayout.Space(10);
+        
+        // Show the button only when the object is selected and in Edit mode
+        if (!Application.isPlaying && GUILayout.Button("Correct Node Settings"))
+        {
+            adjustAllEdges.TriggerNodeSettingsAdjuster();
+            EditorUtility.SetDirty(adjustAllEdges);
+        }
     }
 }
