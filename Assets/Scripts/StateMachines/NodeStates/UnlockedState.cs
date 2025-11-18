@@ -10,7 +10,19 @@ public class UnlockedState : NodeBaseState
     public override void Enter()
     {
         StateMachine.SpriteRenderer.color = NodeStateColors.Unlocked;
-        
+        StateMachine.Ripple();
+    }
+
+    public override void Tick(float deltaTime)
+    {
+    }
+
+    public override void Exit()
+    {
+    }
+
+    public override void RippleHandle()
+    {
         if (StateMachine.AdjacentNodes != null)
         {
             foreach (var neighbor in  StateMachine.AdjacentNodes.neighborNodes)
@@ -25,15 +37,9 @@ public class UnlockedState : NodeBaseState
                 {
                     neighborStateMachine.canBeUnlocked = false;
                 }
+                
+                neighborStateMachine.OnRipple();
             }
         }
-    }
-
-    public override void Tick(float deltaTime)
-    {
-    }
-
-    public override void Exit()
-    {
     }
 }

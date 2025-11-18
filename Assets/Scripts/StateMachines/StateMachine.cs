@@ -16,4 +16,9 @@ public abstract class StateMachine : MonoBehaviour
     {
         _currentState?.Tick(Time.deltaTime);
     }
+
+    public void OnRipple()
+    {
+        _currentState?.RippleHandle();
+    }
 }

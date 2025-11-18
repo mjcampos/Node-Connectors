@@ -37,6 +37,11 @@ public class NodeStateMachine : StateMachine
         }
     }
 
+    public void Ripple()
+    {
+        OnRipple();
+    }
+
     public void OnClick()
     {
         if (state == NodeState.Visible && canBeUnlocked)
