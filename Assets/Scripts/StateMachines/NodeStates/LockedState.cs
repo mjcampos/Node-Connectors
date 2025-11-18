@@ -27,6 +27,18 @@ public class LockedState : NodeBaseState
     {
         StateMachine.canBeUnlocked = false;
         
-        TravereNeighbors(false);
+        // Lock neighbors
+        if (StateMachine.AdjacentNodes != null)
+        {
+            foreach (var neighbor in StateMachine.AdjacentNodes.neighborNodes)
+            {
+                NodeStateMachine neighborStateMachine = neighbor.GetComponent<NodeStateMachine>();
+                
+                neighborStateMachine.state = NodeState.Locked;
+                neighborStateMachine.SwitchState(new LockedState(neighborStateMachine));
+                
+                neighborStateMachine.OnRipple();
+            }
+        }
     }
 }
