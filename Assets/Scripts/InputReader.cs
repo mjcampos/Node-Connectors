@@ -27,8 +27,9 @@ public class InputReader : MonoBehaviour, Controls.IPlayerActions
 
         if (hit.collider != null)
         {
-            //Debug.Log(hit.collider.gameObject.name);
-            Debug.Log(hit.collider.GetComponent<NodeStateMachine>().state);
+            NodeStateMachine clickedSM = hit.collider.GetComponent<NodeStateMachine>();
+            
+            clickedSM?.OnClick();
         }
     }
 }

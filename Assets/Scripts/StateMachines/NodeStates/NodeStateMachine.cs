@@ -36,4 +36,18 @@ public class NodeStateMachine : StateMachine
                 break;
         }
     }
+
+    public void OnClick()
+    {
+        if (state == NodeState.Visible && canBeUnlocked)
+        {
+            state = NodeState.Unlocked;
+            canBeUnlocked = false;
+            SwitchState(new UnlockedState(this));
+        }
+        else
+        {
+            Debug.Log("Keep current State");
+        }
+    }
 }
