@@ -23,23 +23,6 @@ public class UnlockedState : NodeBaseState
 
     public override void RippleHandle()
     {
-        if (StateMachine.AdjacentNodes != null)
-        {
-            foreach (var neighbor in  StateMachine.AdjacentNodes.neighborNodes)
-            {
-                NodeStateMachine neighborStateMachine = neighbor.GetComponent<NodeStateMachine>();
-
-                if (neighborStateMachine != null && neighborStateMachine.state == NodeState.Visible)
-                {
-                    neighborStateMachine.canBeUnlocked = true;
-                }
-                else
-                {
-                    neighborStateMachine.canBeUnlocked = false;
-                }
-                
-                neighborStateMachine.OnRipple();
-            }
-        }
+        TravereNeighbors(true);
     }
 }
