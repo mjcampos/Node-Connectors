@@ -28,6 +28,9 @@ public class NodeStateMachine : StateMachine
             case NodeState.Unlocked:
                 SwitchState(new UnlockedState(this));
                 break;
+            case NodeState.Locked:
+                SwitchState(new LockedState(this));
+                break;
             case NodeState.Visible:
                 SwitchState(new VisibleState(this));
                 break;
