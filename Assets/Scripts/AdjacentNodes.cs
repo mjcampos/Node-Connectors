@@ -54,7 +54,7 @@ public class AdjacentNodes : MonoBehaviour
 
         for (int i = 0; i < transform.childCount; i++)
         {
-            if (transform.GetChild(i).name != "DegreesCanvas") continue;
+            if (transform.GetChild(i).name == "DegreesCanvas") continue;
             
             children.Add(transform.GetChild(i));
         }
