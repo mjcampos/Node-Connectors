@@ -5,6 +5,7 @@ using Helpers;
 public class NodeStateMachine : StateMachine
 {
     public NodeState state;
+    public NodeState previousState = NodeState.None;
     public bool canBeUnlocked;
     
     public SpriteRenderer SpriteRenderer { get; private set; }

@@ -209,6 +209,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NodeStateMachine
   state: 0
+  previousState: 3
   canBeUnlocked: 0
 --- !u!114 &8911150225527894315
 MonoBehaviour:

@@ -18,14 +18,19 @@ public abstract class NodeBaseState : State
             {
                 NodeStateMachine neighborStateMachine = neighbor.GetComponent<NodeStateMachine>();
 
-                if (neighborStateMachine != null && neighborStateMachine.state == NodeState.Visible)
+                if (neighborStateMachine != null)
                 {
-                    neighborStateMachine.canBeUnlocked = canBeUnlocked;
+                    if (neighborStateMachine.state == NodeState.Visible)
+                    {
+                        neighborStateMachine.canBeUnlocked = canBeUnlocked;
+                    }
+                    else
+                    {
+                        neighborStateMachine.canBeUnlocked = !canBeUnlocked;
+                    }
                 }
-                else
-                {
-                    neighborStateMachine.canBeUnlocked = !canBeUnlocked;
-                }
+                
+                neighborStateMachine.previousState = StateMachine.state;
                 
                 neighborStateMachine.OnRipple();
             }

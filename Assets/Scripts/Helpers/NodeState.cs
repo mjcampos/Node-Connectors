@@ -6,6 +6,7 @@ namespace Helpers
     {
         Unlocked,
         Locked,
-        Visible
+        Visible,
+        None
     }
 }

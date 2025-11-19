@@ -10,6 +10,8 @@ public class VisibleState : NodeBaseState
     public override void Enter()
     {
         StateMachine.SpriteRenderer.color = NodeStateColors.Visible;
+        StateMachine.canBeUnlocked = StateMachine.previousState == NodeState.Unlocked;
+        
         StateMachine.Ripple();
     }
 

@@ -36,6 +36,7 @@ public class LockedState : NodeBaseState
                 
                 neighborStateMachine.state = NodeState.Locked;
                 neighborStateMachine.SwitchState(new LockedState(neighborStateMachine));
+                neighborStateMachine.previousState = StateMachine.state;
                 
                 neighborStateMachine.OnRipple();
             }
