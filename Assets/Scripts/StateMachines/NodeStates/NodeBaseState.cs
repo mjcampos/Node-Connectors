@@ -32,11 +32,11 @@ public abstract class NodeBaseState : State
                     {
                         neighborStateMachine.canBeUnlocked = !canBeUnlocked;
                     }
+                    
+                    neighborStateMachine.previousState = StateMachine.state;
+                    
+                    neighborStateMachine.OnRipple();
                 }
-                
-                neighborStateMachine.previousState = StateMachine.state;
-                
-                neighborStateMachine.OnRipple();
             }
         }
     }

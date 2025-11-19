@@ -37,8 +37,8 @@ public class LockedState : NodeBaseState
                 NodeStateMachine neighborStateMachine = neighbor.GetComponent<NodeStateMachine>();
                 
                 neighborStateMachine.state = NodeState.Locked;
-                neighborStateMachine.SwitchState(new LockedState(neighborStateMachine));
                 neighborStateMachine.previousState = StateMachine.state;
+                neighborStateMachine.SwitchState(new LockedState(neighborStateMachine));
                 
                 neighborStateMachine.OnRipple();
             }

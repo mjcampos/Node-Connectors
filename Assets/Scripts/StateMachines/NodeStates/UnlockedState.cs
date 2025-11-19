@@ -11,6 +11,7 @@ public class UnlockedState : NodeBaseState
     {
         StateMachine.SpriteRenderer.color = NodeStateColors.Unlocked;
         StateMachine.degreesOfSeparationFromUnlocked = 0;
+        StateMachine.previousStateDegrees = 0;
         
         StateMachine.UpdateDegreesText();
         StateMachine.Ripple();
