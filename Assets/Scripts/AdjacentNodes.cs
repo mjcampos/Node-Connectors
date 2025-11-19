@@ -50,11 +50,13 @@ public class AdjacentNodes : MonoBehaviour
 
     void DestroyConnectionLines()
     {
-        Transform[] children = new Transform[transform.childCount];
+        List<Transform> children = new List<Transform>();
 
         for (int i = 0; i < transform.childCount; i++)
         {
-            children[i] = transform.GetChild(i);
+            if (transform.GetChild(i).name != "DegreesCanvas") continue;
+            
+            children.Add(transform.GetChild(i));
         }
 
         foreach (Transform child in children)
