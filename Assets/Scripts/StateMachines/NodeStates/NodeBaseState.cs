@@ -10,7 +10,7 @@ public abstract class NodeBaseState : State
         StateMachine = stateMachine;
     }
 
-    public void TravereNeighbors(bool canBeUnlocked)
+    public void TraverseNeighbors(bool canBeUnlocked)
     {
         StateMachine.UpdateDegreesText();
         
@@ -27,6 +27,12 @@ public abstract class NodeBaseState : State
                         neighborStateMachine.canBeUnlocked = canBeUnlocked;
                         neighborStateMachine.previousStateDegrees = StateMachine.degreesOfSeparationFromUnlocked;
                         neighborStateMachine.degreesOfSeparationFromUnlocked = StateMachine.degreesOfSeparationFromUnlocked + 1;
+                    }
+                    else if (neighborStateMachine.state == NodeState.Unlocked)
+                    {
+                        neighborStateMachine.canBeUnlocked = canBeUnlocked;
+                        neighborStateMachine.previousStateDegrees = StateMachine.degreesOfSeparationFromUnlocked;
+                        neighborStateMachine.degreesOfSeparationFromUnlocked = 0;
                     }
                     else
                     {

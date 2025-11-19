@@ -1,22 +1,22 @@
 using UnityEditor;
 using UnityEngine;
 
-[CustomEditor(typeof(AdjustAllEdges))]
+[CustomEditor(typeof(NodeGraphController))]
 public class EdgeEditor : Editor
 {
     public override void OnInspectorGUI()
     {
         DrawDefaultInspector();
         
-        AdjustAllEdges adjustAllEdges = (AdjustAllEdges)target;
+        NodeGraphController nodeGraphController = (NodeGraphController)target;
         
         GUILayout.Space(10);
         
         // Show the button only when the object is selected and in Edit mode
         if (!Application.isPlaying && GUILayout.Button("Adjust Edges"))
         {
-            adjustAllEdges.TriggerEdgeAdjuster();
-            EditorUtility.SetDirty(adjustAllEdges);
+            nodeGraphController.TriggerEdgeAdjuster();
+            EditorUtility.SetDirty(nodeGraphController);
         }
         
         GUILayout.Space(10);
@@ -24,8 +24,8 @@ public class EdgeEditor : Editor
         // Show the button only when the object is selected and in Edit mode
         if (!Application.isPlaying && GUILayout.Button("Correct Node Settings"))
         {
-            adjustAllEdges.TriggerNodeSettingsAdjuster();
-            EditorUtility.SetDirty(adjustAllEdges);
+            nodeGraphController.TriggerNodeSettingsAdjuster();
+            EditorUtility.SetDirty(nodeGraphController);
         }
     }
 }

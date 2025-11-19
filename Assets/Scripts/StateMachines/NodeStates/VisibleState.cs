@@ -11,7 +11,22 @@ public class VisibleState : NodeBaseState
     {
         StateMachine.SpriteRenderer.color = NodeStateColors.Visible;
         StateMachine.canBeUnlocked = StateMachine.previousState == NodeState.Unlocked;
-        StateMachine.degreesOfSeparationFromUnlocked = StateMachine.previousStateDegrees + 1;
+
+        switch (StateMachine.previousState)
+        {
+            case NodeState.Locked:
+                StateMachine.degreesOfSeparationFromUnlocked = 0;
+                break;
+            case NodeState.Unlocked:
+                StateMachine.degreesOfSeparationFromUnlocked = 1;
+                break;
+            case NodeState.Visible:
+                StateMachine.degreesOfSeparationFromUnlocked = StateMachine.previousStateDegrees + 1;
+                break;
+            default:
+                StateMachine.degreesOfSeparationFromUnlocked = 0;
+                break;
+        }
         
         StateMachine.UpdateDegreesText();
         StateMachine.Ripple();
@@ -27,6 +42,6 @@ public class VisibleState : NodeBaseState
 
     public override void RippleHandle()
     {
-        TravereNeighbors(false);
+        TraverseNeighbors(false);
     }
 }

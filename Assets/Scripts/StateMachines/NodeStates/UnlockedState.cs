@@ -11,7 +11,6 @@ public class UnlockedState : NodeBaseState
     {
         StateMachine.SpriteRenderer.color = NodeStateColors.Unlocked;
         StateMachine.degreesOfSeparationFromUnlocked = 0;
-        StateMachine.previousStateDegrees = 0;
         
         StateMachine.UpdateDegreesText();
         StateMachine.Ripple();
@@ -27,6 +26,6 @@ public class UnlockedState : NodeBaseState
 
     public override void RippleHandle()
     {
-        TravereNeighbors(true);
+        TraverseNeighbors(true);
     }
 }
