@@ -10,6 +10,8 @@ public class LockedState : NodeBaseState
     public override void Enter()
     {
         StateMachine.SpriteRenderer.color = NodeStateColors.Locked;
+        StateMachine.degreesOfSeparationFromUnlocked = 0;
+        StateMachine.UpdateDegreesText();
         StateMachine.Ripple();
     }
 

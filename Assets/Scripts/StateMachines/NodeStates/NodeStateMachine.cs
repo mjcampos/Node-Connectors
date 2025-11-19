@@ -1,12 +1,17 @@
 using System;
 using UnityEngine;
 using Helpers;
+using TMPro;
 
 public class NodeStateMachine : StateMachine
 {
     public NodeState state;
     public NodeState previousState = NodeState.None;
     public bool canBeUnlocked;
+    public int degreesOfSeparationFromUnlocked;
+    public int previousStateDegrees;
+
+    public TextMeshProUGUI degreesOfSeparationText;
     
     public SpriteRenderer SpriteRenderer { get; private set; }
     public AdjacentNodes AdjacentNodes { get; private set; }
@@ -58,5 +63,10 @@ public class NodeStateMachine : StateMachine
         {
             Debug.Log("Keep current State");
         }
+    }
+
+    public void UpdateDegreesText()
+    {
+        degreesOfSeparationText.text = degreesOfSeparationFromUnlocked.ToString();
     }
 }

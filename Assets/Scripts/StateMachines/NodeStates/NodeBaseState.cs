@@ -12,6 +12,8 @@ public abstract class NodeBaseState : State
 
     public void TravereNeighbors(bool canBeUnlocked)
     {
+        StateMachine.UpdateDegreesText();
+        
         if (StateMachine.AdjacentNodes != null)
         {
             foreach (var neighbor in  StateMachine.AdjacentNodes.neighborNodes)
@@ -23,6 +25,8 @@ public abstract class NodeBaseState : State
                     if (neighborStateMachine.state == NodeState.Visible)
                     {
                         neighborStateMachine.canBeUnlocked = canBeUnlocked;
+                        neighborStateMachine.previousStateDegrees = StateMachine.degreesOfSeparationFromUnlocked;
+                        neighborStateMachine.degreesOfSeparationFromUnlocked = StateMachine.degreesOfSeparationFromUnlocked + 1;
                     }
                     else
                     {

@@ -211,6 +211,9 @@ MonoBehaviour:
   state: 0
   previousState: 3
   canBeUnlocked: 0
+  degreesOfSeparationFromUnlocked: 0
+  previousStateDegrees: 0
+  degreesOfSeparationText: {fileID: 5095398739683701310}
 --- !u!114 &8911150225527894315
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -272,7 +275,7 @@ GameObject:
   - component: {fileID: 8361570944198383835}
   - component: {fileID: 5095398739683701310}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: DegreesText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -325,7 +328,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: 0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

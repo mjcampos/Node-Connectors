@@ -11,7 +11,9 @@ public class VisibleState : NodeBaseState
     {
         StateMachine.SpriteRenderer.color = NodeStateColors.Visible;
         StateMachine.canBeUnlocked = StateMachine.previousState == NodeState.Unlocked;
+        StateMachine.degreesOfSeparationFromUnlocked = (StateMachine.previousState == NodeState.Unlocked) ? 1 : StateMachine.previousStateDegrees + 1;
         
+        StateMachine.UpdateDegreesText();
         StateMachine.Ripple();
     }
 
