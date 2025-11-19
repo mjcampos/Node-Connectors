@@ -3,6 +3,10 @@ using UnityEngine;
 
 public class NodeGraphController : MonoBehaviour
 {
+    [Header("Visibility Settings")]
+    [Tooltip("Maximum degrees from Unlocked nodes where nodes remain hoverable")]
+    [SerializeField] int visibilityDegreeThreshold = 2;
+
     public void TriggerEdgeAdjuster()
     {
         foreach (Transform child in transform)
@@ -24,5 +28,10 @@ public class NodeGraphController : MonoBehaviour
                 nsm.Ripple();
             }
         }
+    }
+
+    public int GetVisibilityDegreeThreshold()
+    {
+        return visibilityDegreeThreshold;
     }
 }

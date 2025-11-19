@@ -7,6 +7,7 @@ namespace Helpers
         Unlocked,
         Locked,
         Visible,
+        NonHoverable,
         None
     }
 }

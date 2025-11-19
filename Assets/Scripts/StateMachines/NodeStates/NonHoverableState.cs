@@ -1,16 +1,16 @@
 using Helpers;
 using UnityEngine;
 
-public class VisibleState : NodeBaseState
+public class NonHoverableState : NodeBaseState
 {
-    public VisibleState(NodeStateMachine stateMachine) : base(stateMachine)
+    public NonHoverableState(NodeStateMachine stateMachine) : base(stateMachine)
     {
     }
 
     public override void Enter()
     {
-        StateMachine.SpriteRenderer.color = NodeStateColors.Visible;
-        StateMachine.canBeUnlocked = StateMachine.previousState == NodeState.Unlocked;
+        StateMachine.SpriteRenderer.color = NodeStateColors.NonHoverable;
+        StateMachine.canBeUnlocked = false;
 
         CalculateDegreesOfSeparation();
         
@@ -20,10 +20,12 @@ public class VisibleState : NodeBaseState
 
     public override void Tick(float deltaTime)
     {
+        
     }
 
     public override void Exit()
     {
+        
     }
 
     public override void RippleHandle()

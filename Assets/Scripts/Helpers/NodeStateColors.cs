@@ -7,5 +7,6 @@ namespace Helpers
         public static readonly Color Unlocked = Color.red;
         public static readonly Color Locked = Color.black;
         public static readonly Color Visible = Color.blue;
+        public static readonly Color NonHoverable = Color.green;
     }
 }
