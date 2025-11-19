@@ -1,3 +1,4 @@
+using System;
 using Helpers;
 using UnityEngine;
 
@@ -5,7 +6,31 @@ public class NodeGraphController : MonoBehaviour
 {
     [Header("Visibility Settings")]
     [Tooltip("Maximum degrees from Unlocked nodes where nodes remain hoverable")]
+    [Range(0, 20)]
     [SerializeField] int visibilityDegreeThreshold = 2;
+
+    int _previousThreshold = -1;
+
+    void OnValidate()
+    {
+        if (_previousThreshold == -1)
+        {
+            _previousThreshold = visibilityDegreeThreshold;
+            return;
+        }
+
+        if (_previousThreshold != visibilityDegreeThreshold)
+        {
+            _previousThreshold = visibilityDegreeThreshold;
+
+#if UNITY_EDITOR
+            if (!Application.isPlaying)
+            {
+                TriggerNodeSettingsAdjuster();
+            }
+#endif
+        }
+    }
 
     public void TriggerEdgeAdjuster()
     {
@@ -23,7 +48,7 @@ public class NodeGraphController : MonoBehaviour
         {
             NodeStateMachine nsm = child.GetComponent<NodeStateMachine>();
 
-            if (nsm.state == NodeState.Unlocked)
+            if (nsm != null && nsm.state == NodeState.Unlocked)
             {
                 nsm.Ripple();
             }
