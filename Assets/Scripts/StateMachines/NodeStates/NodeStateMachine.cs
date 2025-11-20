@@ -19,10 +19,17 @@ public class NodeStateMachine : StateMachine
 
     void Awake()
     {
-        NodeGraphController = GetComponentInParent<NodeGraphController>();
+        InitializeComponents();
     }
 
     void OnValidate()
+    {
+
+        InitializeComponents();
+        UpdateStateFromEnum();
+    }
+
+    void InitializeComponents()
     {
         if (NodeGraphController == null)
             NodeGraphController = GetComponentInParent<NodeGraphController>();
@@ -32,12 +39,12 @@ public class NodeStateMachine : StateMachine
         
         if (AdjacentNodes == null)
             AdjacentNodes = GetComponent<AdjacentNodes>();
-        
-        UpdateStateFromEnum();
     }
     
     public void UpdateStateFromEnum()
     {
+        if (SpriteRenderer == null) return;
+        
         State newState = state switch
         {
             NodeState.Unlocked => new UnlockedState(this),
