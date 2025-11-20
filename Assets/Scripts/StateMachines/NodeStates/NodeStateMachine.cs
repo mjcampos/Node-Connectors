@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using Helpers;
 using TMPro;
@@ -20,16 +21,20 @@ public class NodeStateMachine : StateMachine
     public SpriteRenderer SpriteRenderer { get; private set; }
     public AdjacentNodes AdjacentNodes { get; private set; }
     public NodeGraphController NodeGraphController { get; private set; }
+    
+    EdgeVisibilityManager _edgeVisibilityManager;
 
     void Awake()
     {
         InitializeComponents();
+        InitializeEdgeManager();
     }
 
     void OnValidate()
     {
 
         InitializeComponents();
+        InitializeEdgeManager();
         UpdateStateFromEnum();
     }
 
@@ -43,6 +48,12 @@ public class NodeStateMachine : StateMachine
         
         if (AdjacentNodes == null)
             AdjacentNodes = GetComponent<AdjacentNodes>();
+    }
+
+    void InitializeEdgeManager()
+    {
+        if (_edgeVisibilityManager == null)
+            _edgeVisibilityManager = new EdgeVisibilityManager(transform, this);
     }
     
     public void UpdateStateFromEnum()
@@ -105,6 +116,11 @@ public class NodeStateMachine : StateMachine
 
         if (degreesOfSeparationText != null)
             degreesOfSeparationText.enabled = isVisible;
+    }
+
+    public void RefreshEdgeVisibility()
+    {
+        _edgeVisibilityManager?.UpdateEdgeVisibility();
     }
 
     public int GetHoverableRange()

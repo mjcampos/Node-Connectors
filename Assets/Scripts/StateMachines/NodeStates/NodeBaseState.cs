@@ -109,5 +109,21 @@ public abstract class NodeBaseState : State
             
             neighborStateMachine.OnRipple();
         }
+        
+        // Refresh edge visibility for this node after all neighbors have updated
+        StateMachine.RefreshEdgeVisibility();
+        
+        // Also refresh edge visiblity for all neighbors
+        foreach (var neighbor in StateMachine.AdjacentNodes.neighborNodes)
+        {
+            if (neighbor == null) continue;
+            
+            NodeStateMachine neighborStateMachine = neighbor.GetComponent<NodeStateMachine>();
+
+            if (neighborStateMachine != null)
+            {
+                neighborStateMachine.RefreshEdgeVisibility();
+            }
+        }
     }
 }
