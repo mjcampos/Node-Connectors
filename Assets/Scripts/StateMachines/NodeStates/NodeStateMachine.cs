@@ -10,6 +10,7 @@ public class NodeStateMachine : StateMachine
     public bool canBeUnlocked;
     public int degreesOfSeparationFromUnlocked;
     public int previousStateDegrees;
+    public int degreesFromVisibleNode;
 
     public TextMeshProUGUI degreesOfSeparationText;
     
@@ -76,7 +77,9 @@ public class NodeStateMachine : StateMachine
     {
         if (degreesOfSeparationText != null)
         {
-            degreesOfSeparationText.text = degreesOfSeparationFromUnlocked.ToString();
+            int displayValue = state == NodeState.NonHoverable ? degreesFromVisibleNode : degreesOfSeparationFromUnlocked;
+            
+            degreesOfSeparationText.text = displayValue.ToString();
         }
     }
 

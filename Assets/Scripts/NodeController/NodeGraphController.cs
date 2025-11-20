@@ -6,7 +6,7 @@ public class NodeGraphController : MonoBehaviour
 {
     [Header("Visibility Settings")]
     [Tooltip("Maximum degrees from Unlocked nodes where nodes remain hoverable")]
-    [Range(0, 20)]
+    [Range(1, 10)]
     [SerializeField] int visibilityDegreeThreshold = 2;
 
     int _previousThreshold = -1;

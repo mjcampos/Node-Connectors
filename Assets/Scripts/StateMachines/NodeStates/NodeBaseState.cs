@@ -60,6 +60,17 @@ public abstract class NodeBaseState : State
                 NodeState targetState = newDegrees <= visibilityThreshold
                     ? NodeState.Visible
                     : NodeState.NonHoverable;
+                
+                if (targetState == NodeState.NonHoverable)
+                {
+                    if (StateMachine.state == NodeState.Visible)
+                    {
+                        neighborStateMachine.degreesFromVisibleNode = 1;
+                    } else if (StateMachine.state == NodeState.NonHoverable)
+                    {
+                        neighborStateMachine.degreesFromVisibleNode = StateMachine.degreesFromVisibleNode + 1;
+                    }
+                }
 
                 if (neighborStateMachine.state != targetState)
                 {

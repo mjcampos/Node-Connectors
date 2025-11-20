@@ -213,6 +213,7 @@ MonoBehaviour:
   canBeUnlocked: 0
   degreesOfSeparationFromUnlocked: 0
   previousStateDegrees: 0
+  degreesFromVisibleNode: 0
   degreesOfSeparationText: {fileID: 5095398739683701310}
 --- !u!114 &8911150225527894315
 MonoBehaviour:

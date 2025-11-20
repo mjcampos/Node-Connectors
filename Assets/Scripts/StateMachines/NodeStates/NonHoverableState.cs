@@ -13,6 +13,11 @@ public class NonHoverableState : NodeBaseState
         StateMachine.canBeUnlocked = false;
 
         CalculateDegreesOfSeparation();
+
+        if (StateMachine.previousState == NodeState.Visible)
+        {
+            StateMachine.degreesFromVisibleNode = 1;
+        }
         
         StateMachine.UpdateDegreesText();
         StateMachine.Ripple();
