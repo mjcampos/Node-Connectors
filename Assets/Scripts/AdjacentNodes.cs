@@ -21,8 +21,8 @@ public class AdjacentNodes : MonoBehaviour
         foreach (var node in neighborNodes)
         {
             if (node == null) continue;
-            
-            var lineObject = new GameObject($"Edge_To_{node.name}");
+
+            var lineObject = new GameObject(NodeConstants.EdgeTo + node.name);
             
             lineObject.transform.SetParent(transform);
             
@@ -54,7 +54,7 @@ public class AdjacentNodes : MonoBehaviour
 
         for (int i = 0; i < transform.childCount; i++)
         {
-            if (transform.GetChild(i).name == "DegreesCanvas") continue;
+            if (transform.GetChild(i).name == NodeConstants.DegreesCanvas) continue;
             
             children.Add(transform.GetChild(i));
         }
