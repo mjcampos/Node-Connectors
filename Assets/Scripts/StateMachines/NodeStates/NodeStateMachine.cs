@@ -15,12 +15,11 @@ public class NodeStateMachine : StateMachine
     public int degreesFromNonHoverable;
     
     public int previousDegrees;
-
-    public TextMeshProUGUI degreesOfSeparationText;
     
     public SpriteRenderer SpriteRenderer { get; private set; }
     public AdjacentNodes AdjacentNodes { get; private set; }
     public NodeGraphController NodeGraphController { get; private set; }
+    public UIController UIController { get; private set; }
     
     EdgeVisibilityManager _edgeVisibilityManager;
 
@@ -48,6 +47,9 @@ public class NodeStateMachine : StateMachine
         
         if (AdjacentNodes == null)
             AdjacentNodes = GetComponent<AdjacentNodes>();
+
+        if (UIController == null)
+            UIController = GetComponent<UIController>();
     }
 
     void InitializeEdgeManager()
@@ -90,7 +92,7 @@ public class NodeStateMachine : StateMachine
 
     public void UpdateDegreesText()
     {
-        if (degreesOfSeparationText == null) return;
+        if (UIController == null) return;
 
         int displayValue = state switch
         {
@@ -99,7 +101,7 @@ public class NodeStateMachine : StateMachine
             _ => degreesFromUnlocked
         };
         
-        degreesOfSeparationText.text = displayValue.ToString();
+        UIController.SetDegreesText(displayValue.ToString());
     }
 
     public void SetVisibility(bool isVisible)
@@ -114,8 +116,8 @@ public class NodeStateMachine : StateMachine
         if (SpriteRenderer != null)
             SpriteRenderer.enabled = isVisible;
 
-        if (degreesOfSeparationText != null)
-            degreesOfSeparationText.enabled = isVisible;
+        if (UIController != null)
+            UIController.SetDegreesTextVisibility(isVisible);
     }
 
     public void RefreshEdgeVisibility()

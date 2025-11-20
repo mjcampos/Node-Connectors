@@ -114,6 +114,7 @@ GameObject:
   - component: {fileID: 4609610870895490565}
   - component: {fileID: 1663370265400641570}
   - component: {fileID: 8911150225527894315}
+  - component: {fileID: 2516602287958699124}
   - component: {fileID: 7424639523468317748}
   m_Layer: 0
   m_Name: Node
@@ -215,7 +216,6 @@ MonoBehaviour:
   degreesFromVisible: 0
   degreesFromNonHoverable: 0
   previousDegrees: 0
-  degreesOfSeparationText: {fileID: 5095398739683701310}
 --- !u!114 &8911150225527894315
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -229,6 +229,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EdgeGenerator
   neighborNodes: []
+--- !u!114 &2516602287958699124
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5769553210031898519}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 563e3d5548cf95f48a814a296726a7f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIController
+  degreesOfSeparationText: {fileID: 5095398739683701310}
 --- !u!58 &7424639523468317748
 CircleCollider2D:
   m_ObjectHideFlags: 0
