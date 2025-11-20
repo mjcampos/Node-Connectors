@@ -8,9 +8,12 @@ public class NodeStateMachine : StateMachine
     public NodeState state;
     public NodeState previousState = NodeState.None;
     public bool canBeUnlocked;
-    public int degreesOfSeparationFromUnlocked;
-    public int previousStateDegrees;
-    public int degreesFromVisibleNode;
+    
+    public int degreesFromUnlocked;
+    public int degreesFromVisible;
+    public int degreesFromNonHoverable;
+    
+    public int previousDegrees;
 
     public TextMeshProUGUI degreesOfSeparationText;
     
@@ -52,6 +55,7 @@ public class NodeStateMachine : StateMachine
             NodeState.Locked => new LockedState(this),
             NodeState.Visible => new VisibleState(this),
             NodeState.NonHoverable => new NonHoverableState(this),
+            NodeState.Hidden => new HiddenState(this),
             _ => new UnlockedState(this)
         };
         
@@ -75,16 +79,41 @@ public class NodeStateMachine : StateMachine
 
     public void UpdateDegreesText()
     {
-        if (degreesOfSeparationText != null)
+        if (degreesOfSeparationText == null) return;
+
+        int displayValue = state switch
         {
-            int displayValue = state == NodeState.NonHoverable ? degreesFromVisibleNode : degreesOfSeparationFromUnlocked;
-            
-            degreesOfSeparationText.text = displayValue.ToString();
-        }
+            NodeState.NonHoverable => degreesFromVisible,
+            NodeState.Hidden => degreesFromNonHoverable,
+            _ => degreesFromUnlocked
+        };
+        
+        degreesOfSeparationText.text = displayValue.ToString();
     }
 
-    public int GetVisibilityThreshold()
+    public void SetVisibility(bool isVisible)
     {
-        return NodeGraphController != null ? NodeGraphController.GetVisibilityDegreeThreshold() : int.MaxValue;
+#if UNITY_EDITOR
+        if (!Application.isPlaying)
+        {
+            isVisible = true;
+        }
+#endif
+
+        if (SpriteRenderer != null)
+            SpriteRenderer.enabled = isVisible;
+
+        if (degreesOfSeparationText != null)
+            degreesOfSeparationText.enabled = isVisible;
+    }
+
+    public int GetHoverableRange()
+    {
+        return NodeGraphController != null ? NodeGraphController.GetHoverableRange() : int.MaxValue;
+    }
+
+    public int GetNonHoverableRange()
+    {
+        return NodeGraphController != null ? NodeGraphController.GetNonHoverableRange() : int.MaxValue;
     }
 }

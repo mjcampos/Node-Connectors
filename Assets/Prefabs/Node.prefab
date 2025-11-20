@@ -211,9 +211,10 @@ MonoBehaviour:
   state: 0
   previousState: 3
   canBeUnlocked: 0
-  degreesOfSeparationFromUnlocked: 0
-  previousStateDegrees: 0
-  degreesFromVisibleNode: 0
+  degreesFromUnlocked: 0
+  degreesFromVisible: 0
+  degreesFromNonHoverable: 0
+  previousDegrees: 0
   degreesOfSeparationText: {fileID: 5095398739683701310}
 --- !u!114 &8911150225527894315
 MonoBehaviour:

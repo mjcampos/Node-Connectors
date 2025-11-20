@@ -1,22 +1,21 @@
 using Helpers;
 using UnityEngine;
 
-public class NonHoverableState : NodeBaseState
+public class HiddenState : NodeBaseState
 {
-    public NonHoverableState(NodeStateMachine stateMachine) : base(stateMachine)
+    public HiddenState(NodeStateMachine stateMachine) : base(stateMachine)
     {
     }
 
     public override void Enter()
     {
-        StateMachine.SpriteRenderer.color = NodeStateColors.NonHoverable;
+        StateMachine.SpriteRenderer.color = NodeStateColors.Hidden;
         StateMachine.canBeUnlocked = false;
-
+        
         CalculateDegrees();
-
-        StateMachine.degreesFromNonHoverable = 0;
-        StateMachine.SetVisibility(true);
+        
         StateMachine.UpdateDegreesText();
+        StateMachine.SetVisibility(false);
         StateMachine.Ripple();
     }
 
@@ -27,7 +26,7 @@ public class NonHoverableState : NodeBaseState
 
     public override void Exit()
     {
-        
+        StateMachine.SetVisibility(true);
     }
 
     public override void RippleHandle()

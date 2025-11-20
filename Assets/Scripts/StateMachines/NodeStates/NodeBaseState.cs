@@ -10,22 +10,23 @@ public abstract class NodeBaseState : State
         StateMachine = stateMachine;
     }
 
-    protected void CalculateDegreesOfSeparation()
+    protected void CalculateDegrees()
     {
         switch (StateMachine.previousState)
         {
             case NodeState.Locked:
-                StateMachine.degreesOfSeparationFromUnlocked = 0;
+                StateMachine.degreesFromUnlocked = 0;
                 break;
             case NodeState.Unlocked:
-                StateMachine.degreesOfSeparationFromUnlocked = 1;
+                StateMachine.degreesFromUnlocked = 1;
                 break;
             case NodeState.Visible:
             case NodeState.NonHoverable:
-                StateMachine.degreesOfSeparationFromUnlocked = StateMachine.previousStateDegrees + 1;
+            case NodeState.Hidden:
+                StateMachine.degreesFromUnlocked = StateMachine.previousDegrees + 1;
                 break;
             default:
-                StateMachine.degreesOfSeparationFromUnlocked = 0;
+                StateMachine.degreesFromUnlocked = 0;
                 break;
         }
     }
@@ -36,7 +37,8 @@ public abstract class NodeBaseState : State
         
         if (StateMachine.AdjacentNodes == null) return;
         
-        int visibilityThreshold = StateMachine.GetVisibilityThreshold();
+        int hoverableRange = StateMachine.GetHoverableRange();
+        int nonHoverableRange = StateMachine.GetNonHoverableRange();
         
         foreach (var neighbor in StateMachine.AdjacentNodes.neighborNodes)
         {
@@ -46,43 +48,59 @@ public abstract class NodeBaseState : State
 
             if (neighborStateMachine == null) continue;
 
-            int newDegrees = StateMachine.degreesOfSeparationFromUnlocked + 1;
+            int newDegreesFromUnlocked = StateMachine.degreesFromUnlocked + 1;
             
             neighborStateMachine.previousState = StateMachine.state;
             
-            if (neighborStateMachine.state == NodeState.Visible || neighborStateMachine.state == NodeState.NonHoverable)
+            if (neighborStateMachine.state == NodeState.Visible || 
+                neighborStateMachine.state == NodeState.NonHoverable ||
+                neighborStateMachine.state == NodeState.Hidden)
             {
-                neighborStateMachine.previousStateDegrees = StateMachine.degreesOfSeparationFromUnlocked;
-                neighborStateMachine.degreesOfSeparationFromUnlocked = newDegrees;
-                neighborStateMachine.canBeUnlocked = canBeUnlocked && (newDegrees <= visibilityThreshold);
-                
-                // Determine if should be visible or NonHoverable based on degrees
-                NodeState targetState = newDegrees <= visibilityThreshold
-                    ? NodeState.Visible
-                    : NodeState.NonHoverable;
-                
-                if (targetState == NodeState.NonHoverable)
-                {
-                    if (StateMachine.state == NodeState.Visible)
-                    {
-                        neighborStateMachine.degreesFromVisibleNode = 1;
-                    } else if (StateMachine.state == NodeState.NonHoverable)
-                    {
-                        neighborStateMachine.degreesFromVisibleNode = StateMachine.degreesFromVisibleNode + 1;
-                    }
-                }
+                bool shouldUpdate = newDegreesFromUnlocked < neighborStateMachine.degreesFromUnlocked ||
+                                    neighborStateMachine.degreesFromUnlocked == 0;
 
-                if (neighborStateMachine.state != targetState)
+                if (shouldUpdate)
                 {
-                    neighborStateMachine.state = targetState;
-                    neighborStateMachine.UpdateStateFromEnum();
+                    neighborStateMachine.previousDegrees = StateMachine.degreesFromUnlocked;
+                    neighborStateMachine.degreesFromUnlocked = newDegreesFromUnlocked;
+                    neighborStateMachine.canBeUnlocked = canBeUnlocked && (newDegreesFromUnlocked <= hoverableRange);
+
+                    NodeState targetState;
+
+                    if (newDegreesFromUnlocked <= hoverableRange)
+                    {
+                        targetState = NodeState.Visible;
+                    }
+                    else
+                    {
+                        int degreesFromVisible = newDegreesFromUnlocked - hoverableRange;
+
+                        neighborStateMachine.degreesFromVisible = degreesFromVisible;
+
+                        if (degreesFromVisible <= nonHoverableRange)
+                        {
+                            targetState = NodeState.NonHoverable;
+                        }
+                        else
+                        {
+                            targetState = NodeState.Hidden;
+                            int degreesFromNonHoverable = degreesFromVisible - nonHoverableRange;
+                            neighborStateMachine.degreesFromNonHoverable = degreesFromNonHoverable;
+                        }
+                    }
+
+                    if (neighborStateMachine.state != targetState)
+                    {
+                        neighborStateMachine.state = targetState;
+                        neighborStateMachine.UpdateStateFromEnum();
+                    }
                 }
             }
             else if (neighborStateMachine.state == NodeState.Unlocked)
             {
                 neighborStateMachine.canBeUnlocked = canBeUnlocked;
-                neighborStateMachine.previousStateDegrees = StateMachine.degreesOfSeparationFromUnlocked;
-                neighborStateMachine.degreesOfSeparationFromUnlocked = 0;
+                neighborStateMachine.previousDegrees = StateMachine.degreesFromUnlocked;
+                neighborStateMachine.degreesFromUnlocked = 0;
             }
             else
             {

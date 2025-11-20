@@ -5,24 +5,44 @@ using UnityEngine;
 public class NodeGraphController : MonoBehaviour
 {
     [Header("Visibility Settings")]
-    [Tooltip("Maximum degrees from Unlocked nodes where nodes remain hoverable")]
+    
+    [Tooltip("Maximum degrees from Unlocked nodes where nodes remain hoverable (Visible)")]
     [Range(1, 10)]
-    [SerializeField] int visibilityDegreeThreshold = 2;
+    [SerializeField] int hoverableRange = 2;
+    
+    [Tooltip("Maximum degrees from Visible nodes where nodes remain non-hoverable (NonHoverable)")]
+    [Range(1, 10)]
+    [SerializeField] int nonHoverableRange = 2;
 
-    int _previousThreshold = -1;
+    int _previousHoverableRange = -1;
+    int _previousNonHoverableRange = -1;
 
     void OnValidate()
     {
-        if (_previousThreshold == -1)
+        bool rangeChanged = false;
+        
+        if (_previousHoverableRange == -1)
         {
-            _previousThreshold = visibilityDegreeThreshold;
-            return;
+            _previousHoverableRange = hoverableRange;
+        }
+        else if (_previousHoverableRange != hoverableRange)
+        {
+            _previousHoverableRange = hoverableRange;
+            rangeChanged = true;
         }
 
-        if (_previousThreshold != visibilityDegreeThreshold)
+        if (_previousNonHoverableRange == -1)
         {
-            _previousThreshold = visibilityDegreeThreshold;
+            _previousNonHoverableRange = nonHoverableRange;
+        } 
+        else if (_previousNonHoverableRange != nonHoverableRange)
+        {
+            _previousNonHoverableRange = nonHoverableRange;
+            rangeChanged = true;
+        }
 
+        if (rangeChanged)
+        {
 #if UNITY_EDITOR
             if (!Application.isPlaying)
             {
@@ -44,6 +64,13 @@ public class NodeGraphController : MonoBehaviour
 
     public void TriggerNodeSettingsAdjuster()
     {
+#if UNITY_EDITOR
+        if (!Application.isPlaying)
+        {
+            ResetNonUnlockedNodes();
+        }
+#endif
+        
         foreach (Transform child in transform)
         {
             NodeStateMachine nsm = child.GetComponent<NodeStateMachine>();
@@ -55,8 +82,29 @@ public class NodeGraphController : MonoBehaviour
         }
     }
 
-    public int GetVisibilityDegreeThreshold()
+    void ResetNonUnlockedNodes()
     {
-        return visibilityDegreeThreshold;
+        foreach (Transform child in transform)
+        {
+            NodeStateMachine nsm = child.GetComponent<NodeStateMachine>();
+
+            if (nsm != null && nsm.state != NodeState.Unlocked && nsm.state != NodeState.Locked)
+            {
+                nsm.degreesFromUnlocked = 0;
+                nsm.degreesFromVisible = 0;
+                nsm.degreesFromNonHoverable = 0;
+                nsm.previousDegrees = 0;
+            }
+        }
+    }
+
+    public int GetHoverableRange()
+    {
+        return hoverableRange;
+    }
+
+    public int GetNonHoverableRange()
+    {
+        return nonHoverableRange;
     }
 }
