@@ -63,7 +63,10 @@ public abstract class NodeBaseState : State
                 {
                     neighborStateMachine.previousDegrees = StateMachine.degreesFromUnlocked;
                     neighborStateMachine.degreesFromUnlocked = newDegreesFromUnlocked;
-                    neighborStateMachine.canBeUnlocked = canBeUnlocked && (newDegreesFromUnlocked <= hoverableRange);
+                    
+                    bool isClickable = canBeUnlocked && (newDegreesFromUnlocked <= hoverableRange);
+                    
+                    neighborStateMachine.canBeUnlocked = neighborStateMachine.canBeUnlocked || isClickable;
 
                     NodeState targetState;
 
@@ -94,6 +97,12 @@ public abstract class NodeBaseState : State
                         neighborStateMachine.state = targetState;
                         neighborStateMachine.UpdateStateFromEnum();
                     }
+                }
+                else
+                {
+                    bool isClickable = canBeUnlocked && (newDegreesFromUnlocked <= hoverableRange);
+                    
+                    neighborStateMachine.canBeUnlocked = neighborStateMachine.canBeUnlocked || isClickable;
                 }
             }
             else if (neighborStateMachine.state == NodeState.Unlocked)
