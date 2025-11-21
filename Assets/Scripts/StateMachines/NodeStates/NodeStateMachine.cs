@@ -23,6 +23,8 @@ public class NodeStateMachine : StateMachine
     
     EdgeVisibilityManager _edgeVisibilityManager;
 
+    public static event Action OnNodeStateChanged;
+
     void Awake()
     {
         InitializeComponents();
@@ -87,7 +89,14 @@ public class NodeStateMachine : StateMachine
             state = NodeState.Unlocked;
             canBeUnlocked = false;
             SwitchState(new UnlockedState(this));
+            
+            NotifyStateChanged();
         }
+    }
+
+    void NotifyStateChanged()
+    {
+        OnNodeStateChanged?.Invoke();
     }
 
     public void UpdateDegreesText()
