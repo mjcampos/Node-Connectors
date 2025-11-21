@@ -16,9 +16,25 @@ public class InputReader : MonoBehaviour, Controls.IPlayerActions
         _controls.Player.Enable();
     }
 
+    void OnDestroy()
+    {
+        if (_controls != null)
+        {
+            _controls.Player.Disable();
+            _controls.Dispose();
+        }
+    }
+
     public void OnClick(InputAction.CallbackContext context)
     {
         if (!context.performed) return;
+
+        if (_camera == null)
+        {
+            _camera = Camera.main;
+            
+            if (_camera == null) return;
+        }
         
         Vector2 screenPos = Mouse.current.position.ReadValue();
         Ray ray = _camera.ScreenPointToRay(screenPos);
