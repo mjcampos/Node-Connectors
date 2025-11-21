@@ -4,7 +4,12 @@ using TMPro;
 
 public class UIController : MonoBehaviour
 {
-    public TextMeshProUGUI degreesOfSeparationText;
+    [Header("Text Components")]
+    [SerializeField] TextMeshProUGUI degreesOfSeparationText;
+    [SerializeField] TextMeshProUGUI hoverableText;
+    
+    [Header("Data")]
+    [SerializeField] NodeTextData nodeTextData;
 
     void Awake()
     {
@@ -20,8 +25,36 @@ public class UIController : MonoBehaviour
     {
         if (degreesOfSeparationText == null)
         {
-            degreesOfSeparationText = GetComponentInChildren<TextMeshProUGUI>();
+            Transform degreesCanvas = transform.Find("DegreesCanvas");
+
+            if (degreesCanvas != null)
+            {
+                Transform degreesTextTransform = degreesCanvas.Find("DegreesText");
+
+                if (degreesTextTransform != null)
+                {
+                    degreesOfSeparationText = degreesTextTransform.GetComponent<TextMeshProUGUI>();
+                }
+            }
         }
+
+        if (hoverableText == null)
+        {
+            Transform degreesCanvas = transform.Find("DegreesCanvas");
+
+            if (degreesCanvas != null)
+            {
+                Transform hoverTextTransform = degreesCanvas.Find("HoverText");
+                
+                if (hoverTextTransform != null)
+                {
+                    hoverableText = hoverTextTransform.GetComponent<TextMeshProUGUI>();
+                }
+            }
+        }
+
+        UpdateHoverableText();
+        SetHoverTextVisibility(false);
     }
 
     public void SetDegreesText(string text)
@@ -38,5 +71,31 @@ public class UIController : MonoBehaviour
         {
             degreesOfSeparationText.enabled = isVisible;
         }
+    }
+
+    public void UpdateHoverableText()
+    {
+        if (hoverableText != null)
+        {
+            hoverableText.text = (nodeTextData != null) ? nodeTextData.nodeText : string.Empty;
+        }
+    }
+    
+    public void SetHoverTextVisibility(bool isVisible)
+    {
+        if (hoverableText != null) 
+        {
+            hoverableText.enabled = isVisible;
+        }
+    }
+
+    public string GetHoverText()
+    {
+        return (nodeTextData != null) ? nodeTextData.nodeText : string.Empty;
+    }
+
+    public bool HasHoverText()
+    {
+        return nodeTextData != null && !string.IsNullOrEmpty(nodeTextData.nodeText);
     }
 }
