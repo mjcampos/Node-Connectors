@@ -10,6 +10,7 @@ public class SaveLoadManager : MonoBehaviour
 
     string _saveFilePath;
     bool _saveOnQuit = true;
+    NodeSaveData _defaultNodeStates;
 
     void Awake()
     {
@@ -18,9 +19,15 @@ public class SaveLoadManager : MonoBehaviour
             nodeGraphController = GetComponent<NodeGraphController>();
         }
 
-        _saveFilePath = Path.Combine(Application.persistentDataPath, SAVE_FILE_NAME);
+        InitializeSavePath();
         
         Debug.Log($"Save file location: {_saveFilePath}");
+    }
+
+    void InitializeSavePath()
+    {
+        if (string.IsNullOrEmpty(_saveFilePath))
+            _saveFilePath = Path.Combine(Application.persistentDataPath, SAVE_FILE_NAME);
     }
 
     void OnEnable()
@@ -35,6 +42,7 @@ public class SaveLoadManager : MonoBehaviour
 
     void Start()
     {
+        CaptureDefaultStates();
         LoadNodeStates();
     }
 
@@ -53,9 +61,39 @@ public class SaveLoadManager : MonoBehaviour
     void OnNodeChanged()
     {
         if (Application.isPlaying && _saveOnQuit)
-        {
             SaveNodeStates();
+    }
+
+    void CaptureDefaultStates()
+    {
+        if (nodeGraphController == null)
+        {
+            Debug.LogWarning("NodeGraphController is not assigned!");
+            return;
         }
+
+        _defaultNodeStates = new NodeSaveData();
+
+        foreach (Transform child in nodeGraphController.transform)
+        {
+            NodeStateMachine nsm = child.GetComponent<NodeStateMachine>();
+            
+            if (nsm == null) continue;
+
+            NodeData data = new NodeData
+            {
+                nodeName = child.name,
+                state = nsm.state,
+                canBeUnlocked = nsm.canBeUnlocked,
+                degreesFromUnlocked = nsm.degreesFromUnlocked,
+                degreesFromVisible = nsm.degreesFromVisible,
+                degreesFromNonHoverable = nsm.degreesFromNonHoverable
+            };
+
+            _defaultNodeStates.AddOrUpdateNode(data);
+        }
+
+        Debug.Log($"[Save System] Captured {_defaultNodeStates.nodes.Count} default node states from Editor");
     }
 
     public void SaveNodeStates()
@@ -116,7 +154,29 @@ public class SaveLoadManager : MonoBehaviour
             return;
         }
 
-        int loadedCount = 0;
+        ApplyNodeData(saveData);
+
+        Debug.Log($"[Save System] Loaded {saveData.nodes.Count} nodes from save file");
+    }
+
+    public void RestoreDefaultStates()
+    {
+        if (_defaultNodeStates == null || _defaultNodeStates.nodes.Count == 0)
+        {
+            Debug.LogWarning("[Save System] No default states captured!");
+            return;
+        }
+
+        ApplyNodeData(_defaultNodeStates);
+
+        Debug.Log($"[Save System] Restored {_defaultNodeStates.nodes.Count} nodes to Editor defaults");
+    }
+
+    void ApplyNodeData(NodeSaveData saveData)
+    {
+        if (nodeGraphController == null) return;
+
+        int appliedCount = 0;
         
         foreach (Transform child in nodeGraphController.transform)
         {
@@ -134,49 +194,68 @@ public class SaveLoadManager : MonoBehaviour
                 nsm.degreesFromVisible = data.degreesFromVisible;
                 nsm.degreesFromNonHoverable = data.degreesFromNonHoverable;
                 nsm.UpdateStateFromEnum();
-                loadedCount++;
+                appliedCount++;
             }
         }
 
-        Debug.Log($"[Save System] Loaded {loadedCount} nodes from save file");
+        Debug.Log($"[Save System] Applied data to {appliedCount} nodes");
     }
 
     public void RevertToDefault()
     {
-        if (File.Exists(_saveFilePath))
+        InitializeSavePath();
+        
+        bool wasInPlayMode = Application.isPlaying;
+        bool fileExisted = File.Exists(_saveFilePath);
+
+        if (fileExisted)
         {
             File.Delete(_saveFilePath);
+            Debug.Log($"[Save System] Save file deleted: {_saveFilePath}");
+        }
+
+        if (wasInPlayMode)
+        {
             _saveOnQuit = false;
-            
-            Debug.Log("[Save System] Save file deleted. Save disabled for this session.");
+            RestoreDefaultStates();
             
             #if UNITY_EDITOR
             UnityEditor.EditorUtility.DisplayDialog(
-                "Save Data Deleted", 
-                "Save file has been deleted and saving is disabled for this play session.\n\nNext time you enter Play Mode, nodes will start from their Editor defaults.", 
+                "Reverted to Default", 
+                "Nodes have been restored to their Editor default states.\n\nSave file deleted and saving disabled for this session.", 
                 "OK");
             #endif
         }
         else
         {
-            Debug.Log("[Save System] No save file found. Already using Editor defaults.");
-            
             #if UNITY_EDITOR
-            UnityEditor.EditorUtility.DisplayDialog(
-                "No Save Data", 
-                "There is no save file to delete.\n\nNodes are already using their Editor defaults.", 
-                "OK");
+            if (fileExisted)
+            {
+                UnityEditor.EditorUtility.DisplayDialog(
+                    "Save Data Deleted", 
+                    "Save file has been deleted.\n\nNext time you enter Play Mode, nodes will start from their Editor defaults.", 
+                    "OK");
+            }
+            else
+            {
+                UnityEditor.EditorUtility.DisplayDialog(
+                    "No Save Data", 
+                    "There is no save file to delete.\n\nNodes are already using their Editor defaults.", 
+                    "OK");
+            }
             #endif
         }
     }
 
     public string GetSaveFilePath()
     {
+        InitializeSavePath();
         return _saveFilePath;
     }
 
     public bool SaveFileExists()
     {
+        InitializeSavePath();
         return File.Exists(_saveFilePath);
     }
 }
