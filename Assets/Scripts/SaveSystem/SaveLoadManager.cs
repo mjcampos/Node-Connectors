@@ -44,6 +44,7 @@ public class SaveLoadManager : MonoBehaviour
     {
         CaptureDefaultStates();
         LoadNodeStates();
+        SaveNodeStates();
     }
 
     void OnApplicationQuit()
@@ -61,7 +62,9 @@ public class SaveLoadManager : MonoBehaviour
     void OnNodeChanged()
     {
         if (Application.isPlaying && _saveOnQuit)
+        {
             SaveNodeStates();
+        }
     }
 
     void CaptureDefaultStates()
@@ -77,6 +80,7 @@ public class SaveLoadManager : MonoBehaviour
         foreach (Transform child in nodeGraphController.transform)
         {
             NodeStateMachine nsm = child.GetComponent<NodeStateMachine>();
+            UIController uiController = child.GetComponent<UIController>();
             
             if (nsm == null) continue;
 
@@ -87,7 +91,8 @@ public class SaveLoadManager : MonoBehaviour
                 canBeUnlocked = nsm.canBeUnlocked,
                 degreesFromUnlocked = nsm.degreesFromUnlocked,
                 degreesFromVisible = nsm.degreesFromVisible,
-                degreesFromNonHoverable = nsm.degreesFromNonHoverable
+                degreesFromNonHoverable = nsm.degreesFromNonHoverable,
+                nodeText = (uiController != null && uiController.HasHoverText()) ? uiController.GetHoverText() : string.Empty
             };
 
             _defaultNodeStates.AddOrUpdateNode(data);
@@ -109,7 +114,8 @@ public class SaveLoadManager : MonoBehaviour
         foreach (Transform child in nodeGraphController.transform)
         {
             NodeStateMachine nsm = child.GetComponent<NodeStateMachine>();
-            
+            UIController uiController = child.GetComponent<UIController>();
+        
             if (nsm == null) continue;
 
             NodeData data = new NodeData
@@ -119,7 +125,8 @@ public class SaveLoadManager : MonoBehaviour
                 canBeUnlocked = nsm.canBeUnlocked,
                 degreesFromUnlocked = nsm.degreesFromUnlocked,
                 degreesFromVisible = nsm.degreesFromVisible,
-                degreesFromNonHoverable = nsm.degreesFromNonHoverable
+                degreesFromNonHoverable = nsm.degreesFromNonHoverable,
+                nodeText = (uiController != null && uiController.HasHoverText()) ? uiController.GetHoverText() : string.Empty
             };
 
             saveData.AddOrUpdateNode(data);

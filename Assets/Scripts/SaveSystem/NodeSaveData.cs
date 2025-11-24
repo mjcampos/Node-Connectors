@@ -12,6 +12,7 @@ public class NodeData
     public int degreesFromUnlocked;
     public int degreesFromVisible;
     public int degreesFromNonHoverable;
+    public string nodeText;
 }
 
 [Serializable]
@@ -40,10 +41,16 @@ public class NodeSaveData
             existing.degreesFromUnlocked = nodeData.degreesFromUnlocked;
             existing.degreesFromVisible = nodeData.degreesFromVisible;
             existing.degreesFromNonHoverable = nodeData.degreesFromNonHoverable;
+            existing.nodeText = nodeData.nodeText;
         }
         else
         {
             nodes.Add(nodeData);
         }
+    }
+    
+    public List<NodeData> GetUnlockedNodes()
+    {
+        return nodes.FindAll(n => n.state == NodeState.Unlocked && !string.IsNullOrEmpty(n.nodeText));
     }
 }
