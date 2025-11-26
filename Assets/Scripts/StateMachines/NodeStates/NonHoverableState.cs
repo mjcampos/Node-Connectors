@@ -11,10 +11,8 @@ public class NonHoverableState : NodeBaseState
     {
         StateMachine.SpriteRenderer.color = NodeStateColors.NonHoverable;
         StateMachine.canBeUnlocked = false;
-        StateMachine.degreesFromNonHoverable = 0;
         StateMachine.SetVisibility(true);
         StateMachine.UpdateDegreesText();
-        StateMachine.Ripple();
     }
 
     public override void Tick(float deltaTime)

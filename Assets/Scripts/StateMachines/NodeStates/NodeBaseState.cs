@@ -12,8 +12,6 @@ public abstract class NodeBaseState : State
 
     public void TraverseNeighbors(bool canBeUnlocked)
     {
-        StateMachine.UpdateDegreesText();
-        
         if (StateMachine.Node == null) return;
         
         int hoverableRange = StateMachine.GetHoverableRange();
@@ -27,39 +25,43 @@ public abstract class NodeBaseState : State
 
             if (neighborStateMachine == null) continue;
 
+            if (neighborStateMachine.state == NodeState.Locked)
+            {
+                continue;
+            }
+
             int newDegreesFromUnlocked = StateMachine.degreesFromUnlocked + 1;
             
             if (neighborStateMachine.state == NodeState.Visible || 
                 neighborStateMachine.state == NodeState.NonHoverable ||
                 neighborStateMachine.state == NodeState.Hidden)
             {
-                bool shouldUpdate = newDegreesFromUnlocked < neighborStateMachine.degreesFromUnlocked ||
-                                    neighborStateMachine.degreesFromUnlocked == 0;
+                bool shouldUpdate = newDegreesFromUnlocked < neighborStateMachine.degreesFromUnlocked;
 
                 if (shouldUpdate)
                 {
                     neighborStateMachine.degreesFromUnlocked = newDegreesFromUnlocked;
-                    neighborStateMachine.UpdateDegreesText();
                     
                     bool isClickable = canBeUnlocked && (newDegreesFromUnlocked <= hoverableRange);
-                    
-                    neighborStateMachine.canBeUnlocked = neighborStateMachine.canBeUnlocked || isClickable;
+                    neighborStateMachine.canBeUnlocked = isClickable;
 
                     NodeState targetState;
 
                     if (newDegreesFromUnlocked <= hoverableRange)
                     {
                         targetState = NodeState.Visible;
+                        neighborStateMachine.degreesFromVisible = 0;
+                        neighborStateMachine.degreesFromNonHoverable = 0;
                     }
                     else
                     {
                         int degreesFromVisible = newDegreesFromUnlocked - hoverableRange;
-
                         neighborStateMachine.degreesFromVisible = degreesFromVisible;
 
                         if (degreesFromVisible <= nonHoverableRange)
                         {
                             targetState = NodeState.NonHoverable;
+                            neighborStateMachine.degreesFromNonHoverable = 0;
                         }
                         else
                         {
@@ -74,27 +76,14 @@ public abstract class NodeBaseState : State
                         neighborStateMachine.state = targetState;
                         neighborStateMachine.UpdateStateFromEnum();
                     }
-                    else
-                    {
-                        neighborStateMachine.OnRipple();
-                    }
-                }
-                else
-                {
-                    bool isClickable = canBeUnlocked && (newDegreesFromUnlocked <= hoverableRange);
                     
-                    neighborStateMachine.canBeUnlocked = neighborStateMachine.canBeUnlocked || isClickable;
+                    neighborStateMachine.UpdateDegreesText();
+                    neighborStateMachine.OnRipple();
                 }
             }
             else if (neighborStateMachine.state == NodeState.Unlocked)
             {
                 neighborStateMachine.canBeUnlocked = canBeUnlocked;
-                neighborStateMachine.degreesFromUnlocked = 0;
-                neighborStateMachine.UpdateDegreesText();
-            }
-            else
-            {
-                neighborStateMachine.canBeUnlocked = !canBeUnlocked;
             }
         }
     }

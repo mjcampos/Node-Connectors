@@ -14,7 +14,6 @@ public class UnlockedState : NodeBaseState
         
         StateMachine.SetVisibility(true);
         StateMachine.UpdateDegreesText();
-        StateMachine.Ripple();
     }
 
     public override void Tick(float deltaTime)

@@ -19,10 +19,21 @@ public class NodeStateMachine : StateMachine
     public UIController UIController { get; private set; }
 
     public static event Action OnNodeStateChanged;
+    
+    static bool _hasInitialized = false;
 
     void Awake()
     {
         InitializeComponents();
+    }
+
+    void Start()
+    {
+        if (Application.isPlaying && !_hasInitialized)
+        {
+            _hasInitialized = true;
+            InitializeRuntimeState();
+        }
     }
 
     void OnValidate()
@@ -52,6 +63,11 @@ public class NodeStateMachine : StateMachine
         if (UIController == null)
             UIController = GetComponent<UIController>();
     }
+
+    void InitializeRuntimeState()
+    {
+        RippleAllUnlockedNodesInGraph();
+    }
     
     public void UpdateStateFromEnum()
     {
@@ -76,6 +92,22 @@ public class NodeStateMachine : StateMachine
         
         NodeStateMachine[] allStateMachines = NodeGraphController.GetComponentsInChildren<NodeStateMachine>();
         
+        bool hasUnlockedNodes = false;
+        foreach (NodeStateMachine stateMachine in allStateMachines)
+        {
+            if (stateMachine.state == NodeState.Unlocked)
+            {
+                hasUnlockedNodes = true;
+                break;
+            }
+        }
+        
+        if (!hasUnlockedNodes)
+        {
+            UpdateDegreesText();
+            return;
+        }
+        
         foreach (NodeStateMachine stateMachine in allStateMachines)
         {
             if (stateMachine.state == NodeState.Visible || 
@@ -83,13 +115,21 @@ public class NodeStateMachine : StateMachine
                 stateMachine.state == NodeState.Hidden)
             {
                 stateMachine.degreesFromUnlocked = int.MaxValue;
+                stateMachine.canBeUnlocked = false;
             }
         }
         
         foreach (NodeStateMachine stateMachine in allStateMachines)
         {
             if (stateMachine.state == NodeState.Unlocked)
+            {
                 stateMachine.Ripple();
+            }
+        }
+        
+        foreach (NodeStateMachine stateMachine in allStateMachines)
+        {
+            stateMachine.UpdateDegreesText();
         }
     }
 
@@ -104,9 +144,19 @@ public class NodeStateMachine : StateMachine
         {
             state = NodeState.Unlocked;
             canBeUnlocked = false;
-            SwitchState(new UnlockedState(this));
+            UpdateStateFromEnum();
+            
+            RippleAllUnlockedNodesInGraph();
             
             NotifyStateChanged();
+        }
+    }
+
+    void OnDestroy()
+    {
+        if (!Application.isPlaying)
+        {
+            _hasInitialized = false;
         }
     }
 
