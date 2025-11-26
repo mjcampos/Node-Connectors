@@ -16,48 +16,38 @@ public class NodeStateMachine : StateMachine
     
     public int previousDegrees;
     
+    public Node Node { get; private set; }
     public SpriteRenderer SpriteRenderer { get; private set; }
-    public AdjacentNodes AdjacentNodes { get; private set; }
     public NodeGraphController NodeGraphController { get; private set; }
     public UIController UIController { get; private set; }
-    
-    EdgeVisibilityManager _edgeVisibilityManager;
 
     public static event Action OnNodeStateChanged;
 
     void Awake()
     {
         InitializeComponents();
-        InitializeEdgeManager();
     }
 
     void OnValidate()
     {
 
         InitializeComponents();
-        InitializeEdgeManager();
         UpdateStateFromEnum();
     }
 
     void InitializeComponents()
     {
+        if (Node == null)
+            Node = GetComponent<Node>();
+        
         if (NodeGraphController == null)
             NodeGraphController = GetComponentInParent<NodeGraphController>();
         
         if (SpriteRenderer == null)
             SpriteRenderer = GetComponent<SpriteRenderer>();
         
-        if (AdjacentNodes == null)
-            AdjacentNodes = GetComponent<AdjacentNodes>();
-
         if (UIController == null)
             UIController = GetComponent<UIController>();
-    }
-
-    void InitializeEdgeManager()
-    {
-        if (_edgeVisibilityManager == null)
-            _edgeVisibilityManager = new EdgeVisibilityManager(transform, this);
     }
     
     public void UpdateStateFromEnum()
@@ -127,11 +117,6 @@ public class NodeStateMachine : StateMachine
 
         if (UIController != null)
             UIController.SetDegreesTextVisibility(isVisible);
-    }
-
-    public void RefreshEdgeVisibility()
-    {
-        _edgeVisibilityManager?.UpdateEdgeVisibility();
     }
 
     public int GetHoverableRange()

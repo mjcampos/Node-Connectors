@@ -35,12 +35,12 @@ public abstract class NodeBaseState : State
     {
         StateMachine.UpdateDegreesText();
         
-        if (StateMachine.AdjacentNodes == null) return;
+        if (StateMachine.Node == null) return;
         
         int hoverableRange = StateMachine.GetHoverableRange();
         int nonHoverableRange = StateMachine.GetNonHoverableRange();
         
-        foreach (var neighbor in StateMachine.AdjacentNodes.neighborNodes)
+        foreach (var neighbor in StateMachine.Node.neighborNodes)
         {
             if (neighbor == null) continue;
             
@@ -63,6 +63,7 @@ public abstract class NodeBaseState : State
                 {
                     neighborStateMachine.previousDegrees = StateMachine.degreesFromUnlocked;
                     neighborStateMachine.degreesFromUnlocked = newDegreesFromUnlocked;
+                    neighborStateMachine.UpdateDegreesText();
                     
                     bool isClickable = canBeUnlocked && (newDegreesFromUnlocked <= hoverableRange);
                     
@@ -97,6 +98,10 @@ public abstract class NodeBaseState : State
                         neighborStateMachine.state = targetState;
                         neighborStateMachine.UpdateStateFromEnum();
                     }
+                    else
+                    {
+                        neighborStateMachine.OnRipple();
+                    }
                 }
                 else
                 {
@@ -110,28 +115,11 @@ public abstract class NodeBaseState : State
                 neighborStateMachine.canBeUnlocked = canBeUnlocked;
                 neighborStateMachine.previousDegrees = StateMachine.degreesFromUnlocked;
                 neighborStateMachine.degreesFromUnlocked = 0;
+                neighborStateMachine.UpdateDegreesText();
             }
             else
             {
                 neighborStateMachine.canBeUnlocked = !canBeUnlocked;
-            }
-            
-            neighborStateMachine.OnRipple();
-        }
-        
-        // Refresh edge visibility for this node after all neighbors have updated
-        StateMachine.RefreshEdgeVisibility();
-        
-        // Also refresh edge visiblity for all neighbors
-        foreach (var neighbor in StateMachine.AdjacentNodes.neighborNodes)
-        {
-            if (neighbor == null) continue;
-            
-            NodeStateMachine neighborStateMachine = neighbor.GetComponent<NodeStateMachine>();
-
-            if (neighborStateMachine != null)
-            {
-                neighborStateMachine.RefreshEdgeVisibility();
             }
         }
     }

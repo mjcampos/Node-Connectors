@@ -30,20 +30,5 @@ public class LockedState : NodeBaseState
     public override void RippleHandle()
     {
         StateMachine.canBeUnlocked = false;
-        
-        // Lock neighbors
-        if (StateMachine.AdjacentNodes != null)
-        {
-            foreach (var neighbor in StateMachine.AdjacentNodes.neighborNodes)
-            {
-                NodeStateMachine neighborStateMachine = neighbor.GetComponent<NodeStateMachine>();
-                
-                neighborStateMachine.state = NodeState.Locked;
-                neighborStateMachine.previousState = StateMachine.state;
-                neighborStateMachine.SwitchState(new LockedState(neighborStateMachine));
-                
-                neighborStateMachine.OnRipple();
-            }
-        }
     }
 }
