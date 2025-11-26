@@ -11,9 +11,6 @@ public class NonHoverableState : NodeBaseState
     {
         StateMachine.SpriteRenderer.color = NodeStateColors.NonHoverable;
         StateMachine.canBeUnlocked = false;
-
-        CalculateDegrees();
-
         StateMachine.degreesFromNonHoverable = 0;
         StateMachine.SetVisibility(true);
         StateMachine.UpdateDegreesText();

@@ -7,14 +7,11 @@ using TMPro;
 public class NodeStateMachine : StateMachine
 {
     public NodeState state;
-    public NodeState previousState = NodeState.None;
     public bool canBeUnlocked;
     
     public int degreesFromUnlocked;
     public int degreesFromVisible;
     public int degreesFromNonHoverable;
-    
-    public int previousDegrees;
     
     public Node Node { get; private set; }
     public SpriteRenderer SpriteRenderer { get; private set; }
@@ -30,9 +27,15 @@ public class NodeStateMachine : StateMachine
 
     void OnValidate()
     {
-
         InitializeComponents();
         UpdateStateFromEnum();
+        
+#if UNITY_EDITOR
+        if (!Application.isPlaying)
+        {
+            RippleAllUnlockedNodesInGraph();
+        }
+#endif
     }
 
     void InitializeComponents()
@@ -65,6 +68,29 @@ public class NodeStateMachine : StateMachine
         };
         
         SwitchState(newState);
+    }
+
+    void RippleAllUnlockedNodesInGraph()
+    {
+        if (NodeGraphController == null) return;
+        
+        NodeStateMachine[] allStateMachines = NodeGraphController.GetComponentsInChildren<NodeStateMachine>();
+        
+        foreach (NodeStateMachine stateMachine in allStateMachines)
+        {
+            if (stateMachine.state == NodeState.Visible || 
+                stateMachine.state == NodeState.NonHoverable || 
+                stateMachine.state == NodeState.Hidden)
+            {
+                stateMachine.degreesFromUnlocked = int.MaxValue;
+            }
+        }
+        
+        foreach (NodeStateMachine stateMachine in allStateMachines)
+        {
+            if (stateMachine.state == NodeState.Unlocked)
+                stateMachine.Ripple();
+        }
     }
 
     public void Ripple()

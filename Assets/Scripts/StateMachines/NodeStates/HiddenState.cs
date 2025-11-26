@@ -11,12 +11,8 @@ public class HiddenState : NodeBaseState
     {
         StateMachine.SpriteRenderer.color = NodeStateColors.Hidden;
         StateMachine.canBeUnlocked = false;
-        
-        CalculateDegrees();
-        
         StateMachine.UpdateDegreesText();
         StateMachine.SetVisibility(false);
-        StateMachine.Ripple();
     }
 
     public override void Tick(float deltaTime)

@@ -10,27 +10,6 @@ public abstract class NodeBaseState : State
         StateMachine = stateMachine;
     }
 
-    protected void CalculateDegrees()
-    {
-        switch (StateMachine.previousState)
-        {
-            case NodeState.Locked:
-                StateMachine.degreesFromUnlocked = 0;
-                break;
-            case NodeState.Unlocked:
-                StateMachine.degreesFromUnlocked = 1;
-                break;
-            case NodeState.Visible:
-            case NodeState.NonHoverable:
-            case NodeState.Hidden:
-                StateMachine.degreesFromUnlocked = StateMachine.previousDegrees + 1;
-                break;
-            default:
-                StateMachine.degreesFromUnlocked = 0;
-                break;
-        }
-    }
-
     public void TraverseNeighbors(bool canBeUnlocked)
     {
         StateMachine.UpdateDegreesText();
@@ -50,8 +29,6 @@ public abstract class NodeBaseState : State
 
             int newDegreesFromUnlocked = StateMachine.degreesFromUnlocked + 1;
             
-            neighborStateMachine.previousState = StateMachine.state;
-            
             if (neighborStateMachine.state == NodeState.Visible || 
                 neighborStateMachine.state == NodeState.NonHoverable ||
                 neighborStateMachine.state == NodeState.Hidden)
@@ -61,7 +38,6 @@ public abstract class NodeBaseState : State
 
                 if (shouldUpdate)
                 {
-                    neighborStateMachine.previousDegrees = StateMachine.degreesFromUnlocked;
                     neighborStateMachine.degreesFromUnlocked = newDegreesFromUnlocked;
                     neighborStateMachine.UpdateDegreesText();
                     
@@ -113,7 +89,6 @@ public abstract class NodeBaseState : State
             else if (neighborStateMachine.state == NodeState.Unlocked)
             {
                 neighborStateMachine.canBeUnlocked = canBeUnlocked;
-                neighborStateMachine.previousDegrees = StateMachine.degreesFromUnlocked;
                 neighborStateMachine.degreesFromUnlocked = 0;
                 neighborStateMachine.UpdateDegreesText();
             }

@@ -80,10 +80,9 @@ public class NodeGraphController : MonoBehaviour
 
             if (nsm != null && nsm.state != NodeState.Unlocked && nsm.state != NodeState.Locked)
             {
-                nsm.degreesFromUnlocked = 0;
+                nsm.degreesFromUnlocked = int.MaxValue;
                 nsm.degreesFromVisible = 0;
                 nsm.degreesFromNonHoverable = 0;
-                nsm.previousDegrees = 0;
             }
         }
     }

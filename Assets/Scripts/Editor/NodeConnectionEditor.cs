@@ -1,3 +1,4 @@
+using Helpers;
 using UnityEditor;
 using UnityEngine;
 
@@ -144,6 +145,8 @@ public class NodeConnectionEditor : Editor
         EditorUtility.SetDirty(nodeB);
 
         Debug.Log($"Connected: {nodeA.name} ↔ {nodeB.name}");
+        
+        RippleAllUnlockedNodes();
     }
 
     void DisconnectNodes(Node nodeA, Node nodeB)
@@ -156,6 +159,31 @@ public class NodeConnectionEditor : Editor
 
         Debug.Log($"Disconnected: {nodeA.name} ↮ {nodeB.name}");
         SceneView.RepaintAll();
+        
+        RippleAllUnlockedNodes();
+    }
+
+    void RippleAllUnlockedNodes()
+    {
+        NodeStateMachine[] allStateMachines = FindObjectsByType<NodeStateMachine>(FindObjectsSortMode.None);
+    
+        foreach (NodeStateMachine stateMachine in allStateMachines)
+        {
+            if (stateMachine.state == NodeState.Visible || 
+                stateMachine.state == NodeState.NonHoverable || 
+                stateMachine.state == NodeState.Hidden)
+            {
+                stateMachine.degreesFromUnlocked = int.MaxValue;
+            }
+        }
+    
+        foreach (NodeStateMachine stateMachine in allStateMachines)
+        {
+            if (stateMachine.state == NodeState.Unlocked)
+            {
+                stateMachine.Ripple();
+            }
+        }
     }
 
     bool IsMouseOverNode(Node node, Vector3 mouseWorldPos)
