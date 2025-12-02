@@ -96,4 +96,10 @@ public class NodeGraphController : MonoBehaviour
     {
         return nonHoverableRange;
     }
+    
+    [ContextMenu("Refresh Node Graph")]
+    public void RefreshNodeGraph()
+    {
+        TriggerNodeSettingsAdjuster();
+    }
 }
