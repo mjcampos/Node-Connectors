@@ -626,7 +626,7 @@ GameObject:
   - component: {fileID: 1003869841}
   - component: {fileID: 1003869842}
   m_Layer: 0
-  m_Name: NodeController
+  m_Name: Node Graph Controller
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

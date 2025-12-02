@@ -2,6 +2,7 @@ using System;
 using Helpers;
 using UnityEngine;
 
+[RequireComponent(typeof(InputReader))]
 public class NodeGraphController : MonoBehaviour
 {
     [Header("Visibility Settings")]
