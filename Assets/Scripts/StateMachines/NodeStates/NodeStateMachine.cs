@@ -7,6 +7,10 @@ public class NodeStateMachine : StateMachine
     [Header("Node Data")]
     [SerializeField] NodeDataSO nodeData;
     
+#if UNITY_EDITOR
+    [SerializeField, HideInInspector] NodeDataSO previousNodeData;
+#endif
+    
     [Header("State References")]
     public NodeState state;
     public bool canBeUnlocked;
@@ -46,6 +50,18 @@ public class NodeStateMachine : StateMachine
         {
             Debug.LogWarning($"NodeStateMachine on '{gameObject.name}' has no NodeDataSO assigned!", this);
         }
+        
+#if UNITY_EDITOR
+        if (previousNodeData != nodeData)
+        {
+            if (Node != null)
+            {
+                Node.OnNodeDataChanged();
+            }
+            
+            previousNodeData = nodeData;
+        }
+#endif
         
         UpdateStateFromEnum();
         
