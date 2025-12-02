@@ -14,8 +14,6 @@ public static class NodeDeletionHandler
         for (int i = 0; i < stream.length; i++)
         {
             ObjectChangeKind type = stream.GetEventType(i);
-            
-            Debug.Log($"ObjectChange detected: {type}");
 
             if (type == ObjectChangeKind.DestroyGameObjectHierarchy)
             {
