@@ -9,7 +9,7 @@ public class NonHoverableState : NodeBaseState
 
     public override void Enter()
     {
-        StateMachine.SpriteRenderer.color = NodeStateColors.NonHoverable;
+        StateMachine.SetSprite(NodeState.NonHoverable);
         StateMachine.canBeUnlocked = false;
         StateMachine.SetVisibility(true);
         StateMachine.UpdateDegreesText();

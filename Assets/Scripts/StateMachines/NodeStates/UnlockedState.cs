@@ -9,7 +9,7 @@ public class UnlockedState : NodeBaseState
 
     public override void Enter()
     {
-        StateMachine.SpriteRenderer.color = NodeStateColors.Unlocked;
+        StateMachine.SetSprite(NodeState.Unlocked);
         StateMachine.degreesFromUnlocked = 0;
         
         StateMachine.SetVisibility(true);

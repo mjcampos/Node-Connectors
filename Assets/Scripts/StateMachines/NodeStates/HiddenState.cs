@@ -9,7 +9,7 @@ public class HiddenState : NodeBaseState
 
     public override void Enter()
     {
-        StateMachine.SpriteRenderer.color = NodeStateColors.Hidden;
+        StateMachine.SetSprite(NodeState.Hidden);
         StateMachine.canBeUnlocked = false;
         StateMachine.SetVisibility(false);
         StateMachine.UpdateDegreesText();

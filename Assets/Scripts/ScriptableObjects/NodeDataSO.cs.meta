@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 8d7ca45c8d714c74f9b3912d5b758ffc
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - unlockedSprite: {fileID: 21300000, guid: b8951a0e6a3a70b43bbf5a99a537661f, type: 3}
+  - lockedSprite: {fileID: 21300000, guid: 97bcc1eec7321ef44a1c0ae57ed7bd29, type: 3}
+  - visibleSprite: {fileID: 21300000, guid: d9c13e7a11774f64987310274ae083d8, type: 3}
+  - nonHoverableSprite: {fileID: 21300000, guid: ab1e041ecf13d1a4e88713df18aebdfb, type: 3}
+  - hiddenSprite: {fileID: 21300000, guid: bd1800e105daed74fa7587cacae149ab, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

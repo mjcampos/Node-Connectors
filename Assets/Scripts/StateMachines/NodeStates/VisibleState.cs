@@ -9,7 +9,7 @@ public class VisibleState : NodeBaseState
 
     public override void Enter()
     {
-        StateMachine.SpriteRenderer.color = NodeStateColors.Visible;
+        StateMachine.SetSprite(NodeState.Visible);
         StateMachine.SetVisibility(true);
         StateMachine.UpdateDegreesText();
     }

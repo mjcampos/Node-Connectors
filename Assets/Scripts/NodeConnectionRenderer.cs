@@ -161,21 +161,24 @@ public class NodeConnectionRenderer : MonoBehaviour
 
     bool ShouldShowLine(NodeStateMachine nodeA, NodeStateMachine nodeB)
     {
-        if (nodeA.state == NodeState.Hidden && nodeB.state == NodeState.Hidden)
+        bool nodeAIsHidden = nodeA.state == NodeState.Hidden;
+        bool nodeBIsHidden = nodeB.state == NodeState.Hidden;
+        
+        if (nodeAIsHidden && nodeBIsHidden)
         {
             return false;
         }
-
-        if (nodeA.state == NodeState.Hidden && nodeA.degreesFromNonHoverable != 1)
+        
+        if (nodeAIsHidden)
         {
-            return false;
+            return nodeA.degreesFromNonHoverable == 1;
         }
-
-        if (nodeB.state == NodeState.Hidden && nodeB.degreesFromNonHoverable != 1)
+        
+        if (nodeBIsHidden)
         {
-            return false;
+            return nodeB.degreesFromNonHoverable == 1;
         }
-
+        
         return true;
     }
 

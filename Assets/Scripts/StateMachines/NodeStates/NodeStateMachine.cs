@@ -1,18 +1,20 @@
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 using Helpers;
-using TMPro;
 
 public class NodeStateMachine : StateMachine
 {
+    [Header("Node Data")]
+    [SerializeField] NodeDataSO nodeData;
+    
+    [Header("State References")]
     public NodeState state;
     public bool canBeUnlocked;
-    
     public int degreesFromUnlocked;
     public int degreesFromVisible;
     public int degreesFromNonHoverable;
     
+    [Header("Component References")]
     public Node Node { get; private set; }
     public SpriteRenderer SpriteRenderer { get; private set; }
     public NodeGraphController NodeGraphController { get; private set; }
@@ -39,6 +41,12 @@ public class NodeStateMachine : StateMachine
     void OnValidate()
     {
         InitializeComponents();
+        
+        if (nodeData == null)
+        {
+            Debug.LogWarning($"NodeStateMachine on '{gameObject.name}' has no NodeDataSO assigned!", this);
+        }
+        
         UpdateStateFromEnum();
         
 #if UNITY_EDITOR
@@ -154,7 +162,7 @@ public class NodeStateMachine : StateMachine
 
     void OnDestroy()
     {
-        if (!Application.isPlaying)
+        if (FindObjectsByType<NodeStateMachine>(FindObjectsSortMode.None).Length <= 1)
         {
             _hasInitialized = false;
         }
@@ -176,7 +184,14 @@ public class NodeStateMachine : StateMachine
             _ => degreesFromUnlocked
         };
         
-        UIController.SetDegreesText(displayValue.ToString());
+        if (displayValue == int.MaxValue)
+        {
+            UIController.SetDegreesText(string.Empty);
+        }
+        else
+        {
+            UIController.SetDegreesText(displayValue.ToString());
+        }
     }
 
     public void SetVisibility(bool isVisible)
@@ -203,5 +218,15 @@ public class NodeStateMachine : StateMachine
     public int GetNonHoverableRange()
     {
         return NodeGraphController != null ? NodeGraphController.GetNonHoverableRange() : int.MaxValue;
+    }
+
+    public void SetSprite(NodeState newState)
+    {
+        Sprite sprite = nodeData?.GetSpriteForState(newState);
+        
+        if (SpriteRenderer != null)
+        {
+            SpriteRenderer.sprite = sprite;
+        }
     }
 }

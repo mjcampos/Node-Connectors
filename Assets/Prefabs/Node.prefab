@@ -324,8 +324,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
-  m_Color: {r: 0, g: 0, b: 1, a: 1}
+  m_Sprite: {fileID: 21300000, guid: d9c13e7a11774f64987310274ae083d8, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -347,6 +347,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c12480fbf34ac8a48acc5ed3fc79dcc3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NodeStateMachine
+  nodeData: {fileID: 11400000, guid: a87c99555c7edce46b38cc1521911028, type: 2}
   state: 2
   canBeUnlocked: 0
   degreesFromUnlocked: 0
@@ -378,8 +379,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIController
   degreesOfSeparationText: {fileID: 5095398739683701310}
-  hoverableText: {fileID: 8678671599810955820}
-  nodeTextData: {fileID: 0}
 --- !u!58 &7424639523468317748
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -429,8 +428,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NodeConnectionRenderer
   lineWidth: 0.1
-  lineColor: {r: 0, g: 0, b: 0, a: 1}
-  lineMaterial: {fileID: 0}
+  lineColor: {r: 1, g: 0, b: 0, a: 1}
+  lineMaterial: {fileID: 2100000, guid: ff509ba6fe30b6f46b6e79c615507265, type: 2}
   sortingOrder: -1
 --- !u!1 &8656575847330340295
 GameObject:

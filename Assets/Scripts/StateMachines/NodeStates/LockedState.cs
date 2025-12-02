@@ -9,12 +9,10 @@ public class LockedState : NodeBaseState
 
     public override void Enter()
     {
-        StateMachine.SpriteRenderer.color = NodeStateColors.Locked;
-        StateMachine.degreesFromUnlocked = 0;
-        
+        StateMachine.SetSprite(NodeState.Locked);
+        StateMachine.canBeUnlocked = false;
         StateMachine.SetVisibility(true);
         StateMachine.UpdateDegreesText();
-        StateMachine.Ripple();
     }
 
     public override void Tick(float deltaTime)
@@ -29,6 +27,5 @@ public class LockedState : NodeBaseState
 
     public override void RippleHandle()
     {
-        StateMachine.canBeUnlocked = false;
     }
 }
