@@ -20,10 +20,29 @@ public class VisibleState : NodeBaseState
 
     public override void Exit()
     {
+        HoverExitHandle();
     }
 
     public override void RippleHandle()
     {
         TraverseNeighbors(false);
+    }
+
+    public override void HoverEnterHandle()
+    {
+        NodeDataSO nodeData = StateMachine.GetNodeData();
+
+        if (nodeData != null && StateMachine.UIController != null)
+        {
+            StateMachine.UIController.ShowHoverInfo(nodeData.title, nodeData.description);
+        }
+    }
+
+    public override void HoverExitHandle()
+    {
+        if (StateMachine.UIController != null)
+        {
+            StateMachine.UIController.HideHoverInfo();
+        }
     }
 }

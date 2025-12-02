@@ -6,6 +6,7 @@ public class InputReader : MonoBehaviour, Controls.IPlayerActions
 {
     Controls _controls;
     Camera _camera;
+    NodeStateMachine _currentHoveredNode;
     
     void Start()
     {
@@ -14,6 +15,11 @@ public class InputReader : MonoBehaviour, Controls.IPlayerActions
         
         _controls.Player.SetCallbacks(this);
         _controls.Player.Enable();
+    }
+
+    void Update()
+    {
+        UpdateHover();
     }
 
     void OnDestroy()
@@ -46,6 +52,41 @@ public class InputReader : MonoBehaviour, Controls.IPlayerActions
             NodeStateMachine clickedSM = hit.collider.GetComponent<NodeStateMachine>();
             
             clickedSM?.OnClick();
+        }
+    }
+
+    void UpdateHover()
+    {
+        if (_camera == null)
+        {
+            _camera = Camera.main;
+            if (_camera == null) return;
+        }
+
+        Vector2 screenPos = Mouse.current.position.ReadValue();
+        Ray ray = _camera.ScreenPointToRay(screenPos);
+        RaycastHit2D hit = Physics2D.GetRayIntersection(ray);
+
+        NodeStateMachine hoveredNode = null;
+
+        if (hit.collider != null)
+        {
+            hoveredNode = hit.collider.GetComponent<NodeStateMachine>();
+        }
+
+        if (hoveredNode != _currentHoveredNode)
+        {
+            if (_currentHoveredNode != null)
+            {
+                _currentHoveredNode.HoverExit();
+            }
+
+            _currentHoveredNode = hoveredNode;
+
+            if (_currentHoveredNode != null)
+            {
+                _currentHoveredNode.HoverEnter();
+            }
         }
     }
 }

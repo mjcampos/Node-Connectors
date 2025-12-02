@@ -21,4 +21,14 @@ public abstract class StateMachine : MonoBehaviour
     {
         _currentState?.RippleHandle();
     }
+
+    public void OnHoverEnter()
+    {
+        _currentState?.HoverEnterHandle();
+    }
+
+    public void OnHoverExit()
+    {
+        _currentState?.HoverExitHandle();
+    }
 }

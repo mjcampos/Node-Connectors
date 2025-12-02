@@ -229,4 +229,19 @@ public class NodeStateMachine : StateMachine
             SpriteRenderer.sprite = sprite;
         }
     }
+
+    public NodeDataSO GetNodeData()
+    {
+        return nodeData;
+    }
+
+    public void HoverEnter()
+    {
+        OnHoverEnter();
+    }
+
+    public void HoverExit()
+    {
+        OnHoverExit();
+    }
 }
