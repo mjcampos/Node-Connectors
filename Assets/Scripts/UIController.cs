@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using TMPro;
 
@@ -28,13 +27,6 @@ public class UIController : MonoBehaviour
 
             if (degreesCanvas != null)
             {
-                /* Get the following text components children of DegreesCanvas:
-                    1. Degrees Text
-                    2. Title Text
-                    3. Description Text
-                 */
-                
-                // Degrees Text
                 Transform degreesTextTransform = degreesCanvas.Find("DegreesText");
 
                 if (degreesTextTransform != null)
@@ -42,7 +34,6 @@ public class UIController : MonoBehaviour
                     degreesOfSeparationText = degreesTextTransform.GetComponent<TextMeshProUGUI>();
                 }
                 
-                // Title Text
                 Transform titleTextTransform = degreesCanvas.Find("TitleText");
 
                 if (titleTextTransform != null)
@@ -50,7 +41,6 @@ public class UIController : MonoBehaviour
                     titleText = titleTextTransform.GetComponent<TextMeshProUGUI>();
                 }
                 
-                // Description Text
                 Transform descriptionTextTransform = degreesCanvas.Find("DescriptionText");
 
                 if (descriptionTextTransform != null)

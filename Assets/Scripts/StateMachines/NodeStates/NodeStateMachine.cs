@@ -65,12 +65,10 @@ public class NodeStateMachine : StateMachine
         
         UpdateStateFromEnum();
         
-#if UNITY_EDITOR
         if (!Application.isPlaying)
         {
             RippleAllUnlockedNodesInGraph();
         }
-#endif
     }
 
     void InitializeComponents()
