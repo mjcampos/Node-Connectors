@@ -35,7 +35,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 325, y: -20.11}
+  m_AnchoredPosition: {x: 300, y: -20.11}
   m_SizeDelta: {x: 200, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5914012038318414678
@@ -163,6 +163,7 @@ GameObject:
   - component: {fileID: 1605272287375016953}
   - component: {fileID: 6466698387895172092}
   - component: {fileID: 4484321247403350480}
+  - component: {fileID: 306615607520386476}
   m_Layer: 5
   m_Name: Unlocked Item Row
   m_TagString: Untagged
@@ -240,6 +241,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.ContentSizeFitter
   m_HorizontalFit: 0
   m_VerticalFit: 2
+--- !u!114 &306615607520386476
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3981241705009041084}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0da3fcd4137959e4caa105d31028a0eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UnlockedItemRow
+  maxTextLength: 10
+  idText: {fileID: 378513595991921426}
+  titleText: {fileID: 5336567344164839590}
+  descriptionText: {fileID: 467364238696153863}
 --- !u!1 &6262814207913801464
 GameObject:
   m_ObjectHideFlags: 0
@@ -275,7 +292,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 108.333336, y: -20.11}
+  m_AnchoredPosition: {x: 100, y: -20.11}
   m_SizeDelta: {x: 200, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &9186159618369125857
@@ -426,7 +443,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 541.6667, y: -20.11}
+  m_AnchoredPosition: {x: 500, y: -20.11}
   m_SizeDelta: {x: 200, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2339202193716543149

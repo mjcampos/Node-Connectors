@@ -493,6 +493,7 @@ GameObject:
   - component: {fileID: 1237458854}
   - component: {fileID: 1237458855}
   - component: {fileID: 1237458856}
+  - component: {fileID: 1237458857}
   m_Layer: 5
   m_Name: Content
   m_TagString: Untagged
@@ -559,6 +560,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.ContentSizeFitter
   m_HorizontalFit: 0
   m_VerticalFit: 2
+--- !u!114 &1237458857
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1237458853}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51da8cd323770c54f81a6b40d8817b80, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UnlockedItemsListController
+  contentParent: {fileID: 1237458854}
+  unlockedItemRowPrefab: {fileID: 3981241705009041084, guid: 51c2ec667c076c94fbfef85f1088442c, type: 3}
+  graphID: MainNodeGraph
 --- !u!224 &1636091001 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3424382468703051489, guid: 6a7bc777cb335f8438ad75142e082b93, type: 3}

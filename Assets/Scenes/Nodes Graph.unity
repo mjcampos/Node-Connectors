@@ -1051,6 +1051,10 @@ PrefabInstance:
       propertyPath: degreesFromUnlocked
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2936714883975807044, guid: df6f5bced9078de458ab40485774b539, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4609610870895490565, guid: df6f5bced9078de458ab40485774b539, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -1370,6 +1374,10 @@ PrefabInstance:
       propertyPath: degreesFromNonHoverable
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2936714883975807044, guid: df6f5bced9078de458ab40485774b539, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4609610870895490565, guid: df6f5bced9078de458ab40485774b539, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -1388,7 +1396,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6066330569781648483, guid: df6f5bced9078de458ab40485774b539, type: 3}
       propertyPath: neighborNodes.Array.size
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 6066330569781648483, guid: df6f5bced9078de458ab40485774b539, type: 3}
       propertyPath: 'neighborNodes.Array.data[0]'

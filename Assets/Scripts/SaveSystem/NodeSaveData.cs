@@ -11,8 +11,9 @@ public class NodeSaveData
     public int degreesFromUnlocked;
     public int degreesFromVisible;
     public int degreesFromNonHoverable;
+    public string nodeDataGUID;
 
-    public NodeSaveData(string id, NodeState nodeState, bool unlockable, int degUnlocked, int degVisible, int degNonHoverable)
+    public NodeSaveData(string id, NodeState nodeState, bool unlockable, int degUnlocked, int degVisible, int degNonHoverable, string dataGUID = "")
     {
         nodeID = id;
         state = nodeState;
@@ -20,6 +21,7 @@ public class NodeSaveData
         degreesFromUnlocked = degUnlocked;
         degreesFromVisible = degVisible;
         degreesFromNonHoverable = degNonHoverable;
+        nodeDataGUID = dataGUID;
     }
 }
 

@@ -83,16 +83,28 @@ public class NodeGraphSaveManager : MonoBehaviour
             Node node = stateMachine.Node;
             if (node == null) continue;
 
-            NodeSaveData nodeData = new NodeSaveData(
+            string dataGUID = "";
+            NodeDataSO nodeData = stateMachine.GetNodeData();
+        
+            if (nodeData != null)
+            {
+#if UNITY_EDITOR
+                string assetPath = UnityEditor.AssetDatabase.GetAssetPath(nodeData);
+                dataGUID = UnityEditor.AssetDatabase.AssetPathToGUID(assetPath);
+#endif
+            }
+
+            NodeSaveData nodeSaveData = new NodeSaveData(
                 node.NodeID,
                 stateMachine.state,
                 stateMachine.canBeUnlocked,
                 stateMachine.degreesFromUnlocked,
                 stateMachine.degreesFromVisible,
-                stateMachine.degreesFromNonHoverable
+                stateMachine.degreesFromNonHoverable,
+                dataGUID
             );
 
-            graphData.nodes.Add(nodeData);
+            graphData.nodes.Add(nodeSaveData);
         }
 
         return graphData;
