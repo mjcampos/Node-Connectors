@@ -11,23 +11,28 @@ public class Node : MonoBehaviour
 
     void OnValidate()
     {
-        GenerateNodeID();
+        GenerateNodeIDIfNeeded();
     }
 
     void Awake()
     {
-        if (string.IsNullOrEmpty(nodeID))
-        {
-            GenerateNodeID();
-        }
+        GenerateNodeIDIfNeeded();
     }
 
     public void OnNodeDataChanged()
     {
-        GenerateNodeID();
+        RegenerateNodeID();
     }
 
-    void GenerateNodeID()
+    void GenerateNodeIDIfNeeded()
+    {
+        if (string.IsNullOrEmpty(nodeID))
+        {
+            RegenerateNodeID();
+        }
+    }
+
+    void RegenerateNodeID()
     {
         NodeStateMachine stateMachine = GetComponent<NodeStateMachine>();
         
@@ -40,19 +45,25 @@ public class Node : MonoBehaviour
 #if UNITY_EDITOR
                 string assetPath = UnityEditor.AssetDatabase.GetAssetPath(nodeData);
                 string dataGuid = UnityEditor.AssetDatabase.AssetPathToGUID(assetPath);
-                nodeID = $"{dataGuid}_{gameObject.name}_{GetInstanceID()}";
+                nodeID = $"{dataGuid}_{gameObject.name}";
 #else
-                nodeID = $"{nodeData.GetInstanceID()}_{gameObject.name}_{GetInstanceID()}";
+                nodeID = $"{nodeData.GetInstanceID()}_{gameObject.name}";
 #endif
             }
             else
             {
-                nodeID = System.Guid.NewGuid().ToString();
+                if (string.IsNullOrEmpty(nodeID))
+                {
+                    nodeID = System.Guid.NewGuid().ToString();
+                }
             }
         }
         else
         {
-            nodeID = System.Guid.NewGuid().ToString();
+            if (string.IsNullOrEmpty(nodeID))
+            {
+                nodeID = System.Guid.NewGuid().ToString();
+            }
         }
     }
 

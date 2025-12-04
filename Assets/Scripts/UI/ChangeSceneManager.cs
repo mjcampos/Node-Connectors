@@ -8,6 +8,8 @@ public class ChangeSceneManager : MonoBehaviour
 
     public void ChangeScene()
     {
+        SaveCurrentSceneIfNeeded();
+
         if (SceneManager.GetActiveScene().name == NodesGraphScene)
         {
             SceneManager.LoadScene(ListScene);
@@ -15,6 +17,24 @@ public class ChangeSceneManager : MonoBehaviour
         else
         {
             SceneManager.LoadScene(NodesGraphScene);
+        }
+    }
+
+    void SaveCurrentSceneIfNeeded()
+    {
+        if (SceneManager.GetActiveScene().name == NodesGraphScene)
+        {
+            NodeGraphSaveManager saveManager = FindFirstObjectByType<NodeGraphSaveManager>();
+            
+            if (saveManager != null)
+            {
+                saveManager.SaveGame();
+                Debug.Log("Saved node graph before scene change.");
+            }
+            else
+            {
+                Debug.LogWarning("NodeGraphSaveManager not found in scene!");
+            }
         }
     }
 }
