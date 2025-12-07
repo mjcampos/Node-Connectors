@@ -3,7 +3,6 @@ using Helpers;
 using UnityEngine;
 
 [RequireComponent(typeof(InputReader))]
-[RequireComponent(typeof(NodeGraphSaveManager))]
 public class NodeGraphController : MonoBehaviour
 {
     [Header("Visibility Settings")]
@@ -18,13 +17,6 @@ public class NodeGraphController : MonoBehaviour
 
     int _previousHoverableRange = -1;
     int _previousNonHoverableRange = -1;
-
-    NodeGraphSaveManager _saveManager;
-
-    void Awake()
-    {
-        _saveManager = GetComponent<NodeGraphSaveManager>();
-    }
 
     void OnValidate()
     {
@@ -106,32 +98,5 @@ public class NodeGraphController : MonoBehaviour
     public void RefreshNodeGraph()
     {
         TriggerNodeSettingsAdjuster();
-    }
-
-    [ContextMenu("Save Current State")]
-    public void SaveCurrentState()
-    {
-        if (_saveManager == null)
-            _saveManager = GetComponent<NodeGraphSaveManager>();
-        
-        _saveManager?.SaveGame();
-    }
-
-    [ContextMenu("Load Saved State")]
-    public void LoadSavedState()
-    {
-        if (_saveManager == null)
-            _saveManager = GetComponent<NodeGraphSaveManager>();
-        
-        _saveManager?.LoadGame();
-    }
-
-    [ContextMenu("Reset to Default State")]
-    public void ResetToDefaultState()
-    {
-        if (_saveManager == null)
-            _saveManager = GetComponent<NodeGraphSaveManager>();
-        
-        _saveManager?.ResetToDefault();
     }
 }

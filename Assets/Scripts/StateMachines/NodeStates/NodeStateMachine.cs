@@ -25,8 +25,6 @@ public class NodeStateMachine : StateMachine
     public UIController UIController { get; private set; }
 
     public static event Action OnNodeStateChanged;
-    
-    static bool _hasInitialized = false;
 
     void Awake()
     {
@@ -35,9 +33,8 @@ public class NodeStateMachine : StateMachine
 
     void Start()
     {
-        if (Application.isPlaying && !_hasInitialized)
+        if (Application.isPlaying)
         {
-            _hasInitialized = true;
             InitializeRuntimeState();
         }
     }
@@ -171,14 +168,6 @@ public class NodeStateMachine : StateMachine
             RippleAllUnlockedNodesInGraph();
             
             NotifyStateChanged();
-        }
-    }
-
-    void OnDestroy()
-    {
-        if (FindObjectsByType<NodeStateMachine>(FindObjectsSortMode.None).Length <= 1)
-        {
-            _hasInitialized = false;
         }
     }
 
