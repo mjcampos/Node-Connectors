@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEditor;
+using UnityEngine.SceneManagement;
 
 [InitializeOnLoad]
 public static class NodeAutoParenting
@@ -9,6 +10,7 @@ public static class NodeAutoParenting
     static NodeAutoParenting()
     {
         ObjectChangeEvents.changesPublished += OnObjectChanges;
+        EditorApplication.hierarchyChanged += OnHierarchyChanged;
     }
 
     static void OnObjectChanges(ref ObjectChangeEventStream stream)
@@ -25,13 +27,39 @@ public static class NodeAutoParenting
         }
     }
 
+    static void OnHierarchyChanged()
+    {
+        if (Application.isPlaying) return;
+
+        Scene activeScene = SceneManager.GetActiveScene();
+        if (activeScene.name != NODE_GRAPH_SCENE_NAME) return;
+
+        GameObject[] rootObjects = activeScene.GetRootGameObjects();
+        
+        foreach (GameObject rootObj in rootObjects)
+        {
+            NodeStateMachine nodeSM = rootObj.GetComponent<NodeStateMachine>();
+            
+            if (nodeSM != null)
+            {
+                NodeGraphController controller = Object.FindFirstObjectByType<NodeGraphController>();
+                
+                if (controller != null && rootObj.transform.parent != controller.transform)
+                {
+                    Undo.SetTransformParent(rootObj.transform, controller.transform, "Auto-parent Node to Controller");
+                    Debug.Log($"Auto-parented '{rootObj.name}' to Node Graph Controller");
+                }
+            }
+        }
+    }
+
     static void CheckAndReparentNode(int instanceId)
     {
         EditorApplication.delayCall += () =>
         {
             if (Application.isPlaying) return;
             
-            UnityEngine.SceneManagement.Scene activeScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene();
+            Scene activeScene = SceneManager.GetActiveScene();
             if (activeScene.name != NODE_GRAPH_SCENE_NAME) return;
 
             GameObject obj = EditorUtility.InstanceIDToObject(instanceId) as GameObject;
