@@ -1973,7 +1973,6 @@ GameObject:
   - component: {fileID: 1003869840}
   - component: {fileID: 1003869841}
   - component: {fileID: 1003869842}
-  - component: {fileID: 1003869843}
   m_Layer: 0
   m_Name: Node Graph Controller
   m_TagString: Untagged
@@ -2047,19 +2046,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 172b19e621fa15a4aa149ab224d4959c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InputReader
---- !u!114 &1003869843
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1003869839}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a4d2f78473e7d6f4d99a04e7a50a6cda, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TEST_KasperSAVe
-  _nodeStateMachines: []
 --- !u!1001 &1009420298
 PrefabInstance:
   m_ObjectHideFlags: 0

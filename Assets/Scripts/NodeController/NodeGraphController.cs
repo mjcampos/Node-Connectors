@@ -8,11 +8,11 @@ public class NodeGraphController : MonoBehaviour
     [Header("Visibility Settings")]
     
     [Tooltip("Maximum degrees from Unlocked nodes where nodes remain hoverable (Visible)")]
-    [Range(0, 10)]
+    [Range(1, 10)]
     [SerializeField] int hoverableRange = 2;
     
     [Tooltip("Maximum degrees from Visible nodes where nodes remain non-hoverable (NonHoverable)")]
-    [Range(0, 10)]
+    [Range(1, 10)]
     [SerializeField] int nonHoverableRange = 2;
 
     int _previousHoverableRange = -1;
