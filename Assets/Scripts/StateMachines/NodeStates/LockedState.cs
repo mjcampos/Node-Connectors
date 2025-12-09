@@ -11,7 +11,9 @@ public class LockedState : NodeBaseState
     {
         StateMachine.SetSprite(NodeState.Locked);
         StateMachine.canBeUnlocked = false;
-        StateMachine.SetVisibility(true);
+        
+        UpdateVisibility();
+        
         StateMachine.UpdateDegreesText();
     }
 
@@ -27,5 +29,17 @@ public class LockedState : NodeBaseState
 
     public override void RippleHandle()
     {
+        UpdateVisibility();
+        TraverseNeighbors(false);
+    }
+
+    void UpdateVisibility()
+    {
+        int hoverableRange = StateMachine.GetHoverableRange();
+        int nonHoverableRange = StateMachine.GetNonHoverableRange();
+        int totalVisibleRange = hoverableRange + nonHoverableRange;
+        bool shouldBeVisible = StateMachine.degreesFromUnlocked <= totalVisibleRange;
+        
+        StateMachine.SetVisibility(shouldBeVisible);
     }
 }

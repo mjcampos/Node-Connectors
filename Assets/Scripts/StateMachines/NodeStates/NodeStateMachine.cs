@@ -108,10 +108,10 @@ public class NodeStateMachine : StateMachine
     void RippleAllUnlockedNodesInGraph()
     {
         if (NodeGraphController == null) return;
-        
+    
         NodeStateMachine[] allStateMachines = NodeGraphController.GetComponentsInChildren<NodeStateMachine>();
-        
         bool hasUnlockedNodes = false;
+        
         foreach (NodeStateMachine stateMachine in allStateMachines)
         {
             if (stateMachine.state == NodeState.Unlocked)
@@ -120,24 +120,25 @@ public class NodeStateMachine : StateMachine
                 break;
             }
         }
-        
+    
         if (!hasUnlockedNodes)
         {
             UpdateDegreesText();
             return;
         }
-        
+    
         foreach (NodeStateMachine stateMachine in allStateMachines)
         {
             if (stateMachine.state == NodeState.Visible || 
                 stateMachine.state == NodeState.NonHoverable || 
-                stateMachine.state == NodeState.Hidden)
+                stateMachine.state == NodeState.Hidden ||
+                stateMachine.state == NodeState.Locked)
             {
                 stateMachine.degreesFromUnlocked = int.MaxValue;
                 stateMachine.canBeUnlocked = false;
             }
         }
-        
+    
         foreach (NodeStateMachine stateMachine in allStateMachines)
         {
             if (stateMachine.state == NodeState.Unlocked)
@@ -145,7 +146,7 @@ public class NodeStateMachine : StateMachine
                 stateMachine.Ripple();
             }
         }
-        
+    
         foreach (NodeStateMachine stateMachine in allStateMachines)
         {
             stateMachine.UpdateDegreesText();

@@ -25,12 +25,36 @@ public abstract class NodeBaseState : State
 
             if (neighborStateMachine == null) continue;
 
+            int newDegreesFromUnlocked = StateMachine.degreesFromUnlocked + 1;
+            
             if (neighborStateMachine.state == NodeState.Locked)
             {
+                bool shouldUpdate = newDegreesFromUnlocked < neighborStateMachine.degreesFromUnlocked;
+
+                if (shouldUpdate)
+                {
+                    neighborStateMachine.degreesFromUnlocked = newDegreesFromUnlocked;
+                    
+                    int degreesFromVisible = newDegreesFromUnlocked - hoverableRange;
+                    
+                    neighborStateMachine.degreesFromVisible = degreesFromVisible;
+
+                    if (degreesFromVisible <= nonHoverableRange)
+                    {
+                        neighborStateMachine.degreesFromNonHoverable = 0;
+                    }
+                    else
+                    {
+                        int degreesFromNonHoverable = degreesFromVisible - nonHoverableRange;
+                        neighborStateMachine.degreesFromNonHoverable = degreesFromNonHoverable;
+                    }
+
+                    neighborStateMachine.UpdateDegreesText();
+                    neighborStateMachine.OnRipple();
+                }
+                
                 continue;
             }
-
-            int newDegreesFromUnlocked = StateMachine.degreesFromUnlocked + 1;
             
             if (neighborStateMachine.state == NodeState.Visible || 
                 neighborStateMachine.state == NodeState.NonHoverable ||
