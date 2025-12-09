@@ -17,7 +17,11 @@ public class NodeStateMachine : StateMachine
     public int degreesFromUnlocked;
     public int degreesFromVisible;
     public int degreesFromNonHoverable;
-    
+
+    [SerializeField] private Node node;
+
+    public string NodeID => node.NodeID;
+
     [Header("Component References")]
     public Node Node { get; private set; }
     public SpriteRenderer SpriteRenderer { get; private set; }
