@@ -1,10 +1,10 @@
-﻿
-using Helpers;
+﻿using Helpers;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEngine;
 
+/*
 public class TEST_KasperSAVe : MonoBehaviour
 {
     private const string FILE_NAME = "FileName.es3";
@@ -87,3 +87,5 @@ public struct SaveNodeData
     public NodeState state;
     public string NodeID;
 }
+
+*/

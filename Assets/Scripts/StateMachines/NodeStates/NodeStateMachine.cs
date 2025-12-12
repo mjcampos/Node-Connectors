@@ -22,7 +22,6 @@ public class NodeStateMachine : StateMachine
 
     public string NodeID => node.NodeID;
 
-    [Header("Component References")]
     public Node Node { get; private set; }
     public SpriteRenderer SpriteRenderer { get; private set; }
     public NodeGraphController NodeGraphController { get; private set; }
