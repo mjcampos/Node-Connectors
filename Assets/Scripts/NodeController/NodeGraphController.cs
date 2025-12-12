@@ -12,7 +12,7 @@ public class NodeGraphController : MonoBehaviour
     [SerializeField] int hoverableRange = 2;
     
     [Tooltip("Maximum degrees from Visible nodes where nodes remain non-hoverable (NonHoverable)")]
-    [Range(1, 10)]
+    [Range(0, 10)]
     [SerializeField] int nonHoverableRange = 2;
 
     int _previousHoverableRange = -1;

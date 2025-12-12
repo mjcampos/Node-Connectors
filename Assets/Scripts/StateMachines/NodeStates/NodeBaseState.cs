@@ -36,17 +36,23 @@ public abstract class NodeBaseState : State
                     neighborStateMachine.degreesFromUnlocked = newDegreesFromUnlocked;
                     
                     int degreesFromVisible = newDegreesFromUnlocked - hoverableRange;
-                    
                     neighborStateMachine.degreesFromVisible = degreesFromVisible;
 
-                    if (degreesFromVisible <= nonHoverableRange)
+                    if (nonHoverableRange > 0)
                     {
-                        neighborStateMachine.degreesFromNonHoverable = 0;
+                        if (degreesFromVisible <= nonHoverableRange)
+                        {
+                            neighborStateMachine.degreesFromNonHoverable = 0;
+                        }
+                        else
+                        {
+                            int degreesFromNonHoverable = degreesFromVisible - nonHoverableRange;
+                            neighborStateMachine.degreesFromNonHoverable = degreesFromNonHoverable;
+                        }
                     }
                     else
                     {
-                        int degreesFromNonHoverable = degreesFromVisible - nonHoverableRange;
-                        neighborStateMachine.degreesFromNonHoverable = degreesFromNonHoverable;
+                        neighborStateMachine.degreesFromNonHoverable = degreesFromVisible;
                     }
 
                     neighborStateMachine.UpdateDegreesText();
@@ -82,7 +88,7 @@ public abstract class NodeBaseState : State
                         int degreesFromVisible = newDegreesFromUnlocked - hoverableRange;
                         neighborStateMachine.degreesFromVisible = degreesFromVisible;
 
-                        if (degreesFromVisible <= nonHoverableRange)
+                        if (nonHoverableRange > 0 && degreesFromVisible <= nonHoverableRange)
                         {
                             targetState = NodeState.NonHoverable;
                             neighborStateMachine.degreesFromNonHoverable = 0;
@@ -90,8 +96,16 @@ public abstract class NodeBaseState : State
                         else
                         {
                             targetState = NodeState.Hidden;
-                            int degreesFromNonHoverable = degreesFromVisible - nonHoverableRange;
-                            neighborStateMachine.degreesFromNonHoverable = degreesFromNonHoverable;
+                            
+                            if (nonHoverableRange > 0)
+                            {
+                                int degreesFromNonHoverable = degreesFromVisible - nonHoverableRange;
+                                neighborStateMachine.degreesFromNonHoverable = degreesFromNonHoverable;
+                            }
+                            else
+                            {
+                                neighborStateMachine.degreesFromNonHoverable = degreesFromVisible;
+                            }
                         }
                     }
 
