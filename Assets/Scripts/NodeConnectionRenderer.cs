@@ -1,5 +1,6 @@
 using UnityEngine;
 using Helpers;
+using System.Collections;
 
 [RequireComponent(typeof(Node))]
 public class NodeConnectionRenderer : MonoBehaviour
@@ -25,6 +26,12 @@ public class NodeConnectionRenderer : MonoBehaviour
     void Start()
     {
         CreateLineRenderers();
+        StartCoroutine(DelayedInitialVisibilityUpdate());
+    }
+
+    IEnumerator DelayedInitialVisibilityUpdate()
+    {
+        yield return new WaitForEndOfFrame();
         UpdateLineVisibility();
     }
 
@@ -161,25 +168,48 @@ public class NodeConnectionRenderer : MonoBehaviour
 
     bool ShouldShowLine(NodeStateMachine nodeA, NodeStateMachine nodeB)
     {
-        bool nodeAIsHidden = nodeA.state == NodeState.Hidden;
-        bool nodeBIsHidden = nodeB.state == NodeState.Hidden;
-        
+        bool nodeAIsHidden = IsNodeHidden(nodeA);
+        bool nodeBIsHidden = IsNodeHidden(nodeB);
+    
         if (nodeAIsHidden && nodeBIsHidden)
         {
             return false;
         }
-        
+    
         if (nodeAIsHidden)
         {
-            return nodeA.degreesFromNonHoverable == 1;
+            bool nodeBIsVisible = IsNodeVisible(nodeB);
+            return nodeA.degreesFromNonHoverable == 1 && nodeBIsVisible;
         }
-        
+    
         if (nodeBIsHidden)
         {
-            return nodeB.degreesFromNonHoverable == 1;
+            bool nodeAIsVisible = IsNodeVisible(nodeA);
+            return nodeB.degreesFromNonHoverable == 1 && nodeAIsVisible;
         }
-        
+    
         return true;
+    }
+
+    bool IsNodeHidden(NodeStateMachine node)
+    {
+        if (node.state == NodeState.Hidden)
+        {
+            return true;
+        }
+    
+        if (node.state == NodeState.Locked)
+        {
+            return !node.SpriteRenderer.enabled;
+        }
+    
+        return false;
+    }
+
+    bool IsNodeVisible(NodeStateMachine node)
+    {
+        return node.state == NodeState.Visible || node.state == NodeState.NonHoverable || 
+               (node.state == NodeState.Locked && node.SpriteRenderer.enabled);
     }
 
     void UpdateLineColor(LineRenderer lr, NodeStateMachine nodeA, NodeStateMachine nodeB)
@@ -187,12 +217,15 @@ public class NodeConnectionRenderer : MonoBehaviour
         Color fullColor = lineColor;
         Color transparentColor = new Color(lineColor.r, lineColor.g, lineColor.b, 0f);
 
-        if (nodeA.state == NodeState.Hidden && nodeA.degreesFromNonHoverable == 1)
+        bool nodeAIsHidden = IsNodeHidden(nodeA);
+        bool nodeBIsHidden = IsNodeHidden(nodeB);
+
+        if (nodeAIsHidden && nodeA.degreesFromNonHoverable == 1)
         {
             lr.startColor = transparentColor;
             lr.endColor = fullColor;
         }
-        else if (nodeB.state == NodeState.Hidden && nodeB.degreesFromNonHoverable == 1)
+        else if (nodeBIsHidden && nodeB.degreesFromNonHoverable == 1)
         {
             lr.startColor = fullColor;
             lr.endColor = transparentColor;
