@@ -26,12 +26,6 @@ public class NodeConnectionRenderer : MonoBehaviour
     void Start()
     {
         CreateLineRenderers();
-        StartCoroutine(DelayedInitialVisibilityUpdate());
-    }
-
-    IEnumerator DelayedInitialVisibilityUpdate()
-    {
-        yield return new WaitForEndOfFrame();
         UpdateLineVisibility();
     }
 
