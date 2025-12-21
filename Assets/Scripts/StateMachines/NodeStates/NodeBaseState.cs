@@ -12,12 +12,12 @@ public abstract class NodeBaseState : State
 
     public void TraverseNeighbors(bool canBeUnlocked)
     {
-        if (StateMachine.Node == null) return;
+        if (StateMachine.node == null) return;
         
         int hoverableRange = StateMachine.GetHoverableRange();
         int nonHoverableRange = StateMachine.GetNonHoverableRange();
         
-        foreach (var neighbor in StateMachine.Node.neighborNodes)
+        foreach (var neighbor in StateMachine.node.neighborNodes)
         {
             if (neighbor == null) continue;
             

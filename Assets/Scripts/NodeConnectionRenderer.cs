@@ -200,7 +200,7 @@ public class NodeConnectionRenderer : MonoBehaviour
     
         if (node.state == NodeState.Locked)
         {
-            return !node.SpriteRenderer.enabled;
+            return !node.spriteRenderer.enabled;
         }
     
         return false;
@@ -209,7 +209,7 @@ public class NodeConnectionRenderer : MonoBehaviour
     bool IsNodeVisible(NodeStateMachine node)
     {
         return node.state == NodeState.Visible || node.state == NodeState.NonHoverable || 
-               (node.state == NodeState.Locked && node.SpriteRenderer.enabled);
+               (node.state == NodeState.Locked && node.spriteRenderer.enabled);
     }
 
     void UpdateLineColor(LineRenderer lr, NodeStateMachine nodeA, NodeStateMachine nodeB)

@@ -130,6 +130,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1003869840}
     m_Modifications:
+    - target: {fileID: 1663370265400641570, guid: df6f5bced9078de458ab40485774b539, type: 3}
+      propertyPath: canBeUnlocked
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1663370265400641570, guid: df6f5bced9078de458ab40485774b539, type: 3}
+      propertyPath: degreesFromUnlocked
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1663370265400641570, guid: df6f5bced9078de458ab40485774b539, type: 3}
+      propertyPath: nodeGraphController
+      value: 
+      objectReference: {fileID: 1003869841}
     - target: {fileID: 2936714883975807044, guid: df6f5bced9078de458ab40485774b539, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -138,6 +150,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: d9c13e7a11774f64987310274ae083d8, type: 3}
+    - target: {fileID: 5095398739683701310, guid: df6f5bced9078de458ab40485774b539, type: 3}
+      propertyPath: m_text
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5769553210031898519, guid: df6f5bced9078de458ab40485774b539, type: 3}
       propertyPath: m_Name
       value: Node (2)
@@ -240,6 +256,10 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1663370265400641570, guid: df6f5bced9078de458ab40485774b539, type: 3}
+      propertyPath: nodeGraphController
+      value: 
+      objectReference: {fileID: 1003869841}
+    - target: {fileID: 1663370265400641570, guid: df6f5bced9078de458ab40485774b539, type: 3}
       propertyPath: degreesFromNonHoverable
       value: 1
       objectReference: {fileID: 0}
@@ -253,7 +273,7 @@ PrefabInstance:
       objectReference: {fileID: 21300000, guid: 97bcc1eec7321ef44a1c0ae57ed7bd29, type: 3}
     - target: {fileID: 5095398739683701310, guid: df6f5bced9078de458ab40485774b539, type: 3}
       propertyPath: m_text
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5769553210031898519, guid: df6f5bced9078de458ab40485774b539, type: 3}
       propertyPath: m_Name
@@ -418,9 +438,25 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1003869840}
     m_Modifications:
+    - target: {fileID: 1663370265400641570, guid: df6f5bced9078de458ab40485774b539, type: 3}
+      propertyPath: canBeUnlocked
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1663370265400641570, guid: df6f5bced9078de458ab40485774b539, type: 3}
+      propertyPath: degreesFromUnlocked
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1663370265400641570, guid: df6f5bced9078de458ab40485774b539, type: 3}
+      propertyPath: nodeGraphController
+      value: 
+      objectReference: {fileID: 1003869841}
     - target: {fileID: 2936714883975807044, guid: df6f5bced9078de458ab40485774b539, type: 3}
       propertyPath: m_Enabled
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5095398739683701310, guid: df6f5bced9078de458ab40485774b539, type: 3}
+      propertyPath: m_text
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5769553210031898519, guid: df6f5bced9078de458ab40485774b539, type: 3}
       propertyPath: m_Name
@@ -523,6 +559,10 @@ PrefabInstance:
       propertyPath: degreesFromUnlocked
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1663370265400641570, guid: df6f5bced9078de458ab40485774b539, type: 3}
+      propertyPath: nodeGraphController
+      value: 
+      objectReference: {fileID: 1003869841}
     - target: {fileID: 2936714883975807044, guid: df6f5bced9078de458ab40485774b539, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -533,7 +573,7 @@ PrefabInstance:
       objectReference: {fileID: 21300000, guid: b8951a0e6a3a70b43bbf5a99a537661f, type: 3}
     - target: {fileID: 5095398739683701310, guid: df6f5bced9078de458ab40485774b539, type: 3}
       propertyPath: m_text
-      value: 
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5769553210031898519, guid: df6f5bced9078de458ab40485774b539, type: 3}
       propertyPath: m_Name
@@ -624,6 +664,10 @@ PrefabInstance:
       propertyPath: state
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1663370265400641570, guid: df6f5bced9078de458ab40485774b539, type: 3}
+      propertyPath: nodeGraphController
+      value: 
+      objectReference: {fileID: 1003869841}
     - target: {fileID: 2936714883975807044, guid: df6f5bced9078de458ab40485774b539, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -854,6 +898,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1003869840}
     m_Modifications:
+    - target: {fileID: 1663370265400641570, guid: df6f5bced9078de458ab40485774b539, type: 3}
+      propertyPath: state
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1663370265400641570, guid: df6f5bced9078de458ab40485774b539, type: 3}
+      propertyPath: degreesFromVisible
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1663370265400641570, guid: df6f5bced9078de458ab40485774b539, type: 3}
+      propertyPath: degreesFromUnlocked
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1663370265400641570, guid: df6f5bced9078de458ab40485774b539, type: 3}
+      propertyPath: nodeGraphController
+      value: 
+      objectReference: {fileID: 1003869841}
     - target: {fileID: 2936714883975807044, guid: df6f5bced9078de458ab40485774b539, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -862,6 +922,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: ab1e041ecf13d1a4e88713df18aebdfb, type: 3}
+    - target: {fileID: 5095398739683701310, guid: df6f5bced9078de458ab40485774b539, type: 3}
+      propertyPath: m_text
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5769553210031898519, guid: df6f5bced9078de458ab40485774b539, type: 3}
       propertyPath: m_Name
       value: Node (1)
@@ -963,6 +1027,10 @@ PrefabInstance:
       propertyPath: degreesFromUnlocked
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1663370265400641570, guid: df6f5bced9078de458ab40485774b539, type: 3}
+      propertyPath: nodeGraphController
+      value: 
+      objectReference: {fileID: 1003869841}
     - target: {fileID: 2936714883975807044, guid: df6f5bced9078de458ab40485774b539, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -1154,6 +1222,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1003869840}
     m_Modifications:
+    - target: {fileID: 1663370265400641570, guid: df6f5bced9078de458ab40485774b539, type: 3}
+      propertyPath: state
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1663370265400641570, guid: df6f5bced9078de458ab40485774b539, type: 3}
+      propertyPath: degreesFromVisible
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1663370265400641570, guid: df6f5bced9078de458ab40485774b539, type: 3}
+      propertyPath: degreesFromUnlocked
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1663370265400641570, guid: df6f5bced9078de458ab40485774b539, type: 3}
+      propertyPath: nodeGraphController
+      value: 
+      objectReference: {fileID: 1003869841}
+    - target: {fileID: 1663370265400641570, guid: df6f5bced9078de458ab40485774b539, type: 3}
+      propertyPath: degreesFromNonHoverable
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2936714883975807044, guid: df6f5bced9078de458ab40485774b539, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -1162,6 +1250,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: bd1800e105daed74fa7587cacae149ab, type: 3}
+    - target: {fileID: 5095398739683701310, guid: df6f5bced9078de458ab40485774b539, type: 3}
+      propertyPath: m_text
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5769553210031898519, guid: df6f5bced9078de458ab40485774b539, type: 3}
       propertyPath: m_Name
       value: Node (2)
@@ -1255,6 +1347,10 @@ PrefabInstance:
       propertyPath: degreesFromUnlocked
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1663370265400641570, guid: df6f5bced9078de458ab40485774b539, type: 3}
+      propertyPath: nodeGraphController
+      value: 
+      objectReference: {fileID: 1003869841}
     - target: {fileID: 2936714883975807044, guid: df6f5bced9078de458ab40485774b539, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -1348,9 +1444,25 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1003869840}
     m_Modifications:
+    - target: {fileID: 1663370265400641570, guid: df6f5bced9078de458ab40485774b539, type: 3}
+      propertyPath: canBeUnlocked
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1663370265400641570, guid: df6f5bced9078de458ab40485774b539, type: 3}
+      propertyPath: degreesFromUnlocked
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1663370265400641570, guid: df6f5bced9078de458ab40485774b539, type: 3}
+      propertyPath: nodeGraphController
+      value: 
+      objectReference: {fileID: 1003869841}
     - target: {fileID: 2936714883975807044, guid: df6f5bced9078de458ab40485774b539, type: 3}
       propertyPath: m_Enabled
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5095398739683701310, guid: df6f5bced9078de458ab40485774b539, type: 3}
+      propertyPath: m_text
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5769553210031898519, guid: df6f5bced9078de458ab40485774b539, type: 3}
       propertyPath: m_Name
@@ -1453,6 +1565,10 @@ PrefabInstance:
       propertyPath: degreesFromUnlocked
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 1663370265400641570, guid: df6f5bced9078de458ab40485774b539, type: 3}
+      propertyPath: nodeGraphController
+      value: 
+      objectReference: {fileID: 1003869841}
     - target: {fileID: 2936714883975807044, guid: df6f5bced9078de458ab40485774b539, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -1566,6 +1682,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1003869840}
     m_Modifications:
+    - target: {fileID: 1663370265400641570, guid: df6f5bced9078de458ab40485774b539, type: 3}
+      propertyPath: state
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1663370265400641570, guid: df6f5bced9078de458ab40485774b539, type: 3}
+      propertyPath: degreesFromVisible
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1663370265400641570, guid: df6f5bced9078de458ab40485774b539, type: 3}
+      propertyPath: degreesFromUnlocked
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1663370265400641570, guid: df6f5bced9078de458ab40485774b539, type: 3}
+      propertyPath: nodeGraphController
+      value: 
+      objectReference: {fileID: 1003869841}
+    - target: {fileID: 1663370265400641570, guid: df6f5bced9078de458ab40485774b539, type: 3}
+      propertyPath: degreesFromNonHoverable
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2936714883975807044, guid: df6f5bced9078de458ab40485774b539, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -1574,6 +1710,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: bd1800e105daed74fa7587cacae149ab, type: 3}
+    - target: {fileID: 5095398739683701310, guid: df6f5bced9078de458ab40485774b539, type: 3}
+      propertyPath: m_text
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5769553210031898519, guid: df6f5bced9078de458ab40485774b539, type: 3}
       propertyPath: m_Name
       value: Node (2)
@@ -1671,6 +1811,10 @@ PrefabInstance:
       propertyPath: degreesFromUnlocked
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1663370265400641570, guid: df6f5bced9078de458ab40485774b539, type: 3}
+      propertyPath: nodeGraphController
+      value: 
+      objectReference: {fileID: 1003869841}
     - target: {fileID: 2936714883975807044, guid: df6f5bced9078de458ab40485774b539, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -1772,6 +1916,10 @@ PrefabInstance:
       propertyPath: degreesFromUnlocked
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1663370265400641570, guid: df6f5bced9078de458ab40485774b539, type: 3}
+      propertyPath: nodeGraphController
+      value: 
+      objectReference: {fileID: 1003869841}
     - target: {fileID: 2936714883975807044, guid: df6f5bced9078de458ab40485774b539, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -1877,6 +2025,10 @@ PrefabInstance:
       propertyPath: degreesFromUnlocked
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1663370265400641570, guid: df6f5bced9078de458ab40485774b539, type: 3}
+      propertyPath: nodeGraphController
+      value: 
+      objectReference: {fileID: 1003869841}
     - target: {fileID: 2936714883975807044, guid: df6f5bced9078de458ab40485774b539, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -1885,6 +2037,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: d9c13e7a11774f64987310274ae083d8, type: 3}
+    - target: {fileID: 5095398739683701310, guid: df6f5bced9078de458ab40485774b539, type: 3}
+      propertyPath: m_text
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5769553210031898519, guid: df6f5bced9078de458ab40485774b539, type: 3}
       propertyPath: m_Name
       value: Node (2)
@@ -2054,9 +2210,25 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1003869840}
     m_Modifications:
+    - target: {fileID: 1663370265400641570, guid: df6f5bced9078de458ab40485774b539, type: 3}
+      propertyPath: canBeUnlocked
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1663370265400641570, guid: df6f5bced9078de458ab40485774b539, type: 3}
+      propertyPath: degreesFromUnlocked
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1663370265400641570, guid: df6f5bced9078de458ab40485774b539, type: 3}
+      propertyPath: nodeGraphController
+      value: 
+      objectReference: {fileID: 1003869841}
     - target: {fileID: 2936714883975807044, guid: df6f5bced9078de458ab40485774b539, type: 3}
       propertyPath: m_Enabled
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5095398739683701310, guid: df6f5bced9078de458ab40485774b539, type: 3}
+      propertyPath: m_text
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5769553210031898519, guid: df6f5bced9078de458ab40485774b539, type: 3}
       propertyPath: m_Name
@@ -2159,6 +2331,10 @@ PrefabInstance:
       propertyPath: degreesFromUnlocked
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 1663370265400641570, guid: df6f5bced9078de458ab40485774b539, type: 3}
+      propertyPath: nodeGraphController
+      value: 
+      objectReference: {fileID: 1003869841}
     - target: {fileID: 2936714883975807044, guid: df6f5bced9078de458ab40485774b539, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -2253,16 +2429,24 @@ PrefabInstance:
     m_TransformParent: {fileID: 1003869840}
     m_Modifications:
     - target: {fileID: 1663370265400641570, guid: df6f5bced9078de458ab40485774b539, type: 3}
-      propertyPath: degreesFromUnlocked
-      value: 2147483647
+      propertyPath: canBeUnlocked
+      value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1663370265400641570, guid: df6f5bced9078de458ab40485774b539, type: 3}
+      propertyPath: degreesFromUnlocked
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1663370265400641570, guid: df6f5bced9078de458ab40485774b539, type: 3}
+      propertyPath: nodeGraphController
+      value: 
+      objectReference: {fileID: 1003869841}
     - target: {fileID: 2936714883975807044, guid: df6f5bced9078de458ab40485774b539, type: 3}
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5095398739683701310, guid: df6f5bced9078de458ab40485774b539, type: 3}
       propertyPath: m_text
-      value: 
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5769553210031898519, guid: df6f5bced9078de458ab40485774b539, type: 3}
       propertyPath: m_Name
@@ -2361,6 +2545,10 @@ PrefabInstance:
       propertyPath: degreesFromUnlocked
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 1663370265400641570, guid: df6f5bced9078de458ab40485774b539, type: 3}
+      propertyPath: nodeGraphController
+      value: 
+      objectReference: {fileID: 1003869841}
     - target: {fileID: 1663370265400641570, guid: df6f5bced9078de458ab40485774b539, type: 3}
       propertyPath: degreesFromNonHoverable
       value: 1
@@ -2462,6 +2650,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1003869840}
     m_Modifications:
+    - target: {fileID: 1663370265400641570, guid: df6f5bced9078de458ab40485774b539, type: 3}
+      propertyPath: state
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1663370265400641570, guid: df6f5bced9078de458ab40485774b539, type: 3}
+      propertyPath: degreesFromVisible
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1663370265400641570, guid: df6f5bced9078de458ab40485774b539, type: 3}
+      propertyPath: degreesFromUnlocked
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1663370265400641570, guid: df6f5bced9078de458ab40485774b539, type: 3}
+      propertyPath: nodeGraphController
+      value: 
+      objectReference: {fileID: 1003869841}
     - target: {fileID: 2936714883975807044, guid: df6f5bced9078de458ab40485774b539, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -2470,6 +2674,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: ab1e041ecf13d1a4e88713df18aebdfb, type: 3}
+    - target: {fileID: 5095398739683701310, guid: df6f5bced9078de458ab40485774b539, type: 3}
+      propertyPath: m_text
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5769553210031898519, guid: df6f5bced9078de458ab40485774b539, type: 3}
       propertyPath: m_Name
       value: Node (2)
@@ -2567,6 +2775,10 @@ PrefabInstance:
       propertyPath: degreesFromUnlocked
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 1663370265400641570, guid: df6f5bced9078de458ab40485774b539, type: 3}
+      propertyPath: nodeGraphController
+      value: 
+      objectReference: {fileID: 1003869841}
     - target: {fileID: 2936714883975807044, guid: df6f5bced9078de458ab40485774b539, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -2664,6 +2876,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1003869840}
     m_Modifications:
+    - target: {fileID: 1663370265400641570, guid: df6f5bced9078de458ab40485774b539, type: 3}
+      propertyPath: state
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1663370265400641570, guid: df6f5bced9078de458ab40485774b539, type: 3}
+      propertyPath: degreesFromVisible
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1663370265400641570, guid: df6f5bced9078de458ab40485774b539, type: 3}
+      propertyPath: degreesFromUnlocked
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1663370265400641570, guid: df6f5bced9078de458ab40485774b539, type: 3}
+      propertyPath: nodeGraphController
+      value: 
+      objectReference: {fileID: 1003869841}
     - target: {fileID: 2936714883975807044, guid: df6f5bced9078de458ab40485774b539, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -2672,6 +2900,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: ab1e041ecf13d1a4e88713df18aebdfb, type: 3}
+    - target: {fileID: 5095398739683701310, guid: df6f5bced9078de458ab40485774b539, type: 3}
+      propertyPath: m_text
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5769553210031898519, guid: df6f5bced9078de458ab40485774b539, type: 3}
       propertyPath: m_Name
       value: Node (2)
@@ -2758,16 +2990,24 @@ PrefabInstance:
     m_TransformParent: {fileID: 1003869840}
     m_Modifications:
     - target: {fileID: 1663370265400641570, guid: df6f5bced9078de458ab40485774b539, type: 3}
-      propertyPath: degreesFromUnlocked
-      value: 2147483647
+      propertyPath: canBeUnlocked
+      value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1663370265400641570, guid: df6f5bced9078de458ab40485774b539, type: 3}
+      propertyPath: degreesFromUnlocked
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1663370265400641570, guid: df6f5bced9078de458ab40485774b539, type: 3}
+      propertyPath: nodeGraphController
+      value: 
+      objectReference: {fileID: 1003869841}
     - target: {fileID: 2936714883975807044, guid: df6f5bced9078de458ab40485774b539, type: 3}
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5095398739683701310, guid: df6f5bced9078de458ab40485774b539, type: 3}
       propertyPath: m_text
-      value: 
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5769553210031898519, guid: df6f5bced9078de458ab40485774b539, type: 3}
       propertyPath: m_Name
@@ -2866,6 +3106,10 @@ PrefabInstance:
       propertyPath: degreesFromUnlocked
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1663370265400641570, guid: df6f5bced9078de458ab40485774b539, type: 3}
+      propertyPath: nodeGraphController
+      value: 
+      objectReference: {fileID: 1003869841}
     - target: {fileID: 1663370265400641570, guid: df6f5bced9078de458ab40485774b539, type: 3}
       propertyPath: degreesFromNonHoverable
       value: 4
@@ -2975,6 +3219,10 @@ PrefabInstance:
       propertyPath: state
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1663370265400641570, guid: df6f5bced9078de458ab40485774b539, type: 3}
+      propertyPath: nodeGraphController
+      value: 
+      objectReference: {fileID: 1003869841}
     - target: {fileID: 2936714883975807044, guid: df6f5bced9078de458ab40485774b539, type: 3}
       propertyPath: m_Enabled
       value: 0

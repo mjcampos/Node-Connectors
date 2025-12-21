@@ -18,20 +18,24 @@ public class NodeStateMachine : StateMachine
     public int degreesFromVisible;
     public int degreesFromNonHoverable;
 
-    [SerializeField] private Node node;
+    [Header("Component References")] 
+    public Node node;
+    public SpriteRenderer spriteRenderer;
+    public UIController uiController;
+
+    [HideInInspector]
+    public NodeGraphController nodeGraphController;
 
     public string NodeID => node.NodeID;
-
-    public Node Node { get; private set; }
-    public SpriteRenderer SpriteRenderer { get; private set; }
-    public NodeGraphController NodeGraphController { get; private set; }
-    public UIController UIController { get; private set; }
 
     public static event Action OnNodeStateChanged;
 
     void Awake()
     {
-        InitializeComponents();
+        if (nodeGraphController == null)
+        {
+            nodeGraphController = GetComponentInParent<NodeGraphController>();
+        }
     }
 
     void Start()
@@ -44,8 +48,11 @@ public class NodeStateMachine : StateMachine
 
     void OnValidate()
     {
-        InitializeComponents();
-        
+        if (nodeGraphController == null)
+        {
+            nodeGraphController = GetComponentInParent<NodeGraphController>();
+        }
+
         if (nodeData == null)
         {
             Debug.LogWarning($"NodeStateMachine on '{gameObject.name}' has no NodeDataSO assigned!", this);
@@ -54,9 +61,9 @@ public class NodeStateMachine : StateMachine
 #if UNITY_EDITOR
         if (previousNodeData != nodeData)
         {
-            if (Node != null)
+            if (node != null)
             {
-                Node.OnNodeDataChanged();
+                node.OnNodeDataChanged();
             }
             
             previousNodeData = nodeData;
@@ -71,21 +78,6 @@ public class NodeStateMachine : StateMachine
         }
     }
 
-    void InitializeComponents()
-    {
-        if (Node == null)
-            Node = GetComponent<Node>();
-        
-        if (NodeGraphController == null)
-            NodeGraphController = GetComponentInParent<NodeGraphController>();
-        
-        if (SpriteRenderer == null)
-            SpriteRenderer = GetComponent<SpriteRenderer>();
-        
-        if (UIController == null)
-            UIController = GetComponent<UIController>();
-    }
-
     void InitializeRuntimeState()
     {
         RippleAllUnlockedNodesInGraph();
@@ -93,7 +85,7 @@ public class NodeStateMachine : StateMachine
     
     public void UpdateStateFromEnum()
     {
-        if (SpriteRenderer == null) return;
+        if (spriteRenderer == null) return;
         
         State newState = state switch
         {
@@ -110,9 +102,9 @@ public class NodeStateMachine : StateMachine
 
     void RippleAllUnlockedNodesInGraph()
     {
-        if (NodeGraphController == null) return;
+        if (nodeGraphController == null) return;
     
-        NodeStateMachine[] allStateMachines = NodeGraphController.GetComponentsInChildren<NodeStateMachine>();
+        NodeStateMachine[] allStateMachines = nodeGraphController.GetComponentsInChildren<NodeStateMachine>();
         bool hasUnlockedNodes = false;
         
         foreach (NodeStateMachine stateMachine in allStateMachines)
@@ -182,7 +174,7 @@ public class NodeStateMachine : StateMachine
 
     public void UpdateDegreesText()
     {
-        if (UIController == null) return;
+        if (uiController == null) return;
 
         int displayValue = state switch
         {
@@ -193,11 +185,11 @@ public class NodeStateMachine : StateMachine
         
         if (displayValue == int.MaxValue)
         {
-            UIController.SetDegreesText(string.Empty);
+            uiController.SetDegreesText(string.Empty);
         }
         else
         {
-            UIController.SetDegreesText(displayValue.ToString());
+            uiController.SetDegreesText(displayValue.ToString());
         }
     }
 
@@ -210,30 +202,30 @@ public class NodeStateMachine : StateMachine
         }
 #endif
 
-        if (SpriteRenderer != null)
-            SpriteRenderer.enabled = isVisible;
+        if (spriteRenderer != null)
+            spriteRenderer.enabled = isVisible;
 
-        if (UIController != null)
-            UIController.SetDegreesTextVisibility(isVisible);
+        if (uiController != null)
+            uiController.SetDegreesTextVisibility(isVisible);
     }
 
     public int GetHoverableRange()
     {
-        return NodeGraphController != null ? NodeGraphController.GetHoverableRange() : int.MaxValue;
+        return nodeGraphController != null ? nodeGraphController.GetHoverableRange() : int.MaxValue;
     }
 
     public int GetNonHoverableRange()
     {
-        return NodeGraphController != null ? NodeGraphController.GetNonHoverableRange() : int.MaxValue;
+        return nodeGraphController != null ? nodeGraphController.GetNonHoverableRange() : int.MaxValue;
     }
 
     public void SetSprite(NodeState newState)
     {
         Sprite sprite = nodeData?.GetSpriteForState(newState);
         
-        if (SpriteRenderer != null)
+        if (spriteRenderer != null)
         {
-            SpriteRenderer.sprite = sprite;
+            spriteRenderer.sprite = sprite;
         }
     }
 

@@ -32,17 +32,17 @@ public class VisibleState : NodeBaseState
     {
         NodeDataSO nodeData = StateMachine.GetNodeData();
 
-        if (nodeData != null && StateMachine.UIController != null)
+        if (nodeData != null && StateMachine.uiController != null)
         {
-            StateMachine.UIController.ShowHoverInfo(nodeData.title, nodeData.description);
+            StateMachine.uiController.ShowHoverInfo(nodeData.title, nodeData.description);
         }
     }
 
     public override void HoverExitHandle()
     {
-        if (StateMachine.UIController != null)
+        if (StateMachine.uiController != null)
         {
-            StateMachine.UIController.HideHoverInfo();
+            StateMachine.uiController.HideHoverInfo();
         }
     }
 }
