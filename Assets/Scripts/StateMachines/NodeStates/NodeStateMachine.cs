@@ -155,6 +155,8 @@ public class NodeStateMachine : StateMachine
 
     public void OnClick()
     {
+        AudioManager.Instance.PlayClickSound();
+        
         if (state == NodeState.Visible && canBeUnlocked)
         {
             state = NodeState.Unlocked;
@@ -236,6 +238,7 @@ public class NodeStateMachine : StateMachine
 
     public void HoverEnter()
     {
+        AudioManager.Instance.PlayHoverSound();
         OnHoverEnter();
     }
 
