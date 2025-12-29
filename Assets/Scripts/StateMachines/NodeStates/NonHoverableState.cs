@@ -29,4 +29,12 @@ public class NonHoverableState : NodeBaseState
     {
         TraverseNeighbors(false);
     }
+
+    public override void HoverEnterHandle()
+    {
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlayHoverSound();
+        }
+    }
 }

@@ -155,10 +155,13 @@ public class NodeStateMachine : StateMachine
 
     public void OnClick()
     {
-        AudioManager.Instance.PlayClickSound();
-        
         if (state == NodeState.Visible && canBeUnlocked)
         {
+            if (AudioManager.Instance != null)
+            {
+                AudioManager.Instance.PlayClickSound();
+            }
+            
             state = NodeState.Unlocked;
             canBeUnlocked = false;
             UpdateStateFromEnum();
@@ -238,7 +241,6 @@ public class NodeStateMachine : StateMachine
 
     public void HoverEnter()
     {
-        AudioManager.Instance.PlayHoverSound();
         OnHoverEnter();
     }
 

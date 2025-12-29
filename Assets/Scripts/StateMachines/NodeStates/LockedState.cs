@@ -33,6 +33,14 @@ public class LockedState : NodeBaseState
         TraverseNeighbors(false);
     }
 
+    public override void HoverEnterHandle()
+    {
+        if (AudioManager.Instance != null && StateMachine.spriteRenderer != null && StateMachine.spriteRenderer.enabled)
+        {
+            AudioManager.Instance.PlayHoverSound();
+        }
+    }
+
     void UpdateVisibility()
     {
         int hoverableRange = StateMachine.GetHoverableRange();

@@ -6,7 +6,7 @@ using UnityEngine;
 [RequireComponent(typeof(AudioSource))]
 public class AudioManager : MonoBehaviour
 {
-    public static AudioManager Instance;
+    public static AudioManager Instance { get; private set; }
     
     [SerializeField] AudioClip hoverOverSound;
     [SerializeField] AudioClip clickSound;
@@ -22,20 +22,23 @@ public class AudioManager : MonoBehaviour
         }
         
         Instance = this;
-    }
-
-    void Start()
-    {
+        
         _audioSource = GetComponent<AudioSource>();
     }
 
     public void PlayClickSound()
     {
-        _audioSource.PlayOneShot(clickSound);
+        if (clickSound != null && _audioSource != null)
+        {
+            _audioSource.PlayOneShot(clickSound);
+        }
     }
 
     public void PlayHoverSound()
     {
-        _audioSource.PlayOneShot(hoverOverSound);
+        if (hoverOverSound != null && _audioSource != null)
+        {
+            _audioSource.PlayOneShot(hoverOverSound);
+        }
     }
 }

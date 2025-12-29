@@ -28,4 +28,12 @@ public class UnlockedState : NodeBaseState
     {
         TraverseNeighbors(true);
     }
+
+    public override void HoverEnterHandle()
+    {
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlayHoverSound();
+        }
+    }
 }

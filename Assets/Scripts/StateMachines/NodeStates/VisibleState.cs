@@ -30,6 +30,11 @@ public class VisibleState : NodeBaseState
 
     public override void HoverEnterHandle()
     {
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlayHoverSound();
+        }
+        
         NodeDataSO nodeData = StateMachine.GetNodeData();
 
         if (nodeData != null && StateMachine.uiController != null)
