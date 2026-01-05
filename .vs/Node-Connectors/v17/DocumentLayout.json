@@ -1,0 +1,87 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\git\\Node-Connectors\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{DC43C4A7-4EB6-AE56-FA67-EEB5636F719A}|Assembly-CSharp.csproj|C:\\git\\Node-Connectors\\assets\\scripts\\test_kaspersave.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DC43C4A7-4EB6-AE56-FA67-EEB5636F719A}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\test_kaspersave.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DC43C4A7-4EB6-AE56-FA67-EEB5636F719A}|Assembly-CSharp.csproj|C:\\git\\Node-Connectors\\assets\\scripts\\statemachines\\nodestates\\nodestatemachine.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DC43C4A7-4EB6-AE56-FA67-EEB5636F719A}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\statemachines\\nodestates\\nodestatemachine.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2E2ECA68-6C77-F08D-DFC3-08162C8DF59B}|Assembly-CSharp-Editor.csproj|c:\\git\\node-connectors\\assets\\scripts\\editor\\nodeautoparenting.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2E2ECA68-6C77-F08D-DFC3-08162C8DF59B}|Assembly-CSharp-Editor.csproj|solutionrelative:assets\\scripts\\editor\\nodeautoparenting.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DC43C4A7-4EB6-AE56-FA67-EEB5636F719A}|Assembly-CSharp.csproj|C:\\git\\Node-Connectors\\assets\\scripts\\nodecontroller\\nodegraphcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DC43C4A7-4EB6-AE56-FA67-EEB5636F719A}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\nodecontroller\\nodegraphcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "NodeAutoParenting.cs",
+              "DocumentMoniker": "C:\\git\\Node-Connectors\\Assets\\Scripts\\Editor\\NodeAutoParenting.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\Editor\\NodeAutoParenting.cs",
+              "ToolTip": "C:\\git\\Node-Connectors\\Assets\\Scripts\\Editor\\NodeAutoParenting.cs",
+              "RelativeToolTip": "Assets\\Scripts\\Editor\\NodeAutoParenting.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-05T08:35:34.39Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "TEST_KasperSAVe.cs",
+              "DocumentMoniker": "C:\\git\\Node-Connectors\\Assets\\Scripts\\TEST_KasperSAVe.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\TEST_KasperSAVe.cs",
+              "ToolTip": "C:\\git\\Node-Connectors\\Assets\\Scripts\\TEST_KasperSAVe.cs",
+              "RelativeToolTip": "Assets\\Scripts\\TEST_KasperSAVe.cs",
+              "ViewState": "AgIAADEAAAAAAAAAAAAkwBkAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-09T19:51:13.706Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "NodeGraphController.cs",
+              "DocumentMoniker": "C:\\git\\Node-Connectors\\Assets\\Scripts\\NodeController\\NodeGraphController.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\NodeController\\NodeGraphController.cs",
+              "ToolTip": "C:\\git\\Node-Connectors\\Assets\\Scripts\\NodeController\\NodeGraphController.cs",
+              "RelativeToolTip": "Assets\\Scripts\\NodeController\\NodeGraphController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-09T19:41:49.448Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "NodeStateMachine.cs",
+              "DocumentMoniker": "C:\\git\\Node-Connectors\\Assets\\Scripts\\StateMachines\\NodeStates\\NodeStateMachine.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\StateMachines\\NodeStates\\NodeStateMachine.cs",
+              "ToolTip": "C:\\git\\Node-Connectors\\Assets\\Scripts\\StateMachines\\NodeStates\\NodeStateMachine.cs",
+              "RelativeToolTip": "Assets\\Scripts\\StateMachines\\NodeStates\\NodeStateMachine.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAjAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-09T19:40:41.929Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
