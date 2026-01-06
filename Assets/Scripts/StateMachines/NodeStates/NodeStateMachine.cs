@@ -157,9 +157,9 @@ public class NodeStateMachine : StateMachine
     {
         if (state == NodeState.Visible && canBeUnlocked)
         {
-            if (AudioManager.Instance != null)
+            if (SoundPlayer.Instance != null)
             {
-                AudioManager.Instance.PlayClickSound();
+                SoundPlayer.Instance.PlayClickSound();
             }
             
             state = NodeState.Unlocked;

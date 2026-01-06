@@ -35,9 +35,9 @@ public class LockedState : NodeBaseState
 
     public override void HoverEnterHandle()
     {
-        if (AudioManager.Instance != null && StateMachine.spriteRenderer != null && StateMachine.spriteRenderer.enabled)
+        if (SoundPlayer.Instance != null && StateMachine.spriteRenderer != null && StateMachine.spriteRenderer.enabled)
         {
-            AudioManager.Instance.PlayHoverSound();
+            SoundPlayer.Instance.PlayHoverSound();
         }
     }
 

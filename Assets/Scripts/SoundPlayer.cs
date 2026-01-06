@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(AudioSource))]
-public class AudioManager : MonoBehaviour
+public class SoundPlayer : MonoBehaviour
 {
-    public static AudioManager Instance { get; private set; }
+    public static SoundPlayer Instance { get; private set; }
     
     [SerializeField] AudioClip hoverOverSound;
     [SerializeField] AudioClip clickSound;

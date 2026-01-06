@@ -32,9 +32,9 @@ public class NonHoverableState : NodeBaseState
 
     public override void HoverEnterHandle()
     {
-        if (AudioManager.Instance != null)
+        if (SoundPlayer.Instance != null)
         {
-            AudioManager.Instance.PlayHoverSound();
+            SoundPlayer.Instance.PlayHoverSound();
         }
     }
 }
