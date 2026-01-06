@@ -1,32 +1,34 @@
 using Helpers;
-using UnityEngine;
 
-public class HiddenState : NodeBaseState
+namespace NodeSystem.StateMachines.NodeStates
 {
-    public HiddenState(NodeStateMachine stateMachine) : base(stateMachine)
+    public class HiddenState : NodeBaseState
     {
-    }
+        public HiddenState(NodeStateMachine stateMachine) : base(stateMachine)
+        {
+        }
 
-    public override void Enter()
-    {
-        StateMachine.SetSprite(NodeState.Hidden);
-        StateMachine.canBeUnlocked = false;
-        StateMachine.SetVisibility(false);
-        StateMachine.UpdateDegreesText();
-    }
+        public override void Enter()
+        {
+            StateMachine.SetSprite(NodeState.Hidden);
+            StateMachine.canBeUnlocked = false;
+            StateMachine.SetVisibility(false);
+            StateMachine.UpdateDegreesText();
+        }
 
-    public override void Tick(float deltaTime)
-    {
+        public override void Tick(float deltaTime)
+        {
         
-    }
+        }
 
-    public override void Exit()
-    {
-        StateMachine.SetVisibility(true);
-    }
+        public override void Exit()
+        {
+            StateMachine.SetVisibility(true);
+        }
 
-    public override void RippleHandle()
-    {
-        TraverseNeighbors(false);
+        public override void RippleHandle()
+        {
+            TraverseNeighbors(false);
+        }
     }
 }

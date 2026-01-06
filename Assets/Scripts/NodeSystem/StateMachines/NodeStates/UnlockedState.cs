@@ -1,39 +1,42 @@
 using Helpers;
-using UnityEngine;
+using NodeController;
 
-public class UnlockedState : NodeBaseState
+namespace NodeSystem.StateMachines.NodeStates
 {
-    public UnlockedState(NodeStateMachine stateMachine) : base(stateMachine)
+    public class UnlockedState : NodeBaseState
     {
-    }
-
-    public override void Enter()
-    {
-        StateMachine.SetSprite(NodeState.Unlocked);
-        StateMachine.degreesFromUnlocked = 0;
-        
-        StateMachine.SetVisibility(true);
-        StateMachine.UpdateDegreesText();
-    }
-
-    public override void Tick(float deltaTime)
-    {
-    }
-
-    public override void Exit()
-    {
-    }
-
-    public override void RippleHandle()
-    {
-        TraverseNeighbors(true);
-    }
-
-    public override void HoverEnterHandle()
-    {
-        if (SoundPlayer.Instance != null)
+        public UnlockedState(NodeStateMachine stateMachine) : base(stateMachine)
         {
-            SoundPlayer.Instance.PlayHoverSound();
+        }
+
+        public override void Enter()
+        {
+            StateMachine.SetSprite(NodeState.Unlocked);
+            StateMachine.degreesFromUnlocked = 0;
+        
+            StateMachine.SetVisibility(true);
+            StateMachine.UpdateDegreesText();
+        }
+
+        public override void Tick(float deltaTime)
+        {
+        }
+
+        public override void Exit()
+        {
+        }
+
+        public override void RippleHandle()
+        {
+            TraverseNeighbors(true);
+        }
+
+        public override void HoverEnterHandle()
+        {
+            if (SoundPlayer.Instance != null)
+            {
+                SoundPlayer.Instance.PlayHoverSound();
+            }
         }
     }
 }

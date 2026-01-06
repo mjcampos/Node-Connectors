@@ -1,53 +1,56 @@
 using Helpers;
-using UnityEngine;
+using NodeController;
 
-public class LockedState : NodeBaseState
+namespace NodeSystem.StateMachines.NodeStates
 {
-    public LockedState(NodeStateMachine stateMachine) : base(stateMachine)
+    public class LockedState : NodeBaseState
     {
-    }
-
-    public override void Enter()
-    {
-        StateMachine.SetSprite(NodeState.Locked);
-        StateMachine.canBeUnlocked = false;
-        
-        UpdateVisibility();
-        
-        StateMachine.UpdateDegreesText();
-    }
-
-    public override void Tick(float deltaTime)
-    {
-        
-    }
-
-    public override void Exit()
-    {
-        
-    }
-
-    public override void RippleHandle()
-    {
-        UpdateVisibility();
-        TraverseNeighbors(false);
-    }
-
-    public override void HoverEnterHandle()
-    {
-        if (SoundPlayer.Instance != null && StateMachine.spriteRenderer != null && StateMachine.spriteRenderer.enabled)
+        public LockedState(NodeStateMachine stateMachine) : base(stateMachine)
         {
-            SoundPlayer.Instance.PlayHoverSound();
         }
-    }
 
-    void UpdateVisibility()
-    {
-        int hoverableRange = StateMachine.GetHoverableRange();
-        int nonHoverableRange = StateMachine.GetNonHoverableRange();
-        int totalVisibleRange = hoverableRange + nonHoverableRange;
-        bool shouldBeVisible = StateMachine.degreesFromUnlocked <= totalVisibleRange;
+        public override void Enter()
+        {
+            StateMachine.SetSprite(NodeState.Locked);
+            StateMachine.canBeUnlocked = false;
         
-        StateMachine.SetVisibility(shouldBeVisible);
+            UpdateVisibility();
+        
+            StateMachine.UpdateDegreesText();
+        }
+
+        public override void Tick(float deltaTime)
+        {
+        
+        }
+
+        public override void Exit()
+        {
+        
+        }
+
+        public override void RippleHandle()
+        {
+            UpdateVisibility();
+            TraverseNeighbors(false);
+        }
+
+        public override void HoverEnterHandle()
+        {
+            if (SoundPlayer.Instance != null && StateMachine.spriteRenderer != null && StateMachine.spriteRenderer.enabled)
+            {
+                SoundPlayer.Instance.PlayHoverSound();
+            }
+        }
+
+        void UpdateVisibility()
+        {
+            int hoverableRange = StateMachine.GetHoverableRange();
+            int nonHoverableRange = StateMachine.GetNonHoverableRange();
+            int totalVisibleRange = hoverableRange + nonHoverableRange;
+            bool shouldBeVisible = StateMachine.degreesFromUnlocked <= totalVisibleRange;
+        
+            StateMachine.SetVisibility(shouldBeVisible);
+        }
     }
 }

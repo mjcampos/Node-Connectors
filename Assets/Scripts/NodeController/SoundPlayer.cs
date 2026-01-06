@@ -1,44 +1,44 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(AudioSource))]
-public class SoundPlayer : MonoBehaviour
+namespace NodeController
 {
-    public static SoundPlayer Instance { get; private set; }
+    [RequireComponent(typeof(AudioSource))]
+    public class SoundPlayer : MonoBehaviour
+    {
+        public static SoundPlayer Instance { get; private set; }
     
-    [SerializeField] AudioClip hoverOverSound;
-    [SerializeField] AudioClip clickSound;
+        [SerializeField] AudioClip hoverOverSound;
+        [SerializeField] AudioClip clickSound;
 
-    AudioSource _audioSource;
+        AudioSource _audioSource;
     
-    void Awake()
-    {
-        if (Instance != null)
+        void Awake()
         {
-            Destroy(gameObject);
-            return;
-        }
+            if (Instance != null)
+            {
+                Destroy(gameObject);
+                return;
+            }
         
-        Instance = this;
+            Instance = this;
         
-        _audioSource = GetComponent<AudioSource>();
-    }
-
-    public void PlayClickSound()
-    {
-        if (clickSound != null && _audioSource != null)
-        {
-            _audioSource.PlayOneShot(clickSound);
+            _audioSource = GetComponent<AudioSource>();
         }
-    }
 
-    public void PlayHoverSound()
-    {
-        if (hoverOverSound != null && _audioSource != null)
+        public void PlayClickSound()
         {
-            _audioSource.PlayOneShot(hoverOverSound);
+            if (clickSound != null && _audioSource != null)
+            {
+                _audioSource.PlayOneShot(clickSound);
+            }
+        }
+
+        public void PlayHoverSound()
+        {
+            if (hoverOverSound != null && _audioSource != null)
+            {
+                _audioSource.PlayOneShot(hoverOverSound);
+            }
         }
     }
 }

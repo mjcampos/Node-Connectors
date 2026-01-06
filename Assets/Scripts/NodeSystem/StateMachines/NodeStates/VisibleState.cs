@@ -1,53 +1,57 @@
 using Helpers;
-using UnityEngine;
+using NodeController;
+using ScriptableObjects;
 
-public class VisibleState : NodeBaseState
+namespace NodeSystem.StateMachines.NodeStates
 {
-    public VisibleState(NodeStateMachine stateMachine) : base(stateMachine)
+    public class VisibleState : NodeBaseState
     {
-    }
-
-    public override void Enter()
-    {
-        StateMachine.SetSprite(NodeState.Visible);
-        StateMachine.SetVisibility(true);
-        StateMachine.UpdateDegreesText();
-    }
-
-    public override void Tick(float deltaTime)
-    {
-    }
-
-    public override void Exit()
-    {
-        HoverExitHandle();
-    }
-
-    public override void RippleHandle()
-    {
-        TraverseNeighbors(false);
-    }
-
-    public override void HoverEnterHandle()
-    {
-        if (SoundPlayer.Instance != null)
+        public VisibleState(NodeStateMachine stateMachine) : base(stateMachine)
         {
-            SoundPlayer.Instance.PlayHoverSound();
         }
+
+        public override void Enter()
+        {
+            StateMachine.SetSprite(NodeState.Visible);
+            StateMachine.SetVisibility(true);
+            StateMachine.UpdateDegreesText();
+        }
+
+        public override void Tick(float deltaTime)
+        {
+        }
+
+        public override void Exit()
+        {
+            HoverExitHandle();
+        }
+
+        public override void RippleHandle()
+        {
+            TraverseNeighbors(false);
+        }
+
+        public override void HoverEnterHandle()
+        {
+            if (SoundPlayer.Instance != null)
+            {
+                SoundPlayer.Instance.PlayHoverSound();
+            }
         
-        NodeDataSO nodeData = StateMachine.GetNodeData();
+            NodeDataSO nodeData = StateMachine.GetNodeData();
 
-        if (nodeData != null && StateMachine.uiController != null)
-        {
-            StateMachine.uiController.ShowHoverInfo(nodeData.title, nodeData.description);
+            if (nodeData != null && StateMachine.uiController != null)
+            {
+                StateMachine.uiController.ShowHoverInfo(nodeData.title, nodeData.description);
+            }
         }
-    }
 
-    public override void HoverExitHandle()
-    {
-        if (StateMachine.uiController != null)
+        public override void HoverExitHandle()
         {
-            StateMachine.uiController.HideHoverInfo();
+            if (StateMachine.uiController != null)
+            {
+                StateMachine.uiController.HideHoverInfo();
+            }
         }
     }
 }
