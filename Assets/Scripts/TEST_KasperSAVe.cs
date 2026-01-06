@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using UnityEngine;
 
-/*
+
 public class TEST_KasperSAVe : MonoBehaviour
 {
     private const string FILE_NAME = "FileName.es3";
@@ -39,7 +39,7 @@ public class TEST_KasperSAVe : MonoBehaviour
             SaveNodeData snd = new SaveNodeData
             {                 
                 state = nodeStateMachine.state,
-                NodeID = nodeStateMachine.Node.NodeID
+                NodeID = nodeStateMachine.NodeID
             };
 
             _nodeData.Add(snd);
@@ -68,7 +68,7 @@ public class TEST_KasperSAVe : MonoBehaviour
         {
             foreach (SaveNodeData NodeData in _nodeData)
             {
-                if(nodeStateMachine.Node.NodeID == NodeData.NodeID)
+                if(nodeStateMachine.NodeID == NodeData.NodeID)
                 {
                     nodeStateMachine.state = NodeData.state;
                 }
@@ -88,4 +88,3 @@ public struct SaveNodeData
     public string NodeID;
 }
 
-*/
