@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public static class NodeAutoParenting
 {
     const string NODE_GRAPH_SCENE_NAME = "Nodes Graph";
+    const string NODES_WRAPPER_NAME = "Nodes";
 
     static NodeAutoParenting()
     {
@@ -42,12 +43,12 @@ public static class NodeAutoParenting
             
             if (nodeSM != null)
             {
-                NodeGraphController controller = Object.FindFirstObjectByType<NodeGraphController>();
+                Transform nodesWrapper = FindNodesWrapper();
                 
-                if (controller != null && rootObj.transform.parent != controller.transform)
+                if (nodesWrapper != null && rootObj.transform.parent != nodesWrapper)
                 {
-                    Undo.SetTransformParent(rootObj.transform, controller.transform, "Auto-parent Node to Controller");
-                    Debug.Log($"Auto-parented '{rootObj.name}' to Node Graph Controller");
+                    Undo.SetTransformParent(rootObj.transform, nodesWrapper, "Auto-parent Node to Nodes wrapper");
+                    Debug.Log($"Auto-parented '{rootObj.name}' to Nodes wrapper");
                 }
             }
         }
@@ -70,14 +71,30 @@ public static class NodeAutoParenting
             
             if (nodeSM != null)
             {
-                NodeGraphController controller = Object.FindFirstObjectByType<NodeGraphController>();
+                Transform nodesWrapper = FindNodesWrapper();
                 
-                if (controller != null && obj.transform.parent != controller.transform)
+                if (nodesWrapper != null && obj.transform.parent != nodesWrapper)
                 {
-                    Undo.SetTransformParent(obj.transform, controller.transform, "Auto-parent Node to Controller");
-                    Debug.Log($"Auto-parented '{obj.name}' to Node Graph Controller");
+                    Undo.SetTransformParent(obj.transform, nodesWrapper, "Auto-parent Node to Nodes wrapper");
+                    Debug.Log($"Auto-parented '{obj.name}' to Nodes wrapper");
                 }
             }
         };
+    }
+
+    static Transform FindNodesWrapper()
+    {
+        NodeGraphController controller = Object.FindFirstObjectByType<NodeGraphController>();
+        
+        if (controller == null) return null;
+
+        Transform nodesWrapper = controller.transform.Find(NODES_WRAPPER_NAME);
+        
+        if (nodesWrapper == null)
+        {
+            Debug.LogWarning($"'{NODES_WRAPPER_NAME}' wrapper not found under Node Graph Controller! Nodes will not auto-parent correctly.");
+        }
+        
+        return nodesWrapper;
     }
 }
