@@ -58,11 +58,11 @@ public class NodeGraphController : MonoBehaviour
             ResetNonUnlockedNodes();
         }
         
-        foreach (Transform child in transform)
+        NodeStateMachine[] allNodes = GetComponentsInChildren<NodeStateMachine>();
+        
+        foreach (NodeStateMachine nsm in allNodes)
         {
-            NodeStateMachine nsm = child.GetComponent<NodeStateMachine>();
-
-            if (nsm != null && nsm.state == NodeState.Unlocked)
+            if (nsm.state == NodeState.Unlocked)
             {
                 nsm.Ripple();
             }
@@ -71,11 +71,11 @@ public class NodeGraphController : MonoBehaviour
 
     void ResetNonUnlockedNodes()
     {
-        foreach (Transform child in transform)
+        NodeStateMachine[] allNodes = GetComponentsInChildren<NodeStateMachine>();
+        
+        foreach (NodeStateMachine nsm in allNodes)
         {
-            NodeStateMachine nsm = child.GetComponent<NodeStateMachine>();
-
-            if (nsm != null && nsm.state != NodeState.Unlocked && nsm.state != NodeState.Locked)
+            if (nsm.state != NodeState.Unlocked && nsm.state != NodeState.Locked)
             {
                 nsm.degreesFromUnlocked = int.MaxValue;
                 nsm.degreesFromVisible = 0;
