@@ -9,10 +9,31 @@ namespace Editor
     public class NodeConnectionEditor : UnityEditor.Editor
     {
         static Node startNode = null;
-        static bool isConnecting = false;
+        static bool isDragging = false;
+        static Vector2 currentMousePos;
 
-        const float NODE_RADIUS = 0.75f;
-        const float LINE_WIDTH = 3f;
+        const string PREF_KEY_RADIUS = "NodeConnectionEditor_DetectionRadius";
+        const float DEFAULT_RADIUS = 50f;
+
+        static float nodeRadius = -1f;
+
+        static float NodeRadius
+        {
+            get
+            {
+                if (nodeRadius < 0)
+                {
+                    nodeRadius = EditorPrefs.GetFloat(PREF_KEY_RADIUS, DEFAULT_RADIUS);
+                }
+                return nodeRadius;
+            }
+            
+            set
+            {
+                nodeRadius = value;
+                EditorPrefs.SetFloat(PREF_KEY_RADIUS, value);
+            }
+        }
 
         void OnEnable()
         {
@@ -26,111 +47,49 @@ namespace Editor
 
         void OnSceneGUI(SceneView sceneView)
         {
-            if (target == null || !(target is Node)) return;
-
-            Node node = target as Node;
-            if (node == null) return;
-
             Event e = Event.current;
+            
+            currentMousePos = e.mousePosition;
 
-            DrawExistingConnections(node);
-            DrawNodeOutline(node);
-            HandleDragConnection(node, e);
-            HandleRightClickDisconnect(node, e);
+            DrawExistingConnections();
+            DrawDragLine();
+            HandleRightClickDisconnect(e);
+            
+            if (!e.shift)
+            {
+                if (isDragging)
+                {
+                    isDragging = false;
+                    startNode = null;
+                }
+                return;
+            }
 
-            if (isConnecting)
+            HandleInput(e);
+
+            if (isDragging)
             {
                 SceneView.RepaintAll();
             }
         }
 
-        void DrawExistingConnections(Node node)
-        {
-            Handles.color = new Color(1f, 0.8f, 0f, 0.8f);
-
-            foreach (Node neighbor in node.neighborNodes)
-            {
-                if (neighbor != null)
-                {
-                    Handles.DrawLine(node.transform.position, neighbor.transform.position, LINE_WIDTH);
-                }
-            }
-        }
-
-        void DrawNodeOutline(Node node)
-        {
-            if (isConnecting && startNode == node)
-            {
-                Handles.color = Color.green;
-                Handles.DrawWireDisc(node.transform.position, Vector3.forward, NODE_RADIUS, 4f);
-            }
-            else
-            {
-                Handles.color = new Color(0.5f, 0.5f, 0.5f, 0.3f);
-                Handles.DrawWireDisc(node.transform.position, Vector3.forward, NODE_RADIUS, 2f);
-            }
-        }
-
-        void HandleDragConnection(Node node, Event e)
-        {
-            Vector3 mouseWorldPos = GetMouseWorldPosition();
-
-            if (e.type == EventType.MouseDown && e.button == 0 && e.shift)
-            {
-                if (IsMouseOverNode(node, mouseWorldPos))
-                {
-                    startNode = node;
-                    isConnecting = true;
-                    e.Use();
-                    Debug.Log($"Started dragging from {node.name}");
-                }
-            }
-
-            if (isConnecting && startNode != null)
-            {
-                Handles.color = Color.green;
-                Handles.DrawDottedLine(startNode.transform.position, mouseWorldPos, 3f);
-            }
-
-            if (e.type == EventType.MouseUp && e.button == 0 && isConnecting)
-            {
-                Node endNode = GetNodeUnderMouse(mouseWorldPos);
-
-                if (endNode != null && endNode != startNode)
-                {
-                    ConnectNodes(startNode, endNode);
-                }
-
-                startNode = null;
-                isConnecting = false;
-                e.Use();
-                SceneView.RepaintAll();
-            }
-
-            if (e.type == EventType.KeyDown && e.keyCode == KeyCode.Escape)
-            {
-                startNode = null;
-                isConnecting = false;
-                e.Use();
-                SceneView.RepaintAll();
-            }
-        }
-
-        void HandleRightClickDisconnect(Node node, Event e)
+        void HandleRightClickDisconnect(Event e)
         {
             if (e.type == EventType.MouseDown && e.button == 1)
             {
-                Vector3 mouseWorldPos = GetMouseWorldPosition();
-                Node targetNode = GetNodeUnderMouse(mouseWorldPos);
+                Node selectedNode = target as Node;
+                if (selectedNode == null) return;
 
-                if (targetNode != null && targetNode != node)
+                Node clickedNode = GetNodeUnderMouse(e.mousePosition);
+                
+                if (clickedNode != null && clickedNode != selectedNode)
                 {
-                    if (node.neighborNodes.Contains(targetNode))
+                    if (selectedNode.neighborNodes.Contains(clickedNode))
                     {
                         GenericMenu menu = new GenericMenu();
-                        menu.AddItem(new GUIContent($"Disconnect from {targetNode.name}"), false, () =>
+                        menu.AddItem(new GUIContent($"Disconnect {selectedNode.name} from {clickedNode.name}"), false, () =>
                         {
-                            DisconnectNodes(node, targetNode);
+                            DisconnectNodes(selectedNode, clickedNode);
                         });
                         menu.ShowAsContext();
                         e.Use();
@@ -139,17 +98,175 @@ namespace Editor
             }
         }
 
+        void HandleInput(Event e)
+        {
+            if (e.type == EventType.MouseDown && e.button == 0 && e.shift)
+            {
+                Node nodeUnderMouse = GetNodeUnderMouse(e.mousePosition);
+                if (nodeUnderMouse != null)
+                {
+                    startNode = nodeUnderMouse;
+                    isDragging = true;
+                    e.Use();
+                    GUIUtility.hotControl = GUIUtility.GetControlID(FocusType.Passive);
+                    Debug.Log($"✅ Started dragging from: {startNode.name}");
+                }
+            }
+
+            if (e.type == EventType.MouseDrag && isDragging)
+            {
+                e.Use();
+                SceneView.RepaintAll();
+            }
+
+            if (e.type == EventType.MouseUp && e.button == 0 && isDragging)
+            {
+                Node endNode = GetNodeUnderMouse(e.mousePosition);
+                
+                if (endNode != null && endNode != startNode)
+                {
+                    ConnectNodes(startNode, endNode);
+                }
+                
+                isDragging = false;
+                startNode = null;
+                GUIUtility.hotControl = 0;
+                e.Use();
+                SceneView.RepaintAll();
+            }
+
+            if (e.type == EventType.KeyDown && e.keyCode == KeyCode.Escape && isDragging)
+            {
+                isDragging = false;
+                startNode = null;
+                GUIUtility.hotControl = 0;
+                e.Use();
+                SceneView.RepaintAll();
+            }
+
+            if (e.shift && !isDragging)
+            {
+                if (e.type == EventType.Layout)
+                {
+                    HandleUtility.AddDefaultControl(GUIUtility.GetControlID(FocusType.Passive));
+                }
+            }
+        }
+
+        void DrawExistingConnections()
+        {
+            Node[] allNodes = FindObjectsByType<Node>(FindObjectsSortMode.None);
+            
+            Handles.color = new Color(1f, 0.8f, 0f, 0.8f);
+            
+            foreach (Node node in allNodes)
+            {
+                if (node.neighborNodes == null) continue;
+                
+                foreach (Node neighbor in node.neighborNodes)
+                {
+                    if (neighbor != null && neighbor.GetInstanceID() > node.GetInstanceID())
+                    {
+                        Vector3 startPos = GetNodeWorldPosition(node);
+                        Vector3 endPos = GetNodeWorldPosition(neighbor);
+                        
+                        Handles.DrawLine(startPos, endPos, 3f);
+                    }
+                }
+            }
+        }
+
+        void DrawDragLine()
+        {
+            if (!isDragging || startNode == null) return;
+
+            Vector3 startWorldPos = GetNodeWorldPosition(startNode);
+            
+            Ray ray = HandleUtility.GUIPointToWorldRay(currentMousePos);
+            Plane plane = new Plane(Vector3.forward, startWorldPos);
+            
+            if (plane.Raycast(ray, out float distance))
+            {
+                Vector3 mouseWorldPos = ray.GetPoint(distance);
+                
+                Handles.color = Color.green;
+                Handles.DrawDottedLine(startWorldPos, mouseWorldPos, 3f);
+                
+                Node nodeUnderMouse = GetNodeUnderMouse(currentMousePos);
+                if (nodeUnderMouse != null && nodeUnderMouse != startNode)
+                {
+                    Vector3 targetPos = GetNodeWorldPosition(nodeUnderMouse);
+                    Handles.DrawWireDisc(targetPos, Vector3.forward, NodeRadius, 4f);
+                }
+            }
+        }
+
+        Node GetNodeUnderMouse(Vector2 mouseGUIPos)
+        {
+            Node[] allNodes = FindObjectsByType<Node>(FindObjectsSortMode.None);
+            
+            Ray ray = HandleUtility.GUIPointToWorldRay(mouseGUIPos);
+            Plane plane = new Plane(Vector3.forward, Vector3.zero);
+            
+            if (!plane.Raycast(ray, out float distance))
+            {
+                return null;
+            }
+            
+            Vector3 worldPoint = ray.GetPoint(distance);
+            
+            float closestDistance = float.MaxValue;
+            Node closestNode = null;
+            
+            foreach (Node node in allNodes)
+            {
+                Vector3 nodeWorldPos = GetNodeWorldPosition(node);
+                float dist = Vector3.Distance(worldPoint, nodeWorldPos);
+                
+                if (dist < NodeRadius && dist < closestDistance)
+                {
+                    closestDistance = dist;
+                    closestNode = node;
+                }
+            }
+            
+            return closestNode;
+        }
+
+        Vector3 GetNodeWorldPosition(Node node)
+        {
+            RectTransform rectTransform = node.GetComponent<RectTransform>();
+            
+            if (rectTransform == null)
+            {
+                return node.transform.position;
+            }
+            
+            Vector3[] corners = new Vector3[4];
+            rectTransform.GetWorldCorners(corners);
+            Vector3 center = (corners[0] + corners[2]) * 0.5f;
+            
+            return center;
+        }
+
         void ConnectNodes(Node nodeA, Node nodeB)
         {
+            if (nodeA.neighborNodes.Contains(nodeB))
+            {
+                Debug.Log($"ℹ️ Nodes already connected: {nodeA.name} ↔ {nodeB.name}");
+                return;
+            }
+
             nodeA.AddNeighbor(nodeB);
             nodeB.AddNeighbor(nodeA);
 
             EditorUtility.SetDirty(nodeA);
             EditorUtility.SetDirty(nodeB);
 
-            Debug.Log($"Connected: {nodeA.name} ↔ {nodeB.name}");
+            Debug.Log($"✅ Connected: {nodeA.name} ↔ {nodeB.name}");
         
             RippleAllUnlockedNodes();
+            SceneView.RepaintAll();
         }
 
         void DisconnectNodes(Node nodeA, Node nodeB)
@@ -160,10 +277,10 @@ namespace Editor
             EditorUtility.SetDirty(nodeA);
             EditorUtility.SetDirty(nodeB);
 
-            Debug.Log($"Disconnected: {nodeA.name} ↮ {nodeB.name}");
-            SceneView.RepaintAll();
+            Debug.Log($"🔗 Disconnected: {nodeA.name} ↮ {nodeB.name}");
         
             RippleAllUnlockedNodes();
+            SceneView.RepaintAll();
         }
 
         void RippleAllUnlockedNodes()
@@ -189,40 +306,6 @@ namespace Editor
             }
         }
 
-        bool IsMouseOverNode(Node node, Vector3 mouseWorldPos)
-        {
-            float distance = Vector3.Distance(mouseWorldPos, node.transform.position);
-            return distance < NODE_RADIUS;
-        }
-
-        Node GetNodeUnderMouse(Vector3 mouseWorldPos)
-        {
-            Node[] allNodes = FindObjectsByType<Node>(FindObjectsSortMode.None);
-
-            foreach (Node node in allNodes)
-            {
-                if (IsMouseOverNode(node, mouseWorldPos))
-                {
-                    return node;
-                }
-            }
-
-            return null;
-        }
-
-        Vector3 GetMouseWorldPosition()
-        {
-            Ray ray = HandleUtility.GUIPointToWorldRay(Event.current.mousePosition);
-            Plane groundPlane = new Plane(Vector3.forward, Vector3.zero);
-        
-            if (groundPlane.Raycast(ray, out float distance))
-            {
-                return ray.GetPoint(distance);
-            }
-        
-            return Vector3.zero;
-        }
-
         public override void OnInspectorGUI()
         {
             DrawDefaultInspector();
@@ -230,11 +313,25 @@ namespace Editor
             Node node = (Node)target;
 
             EditorGUILayout.Space(10);
+            
+            EditorGUILayout.LabelField("Connection Settings", EditorStyles.boldLabel);
+            
+            EditorGUI.BeginChangeCheck();
+            float newRadius = EditorGUILayout.Slider("Detection Radius", NodeRadius, 20f, 200f);
+            if (EditorGUI.EndChangeCheck())
+            {
+                NodeRadius = newRadius;
+                SceneView.RepaintAll();
+            }
+            
+            EditorGUILayout.HelpBox($"Detection radius: {NodeRadius:F0} units\n\n✨ HOW TO USE:\n• CONNECT: Hold SHIFT + drag from node to node\n• DISCONNECT: Select a node, then right-click a connected node", MessageType.Info);
+
+            EditorGUILayout.Space(5);
             EditorGUILayout.LabelField("Node Connections", EditorStyles.boldLabel);
 
             if (node.neighborNodes.Count == 0)
             {
-                EditorGUILayout.HelpBox("No connections.\n\nHold SHIFT + drag from this node to another in Scene view to connect.", MessageType.Info);
+                EditorGUILayout.LabelField("No connections yet", EditorStyles.miniLabel);
             }
             else
             {
@@ -251,7 +348,7 @@ namespace Editor
                         EditorGUILayout.BeginHorizontal();
                         EditorGUILayout.LabelField($"→ {neighbor.name}", EditorStyles.miniLabel);
                     
-                        if (GUILayout.Button("X", GUILayout.Width(25)))
+                        if (GUILayout.Button("Disconnect", GUILayout.Width(80)))
                         {
                             DisconnectNodes(node, neighbor);
                         }
@@ -267,9 +364,17 @@ namespace Editor
                 EditorGUILayout.EndVertical();
             }
 
-            if (isConnecting && startNode == node)
+            if (isDragging && startNode == node)
             {
-                EditorGUILayout.HelpBox("Drag to another node to connect!", MessageType.Warning);
+                EditorGUILayout.HelpBox("🟢 Dragging... Release on target node to connect!", MessageType.Warning);
+            }
+            
+            EditorGUILayout.Space(5);
+            
+            if (GUILayout.Button("Reset Detection Radius to Default"))
+            {
+                NodeRadius = DEFAULT_RADIUS;
+                SceneView.RepaintAll();
             }
         }
     }

@@ -37,7 +37,7 @@ namespace NodeSystem.StateMachines.NodeStates
 
         public override void HoverEnterHandle()
         {
-            if (SoundPlayer.Instance != null && StateMachine.spriteRenderer != null && StateMachine.spriteRenderer.enabled)
+            if (SoundPlayer.Instance != null && StateMachine.nodeImage != null && StateMachine.nodeImage.enabled)
             {
                 SoundPlayer.Instance.PlayHoverSound();
             }

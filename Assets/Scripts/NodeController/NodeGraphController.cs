@@ -4,7 +4,6 @@ using UnityEngine;
 
 namespace NodeController
 {
-    [RequireComponent(typeof(InputReader))]
     public class NodeGraphController : MonoBehaviour
     {
         [Header("Visibility Settings")]

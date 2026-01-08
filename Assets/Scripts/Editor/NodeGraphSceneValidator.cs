@@ -50,7 +50,6 @@ namespace Editor
         {
             GameObject controllerObj = new GameObject(CONTROLLER_NAME);
             controllerObj.AddComponent<NodeGraphController>();
-            controllerObj.AddComponent<InputReader>();
         
             Undo.RegisterCreatedObjectUndo(controllerObj, "Create Node Graph Controller");
             Selection.activeGameObject = controllerObj;

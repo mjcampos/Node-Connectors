@@ -5,6 +5,7 @@ using NodeSystem.StateMachines;
 using NodeSystem.StateMachines.NodeStates;
 using ScriptableObjects;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace NodeSystem
 {
@@ -26,7 +27,7 @@ namespace NodeSystem
 
         [Header("Component References")] 
         public Node node;
-        public SpriteRenderer spriteRenderer;
+        public Image nodeImage;
         public UIController uiController;
 
         [HideInInspector]
@@ -41,6 +42,11 @@ namespace NodeSystem
             if (nodeGraphController == null)
             {
                 nodeGraphController = GetComponentInParent<NodeGraphController>();
+            }
+            
+            if (nodeImage == null)
+            {
+                nodeImage = GetComponent<Image>();
             }
         }
 
@@ -57,6 +63,11 @@ namespace NodeSystem
             if (nodeGraphController == null)
             {
                 nodeGraphController = GetComponentInParent<NodeGraphController>();
+            }
+            
+            if (nodeImage == null)
+            {
+                nodeImage = GetComponent<Image>();
             }
 
             if (nodeData == null)
@@ -91,7 +102,15 @@ namespace NodeSystem
     
         public void UpdateStateFromEnum()
         {
-            if (spriteRenderer == null) return;
+            if (nodeImage == null)
+            {
+                nodeImage = GetComponent<Image>();
+                if (nodeImage == null)
+                {
+                    Debug.LogWarning($"NodeStateMachine on '{gameObject.name}' has no Image component!", this);
+                    return;
+                }
+            }
         
             State newState = state switch
             {
@@ -213,8 +232,8 @@ namespace NodeSystem
             }
 #endif
 
-            if (spriteRenderer != null)
-                spriteRenderer.enabled = isVisible;
+            if (nodeImage != null)
+                nodeImage.enabled = isVisible;
 
             if (uiController != null)
                 uiController.SetDegreesTextVisibility(isVisible);
@@ -234,9 +253,9 @@ namespace NodeSystem
         {
             Sprite sprite = nodeData?.GetSpriteForState(newState);
         
-            if (spriteRenderer != null)
+            if (nodeImage != null)
             {
-                spriteRenderer.sprite = sprite;
+                nodeImage.sprite = sprite;
             }
         }
 

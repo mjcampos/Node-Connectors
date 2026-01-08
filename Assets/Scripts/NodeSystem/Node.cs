@@ -37,31 +37,14 @@ namespace NodeSystem
 
         void RegenerateNodeID()
         {
-            NodeStateMachine stateMachine = GetComponent<NodeStateMachine>();
-        
-            if (stateMachine != null)
-            {
-                NodeDataSO nodeData = stateMachine.GetNodeData();
-            
-                if (nodeData != null)
-                {
 #if UNITY_EDITOR
-                    string assetPath = UnityEditor.AssetDatabase.GetAssetPath(nodeData);
-                    string dataGuid = UnityEditor.AssetDatabase.AssetPathToGUID(assetPath);
-                    nodeID = $"{dataGuid}_{gameObject.name}";
-#else
-                nodeID = $"{nodeData.GetInstanceID()}_{gameObject.name}";
-#endif
-                }
-                else
-                {
-                    if (string.IsNullOrEmpty(nodeID))
-                    {
-                        nodeID = System.Guid.NewGuid().ToString();
-                    }
-                }
+            if (!Application.isPlaying)
+            {
+                nodeID = System.Guid.NewGuid().ToString();
+                UnityEditor.EditorUtility.SetDirty(this);
             }
             else
+#endif
             {
                 if (string.IsNullOrEmpty(nodeID))
                 {
@@ -77,5 +60,35 @@ namespace NodeSystem
                 neighborNodes.Add(node);
             }
         }
+
+#if UNITY_EDITOR
+        void OnDrawGizmos()
+        {
+            RectTransform rectTransform = GetComponent<RectTransform>();
+            if (rectTransform == null) return;
+
+            Vector3[] corners = new Vector3[4];
+            rectTransform.GetWorldCorners(corners);
+            Vector3 center = (corners[0] + corners[2]) * 0.5f;
+
+            Gizmos.color = new Color(0, 1, 1, 0.5f);
+            Gizmos.DrawSphere(center, Vector3.Distance(corners[0], corners[2]) * 0.1f);
+        }
+
+        void OnDrawGizmosSelected()
+        {
+            RectTransform rectTransform = GetComponent<RectTransform>();
+            if (rectTransform == null) return;
+
+            Vector3[] corners = new Vector3[4];
+            rectTransform.GetWorldCorners(corners);
+            
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawLine(corners[0], corners[1]);
+            Gizmos.DrawLine(corners[1], corners[2]);
+            Gizmos.DrawLine(corners[2], corners[3]);
+            Gizmos.DrawLine(corners[3], corners[0]);
+        }
+#endif
     }
 }

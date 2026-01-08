@@ -12,6 +12,7 @@ namespace NodeSystem
         [SerializeField] Color lineColor = Color.black;
         [SerializeField] Material lineMaterial;
         [SerializeField] int sortingOrder = -1;
+        [SerializeField] string sortingLayerName = "Default";
 
         Node _node;
         NodeStateMachine _stateMachine;
@@ -64,10 +65,7 @@ namespace NodeSystem
             {
                 if (neighbor == null) continue;
 
-                int nodeID = gameObject.GetInstanceID();
-                int neighborID = neighbor.gameObject.GetInstanceID();
-
-                if (nodeID < neighborID)
+                if (ShouldCreateLine(_node, neighbor))
                 {
                     connectionCount++;
                 }
@@ -81,14 +79,12 @@ namespace NodeSystem
             {
                 if (neighbor == null) continue;
 
-                int nodeID = gameObject.GetInstanceID();
-                int neighborID = neighbor.gameObject.GetInstanceID();
-
-                if (nodeID < neighborID)
+                if (ShouldCreateLine(_node, neighbor))
                 {
                     GameObject lineObj = new GameObject($"Line_{gameObject.name}_to_{neighbor.gameObject.name}");
                     lineObj.transform.SetParent(transform);
                     lineObj.transform.localPosition = Vector3.zero;
+                    lineObj.layer = gameObject.layer;
 
                     LineRenderer lr = lineObj.AddComponent<LineRenderer>();
                     lr.positionCount = 2;
@@ -96,6 +92,7 @@ namespace NodeSystem
                     lr.endWidth = lineWidth;
                     lr.startColor = lineColor;
                     lr.endColor = lineColor;
+                    lr.sortingLayerName = sortingLayerName;
                     lr.sortingOrder = sortingOrder;
                     lr.useWorldSpace = true;
 
@@ -116,6 +113,19 @@ namespace NodeSystem
                     index++;
                 }
             }
+
+            if (Application.isPlaying)
+            {
+                Debug.Log($"[{gameObject.name}] Created {connectionCount} line renderer(s) in Play Mode");
+            }
+        }
+
+        bool ShouldCreateLine(Node nodeA, Node nodeB)
+        {
+            string idA = nodeA.NodeID;
+            string idB = nodeB.NodeID;
+
+            return string.Compare(idA, idB, System.StringComparison.Ordinal) < 0;
         }
 
         void LateUpdate()
@@ -192,19 +202,19 @@ namespace NodeSystem
             {
                 return true;
             }
-    
+
             if (node.state == NodeState.Locked)
             {
-                return !node.spriteRenderer.enabled;
+                return node.nodeImage != null && !node.nodeImage.enabled;
             }
-    
+
             return false;
         }
 
         bool IsNodeVisible(NodeStateMachine node)
         {
             return node.state == NodeState.Visible || node.state == NodeState.NonHoverable || 
-                   (node.state == NodeState.Locked && node.spriteRenderer.enabled);
+                   (node.state == NodeState.Locked && node.nodeImage != null && node.nodeImage.enabled);
         }
 
         void UpdateLineColor(LineRenderer lr, NodeStateMachine nodeA, NodeStateMachine nodeB)
@@ -242,6 +252,7 @@ namespace NodeSystem
                 {
                     lr.startWidth = lineWidth;
                     lr.endWidth = lineWidth;
+                    lr.sortingLayerName = sortingLayerName;
                     lr.sortingOrder = sortingOrder;
 
                     if (lineMaterial != null)
