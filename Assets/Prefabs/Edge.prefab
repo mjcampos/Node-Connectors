@@ -69,7 +69,7 @@ MonoBehaviour:
   points:
   - {x: 0, y: 0}
   - {x: 0, y: 0}
-  thickness: 7
+  thickness: 4
   center: 0
 --- !u!114 &312808958819328135
 MonoBehaviour:

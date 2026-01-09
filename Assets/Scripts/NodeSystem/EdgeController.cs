@@ -62,15 +62,8 @@ namespace NodeSystem
 
         void UpdateLinePosition()
         {
-            if (LineRenderer == null)
-            {
+            if (LineRenderer == null || _startRect == null || _targetRect == null || _canvasRect == null)
                 return;
-            }
-            
-            if (_startRect == null || _targetRect == null || _canvasRect == null)
-            {
-                return;
-            }
 
             if (!LineRenderer.enabled)
                 return;
@@ -115,24 +108,6 @@ namespace NodeSystem
                 Color color = LineRenderer.color;
                 color.a = alpha;
                 LineRenderer.color = color;
-                LineRenderer.SetVerticesDirty();
-            }
-        }
-
-        public void SetColor(Color color)
-        {
-            if (LineRenderer != null)
-            {
-                LineRenderer.color = color;
-                LineRenderer.SetVerticesDirty();
-            }
-        }
-
-        public void SetThickness(float thickness)
-        {
-            if (LineRenderer != null)
-            {
-                LineRenderer.thickness = thickness;
                 LineRenderer.SetVerticesDirty();
             }
         }

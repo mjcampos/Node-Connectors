@@ -10,13 +10,9 @@ namespace NodeSystem
         [Header("Prefab")]
         [SerializeField] GameObject edgePrefab;
 
-        [Header("Line Settings")]
-        [SerializeField] float lineWidth = 10f;
-
         Node _node;
         NodeStateMachine _stateMachine;
         RectTransform _rectTransform;
-        Canvas _canvas;
         RectTransform _canvasRectTransform;
         Transform _edgesContainer;
 
@@ -40,26 +36,19 @@ namespace NodeSystem
             NodeStateMachine.OnNodeStateChanged -= OnAnyNodeStateChanged;
         }
 
-        void OnValidate()
-        {
-            InitializeComponents();
-            
-            if (Application.isPlaying)
-            {
-                SyncConnections();
-            }
-        }
-
         void InitializeComponents()
         {
             if (_node == null) _node = GetComponent<Node>();
             if (_stateMachine == null) _stateMachine = GetComponent<NodeStateMachine>();
             if (_rectTransform == null) _rectTransform = GetComponent<RectTransform>();
-            if (_canvas == null) _canvas = GetComponentInParent<Canvas>();
-            
-            if (_canvas != null && _canvasRectTransform == null)
+
+            if (_canvasRectTransform == null)
             {
-                _canvasRectTransform = _canvas.GetComponent<RectTransform>();
+                Canvas canvas = GetComponentInParent<Canvas>();
+                if (canvas != null)
+                {
+                    _canvasRectTransform = canvas.GetComponent<RectTransform>();
+                }
             }
 
             if (_edgesContainer == null)
@@ -133,14 +122,6 @@ namespace NodeSystem
                 edgeRect.anchorMax = Vector2.one;
                 edgeRect.sizeDelta = Vector2.zero;
                 edgeRect.anchoredPosition = Vector2.zero;
-            }
-
-            UILineRenderer lineRenderer = edgeInstance.GetComponent<UILineRenderer>();
-            if (lineRenderer != null)
-            {
-                lineRenderer.thickness = lineWidth;
-                lineRenderer.raycastTarget = false;
-                lineRenderer.center = false;
             }
 
             EdgeController edgeController = edgeInstance.GetComponent<EdgeController>();
