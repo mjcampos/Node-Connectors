@@ -99,13 +99,37 @@ namespace NodeSystem
             {
                 if (neighbor == null) continue;
 
-                if (ShouldCreateEdge(_node, neighbor))
+                if (!EdgeExists(neighbor))
                 {
                     CreateEdge(neighbor);
                 }
             }
 
             UpdateAllEdgesVisibility();
+        }
+
+        bool EdgeExists(Node targetNode)
+        {
+            if (_edgesContainer == null || targetNode == null) return false;
+
+            RectTransform targetRect = targetNode.GetComponent<RectTransform>();
+            if (targetRect == null) return false;
+
+            EdgeController[] edges = _edgesContainer.GetComponentsInChildren<EdgeController>();
+            foreach (EdgeController edge in edges)
+            {
+                if (edge == null) continue;
+
+                bool thisNodeIsStart = edge.StartRect == _rectTransform && edge.TargetRect == targetRect;
+                bool thisNodeIsTarget = edge.StartRect == targetRect && edge.TargetRect == _rectTransform;
+
+                if (thisNodeIsStart || thisNodeIsTarget)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         void CreateEdge(Node targetNode)
@@ -143,14 +167,6 @@ namespace NodeSystem
                     DestroyImmediate(edge.gameObject);
                 }
             }
-        }
-
-        bool ShouldCreateEdge(Node nodeA, Node nodeB)
-        {
-            string idA = nodeA.NodeID;
-            string idB = nodeB.NodeID;
-
-            return string.Compare(idA, idB, System.StringComparison.Ordinal) < 0;
         }
 
         void UpdateAllEdgesVisibility()

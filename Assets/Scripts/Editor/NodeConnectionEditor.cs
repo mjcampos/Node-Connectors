@@ -293,9 +293,10 @@ namespace Editor
 
             // NEW: Sync Edge prefabs in editor
             NodeConnectionRenderer rendererA = nodeA.GetComponent<NodeConnectionRenderer>();
-            //NodeConnectionRenderer rendererB = nodeB.GetComponent<NodeConnectionRenderer>();
+            NodeConnectionRenderer rendererB = nodeB.GetComponent<NodeConnectionRenderer>();
+            
             if (rendererA != null) rendererA.SyncConnections();
-            //if (rendererB != null) rendererB.SyncConnections();
+            if (rendererB != null) rendererB.SyncConnections();
 
             RippleAllUnlockedNodes();
             SceneView.RepaintAll();
@@ -314,6 +315,7 @@ namespace Editor
             // NEW: Sync Edge prefabs in editor
             NodeConnectionRenderer rendererA = nodeA.GetComponent<NodeConnectionRenderer>();
             NodeConnectionRenderer rendererB = nodeB.GetComponent<NodeConnectionRenderer>();
+            
             if (rendererA != null) rendererA.SyncConnections();
             if (rendererB != null) rendererB.SyncConnections();
 
