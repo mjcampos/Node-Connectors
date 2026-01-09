@@ -13,6 +13,18 @@ namespace NodeSystem
 
         public RectTransform TargetRect => _targetRect;
 
+        UILineRenderer LineRenderer
+        {
+            get
+            {
+                if (_lineRenderer == null)
+                {
+                    _lineRenderer = GetComponent<UILineRenderer>();
+                }
+                return _lineRenderer;
+            }
+        }
+
         void Awake()
         {
             _lineRenderer = GetComponent<UILineRenderer>();
@@ -23,6 +35,8 @@ namespace NodeSystem
             _startRect = startRect;
             _targetRect = targetRect;
             _canvasRect = canvasRect;
+            
+            UpdateLinePosition();
         }
 
         void LateUpdate()
@@ -32,18 +46,31 @@ namespace NodeSystem
 
         void UpdateLinePosition()
         {
-            if (_lineRenderer == null || _startRect == null || _targetRect == null || _canvasRect == null)
+            if (LineRenderer == null)
+            {
+                Debug.LogError("[EdgeController] UILineRenderer component not found!");
                 return;
+            }
+            
+            if (_startRect == null || _targetRect == null || _canvasRect == null)
+            {
+                return;
+            }
 
-            if (!_lineRenderer.enabled)
+            if (!LineRenderer.enabled)
                 return;
 
             Vector2 startPos = GetLocalPosition(_startRect);
             Vector2 endPos = GetLocalPosition(_targetRect);
 
-            _lineRenderer.points[0] = startPos;
-            _lineRenderer.points[1] = endPos;
-            _lineRenderer.SetVerticesDirty();
+            if (LineRenderer.points == null || LineRenderer.points.Length < 2)
+            {
+                LineRenderer.points = new Vector2[2];
+            }
+
+            LineRenderer.points[0] = Vector2.zero;
+            LineRenderer.points[1] = endPos;
+            LineRenderer.SetVerticesDirty();
         }
 
         Vector2 GetLocalPosition(RectTransform rectTransform)
@@ -60,27 +87,27 @@ namespace NodeSystem
 
         public void SetVisibility(bool visible)
         {
-            if (_lineRenderer != null)
+            if (LineRenderer != null)
             {
-                _lineRenderer.enabled = visible;
+                LineRenderer.enabled = visible;
             }
         }
 
         public void SetColor(Color color)
         {
-            if (_lineRenderer != null)
+            if (LineRenderer != null)
             {
-                _lineRenderer.color = color;
-                _lineRenderer.SetVerticesDirty();
+                LineRenderer.color = color;
+                LineRenderer.SetVerticesDirty();
             }
         }
 
         public void SetThickness(float thickness)
         {
-            if (_lineRenderer != null)
+            if (LineRenderer != null)
             {
-                _lineRenderer.thickness = thickness;
-                _lineRenderer.SetVerticesDirty();
+                LineRenderer.thickness = thickness;
+                LineRenderer.SetVerticesDirty();
             }
         }
     }

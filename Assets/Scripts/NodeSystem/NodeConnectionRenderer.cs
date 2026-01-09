@@ -1,4 +1,3 @@
-using System;
 using Helpers;
 using UnityEngine;
 using Plugins.Radishmouse;
@@ -26,6 +25,11 @@ namespace NodeSystem
             InitializeComponents();
         }
 
+        void Start()
+        {
+            SyncConnections();
+        }
+
         void OnEnable()
         {
             NodeStateMachine.OnNodeStateChanged += OnAnyNodeStateChanged;
@@ -39,16 +43,21 @@ namespace NodeSystem
         void OnValidate()
         {
             InitializeComponents();
+            
+            if (Application.isPlaying)
+            {
+                SyncConnections();
+            }
         }
 
         void InitializeComponents()
         {
-            _node = GetComponent<Node>();
-            _stateMachine = GetComponent<NodeStateMachine>();
-            _rectTransform = GetComponent<RectTransform>();
-            _canvas = GetComponentInParent<Canvas>();
+            if (_node == null) _node = GetComponent<Node>();
+            if (_stateMachine == null) _stateMachine = GetComponent<NodeStateMachine>();
+            if (_rectTransform == null) _rectTransform = GetComponent<RectTransform>();
+            if (_canvas == null) _canvas = GetComponentInParent<Canvas>();
             
-            if (_canvas != null)
+            if (_canvas != null && _canvasRectTransform == null)
             {
                 _canvasRectTransform = _canvas.GetComponent<RectTransform>();
             }
@@ -63,17 +72,21 @@ namespace NodeSystem
         {
             if (_node == null || edgePrefab == null) return;
 
+            InitializeComponents();
+
+            ClearAllEdges();
+
             foreach (Node neighbor in _node.neighborNodes)
             {
-                Vector2 targetPos = neighbor.transform.position;
-                GameObject edgeInstance = Instantiate(edgePrefab, transform);
-                UILineRenderer lineRenderer = edgeInstance.GetComponent<UILineRenderer>();
-                
-                if (lineRenderer != null)
+                if (neighbor == null) continue;
+
+                if (ShouldCreateEdge(_node, neighbor))
                 {
-                    lineRenderer.points[1] = targetPos.normalized;
+                    CreateEdge(neighbor);
                 }
             }
+
+            UpdateAllEdgesVisibility();
         }
 
         void CreateEdge(Node targetNode)
@@ -81,29 +94,15 @@ namespace NodeSystem
             if (edgePrefab == null || targetNode == null) return;
 
             GameObject edgeInstance = Instantiate(edgePrefab, transform);
+            
             edgeInstance.name = $"Edge_to_{targetNode.gameObject.name}";
 
-            RectTransform edgeRect = edgeInstance.GetComponent<RectTransform>();
-            if (edgeRect != null)
+            EdgeController edgeController = edgeInstance.GetComponent<EdgeController>();
+            
+            if (edgeController != null)
             {
-                edgeRect.anchorMin = Vector2.zero;
-                edgeRect.anchorMax = Vector2.one;
-                edgeRect.sizeDelta = Vector2.zero;
-                edgeRect.anchoredPosition = Vector2.zero;
+                edgeController.Initialize(_rectTransform, targetNode.GetComponent<RectTransform>(), _canvasRectTransform);
             }
-
-            UILineRenderer lineRenderer = edgeInstance.GetComponent<UILineRenderer>();
-            if (lineRenderer != null)
-            {
-                lineRenderer.thickness = lineWidth;
-                lineRenderer.color = lineColor;
-                lineRenderer.raycastTarget = false;
-                lineRenderer.center = false;
-                lineRenderer.points = new Vector2[2];
-            }
-
-            EdgeController edgeController = edgeInstance.AddComponent<EdgeController>();
-            edgeController.Initialize(_rectTransform, targetNode.GetComponent<RectTransform>(), _canvasRectTransform);
         }
 
         void ClearAllEdges()
@@ -113,7 +112,7 @@ namespace NodeSystem
             {
                 if (edge != null)
                 {
-                    Destroy(edge.gameObject);
+                    DestroyImmediate(edge.gameObject);
                 }
             }
         }
