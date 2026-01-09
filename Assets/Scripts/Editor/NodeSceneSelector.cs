@@ -55,41 +55,6 @@ namespace Editor
                     }
                 }
             }
-
-            DrawNodeHandles();
-        }
-
-        static void DrawNodeHandles()
-        {
-            Node[] allNodes = Object.FindObjectsOfType<Node>();
-
-            foreach (Node node in allNodes)
-            {
-                if (node == null) continue;
-
-                RectTransform rectTransform = node.GetComponent<RectTransform>();
-                if (rectTransform == null) continue;
-
-                Vector3[] corners = new Vector3[4];
-                rectTransform.GetWorldCorners(corners);
-                Vector3 center = (corners[0] + corners[2]) * 0.5f;
-
-                bool isSelected = Selection.activeGameObject == node.gameObject;
-                
-                Handles.color = isSelected ? new Color(1, 1, 0, 0.8f) : new Color(1, 1, 1, 0.3f);
-                
-                float size = Vector3.Distance(corners[0], corners[2]) * 0.5f;
-                Handles.DrawWireDisc(center, Vector3.forward, size);
-                
-                if (isSelected)
-                {
-                    Handles.color = new Color(1, 1, 0, 0.2f);
-                    Handles.DrawSolidDisc(center, Vector3.forward, size);
-                }
-
-                Handles.color = isSelected ? Color.yellow : new Color(0.8f, 0.8f, 0.8f, 0.5f);
-                Handles.Label(center + Vector3.up * size * 1.2f, node.gameObject.name, EditorStyles.miniLabel);
-            }
         }
     }
 }

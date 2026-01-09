@@ -33,7 +33,31 @@ namespace NodeSystem
             {
                 RegenerateNodeID();
             }
+            else
+            {
+#if UNITY_EDITOR
+                ValidateUniqueID();
+#endif
+            }
         }
+
+#if UNITY_EDITOR
+        void ValidateUniqueID()
+        {
+            if (Application.isPlaying) return;
+
+            Node[] allNodes = FindObjectsOfType<Node>();
+            foreach (Node otherNode in allNodes)
+            {
+                if (otherNode != this && otherNode.nodeID == this.nodeID)
+                {
+                    Debug.LogWarning($"Duplicate NodeID detected on '{gameObject.name}'. Regenerating...", this);
+                    RegenerateNodeID();
+                    break;
+                }
+            }
+        }
+#endif
 
         void RegenerateNodeID()
         {
@@ -42,6 +66,7 @@ namespace NodeSystem
             {
                 nodeID = System.Guid.NewGuid().ToString();
                 UnityEditor.EditorUtility.SetDirty(this);
+                Debug.Log($"Generated new NodeID for '{gameObject.name}': {nodeID}", this);
             }
             else
 #endif

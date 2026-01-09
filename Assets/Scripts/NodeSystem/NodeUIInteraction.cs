@@ -3,21 +3,13 @@ using UnityEngine.EventSystems;
 
 namespace NodeSystem
 {
-    public class NodeUIInteraction : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
+    public class NodeUIInteraction : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         NodeStateMachine _stateMachine;
 
         void Awake()
         {
             _stateMachine = GetComponent<NodeStateMachine>();
-        }
-
-        public void OnPointerClick(PointerEventData eventData)
-        {
-            if (_stateMachine != null)
-            {
-                _stateMachine.OnClick();
-            }
         }
 
         public void OnPointerEnter(PointerEventData eventData)

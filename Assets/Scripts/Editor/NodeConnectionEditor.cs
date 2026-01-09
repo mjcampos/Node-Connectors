@@ -11,29 +11,7 @@ namespace Editor
         static Node startNode = null;
         static bool isDragging = false;
         static Vector2 currentMousePos;
-
-        const string PREF_KEY_RADIUS = "NodeConnectionEditor_DetectionRadius";
-        const float DEFAULT_RADIUS = 50f;
-
-        static float nodeRadius = -1f;
-
-        static float NodeRadius
-        {
-            get
-            {
-                if (nodeRadius < 0)
-                {
-                    nodeRadius = EditorPrefs.GetFloat(PREF_KEY_RADIUS, DEFAULT_RADIUS);
-                }
-                return nodeRadius;
-            }
-            
-            set
-            {
-                nodeRadius = value;
-                EditorPrefs.SetFloat(PREF_KEY_RADIUS, value);
-            }
-        }
+        static bool debugMode = false;
 
         void OnEnable()
         {
@@ -51,8 +29,13 @@ namespace Editor
             
             currentMousePos = e.mousePosition;
 
-            DrawExistingConnections();
             DrawDragLine();
+            
+            if (debugMode)
+            {
+                DrawDebugInfo();
+            }
+            
             HandleRightClickDisconnect(e);
             
             if (!e.shift)
@@ -70,6 +53,41 @@ namespace Editor
             if (isDragging)
             {
                 SceneView.RepaintAll();
+            }
+        }
+
+        void DrawDebugInfo()
+        {
+            Node[] allNodes = FindObjectsByType<Node>(FindObjectsSortMode.None);
+            
+            Ray ray = HandleUtility.GUIPointToWorldRay(currentMousePos);
+            Plane plane = new Plane(Vector3.forward, Vector3.zero);
+            
+            if (plane.Raycast(ray, out float distance))
+            {
+                Vector3 worldPoint = ray.GetPoint(distance);
+                
+                Handles.color = Color.magenta;
+                Handles.DrawWireCube(worldPoint, Vector3.one * 0.1f);
+                Handles.Label(worldPoint + Vector3.up * 0.15f, $"Mouse: ({worldPoint.x:F2}, {worldPoint.y:F2})");
+                
+                foreach (Node node in allNodes)
+                {
+                    RectTransform rectTransform = node.GetComponent<RectTransform>();
+                    if (rectTransform == null) continue;
+                    
+                    Vector3[] corners = new Vector3[4];
+                    rectTransform.GetWorldCorners(corners);
+                    
+                    Handles.color = Color.cyan;
+                    Handles.DrawLine(corners[0], corners[1]);
+                    Handles.DrawLine(corners[1], corners[2]);
+                    Handles.DrawLine(corners[2], corners[3]);
+                    Handles.DrawLine(corners[3], corners[0]);
+                    
+                    Vector3 center = (corners[0] + corners[2]) * 0.5f;
+                    Handles.Label(center, $"{node.name}\nMin: ({corners[0].x:F2}, {corners[0].y:F2})\nMax: ({corners[2].x:F2}, {corners[2].y:F2})");
+                }
             }
         }
 
@@ -103,6 +121,12 @@ namespace Editor
             if (e.type == EventType.MouseDown && e.button == 0 && e.shift)
             {
                 Node nodeUnderMouse = GetNodeUnderMouse(e.mousePosition);
+                
+                if (debugMode)
+                {
+                    Debug.Log($"Mouse down - Node found: {(nodeUnderMouse != null ? nodeUnderMouse.name : "NULL")}");
+                }
+                
                 if (nodeUnderMouse != null)
                 {
                     startNode = nodeUnderMouse;
@@ -153,29 +177,6 @@ namespace Editor
             }
         }
 
-        void DrawExistingConnections()
-        {
-            Node[] allNodes = FindObjectsByType<Node>(FindObjectsSortMode.None);
-            
-            Handles.color = new Color(1f, 0.8f, 0f, 0.8f);
-            
-            foreach (Node node in allNodes)
-            {
-                if (node.neighborNodes == null) continue;
-                
-                foreach (Node neighbor in node.neighborNodes)
-                {
-                    if (neighbor != null && neighbor.GetInstanceID() > node.GetInstanceID())
-                    {
-                        Vector3 startPos = GetNodeWorldPosition(node);
-                        Vector3 endPos = GetNodeWorldPosition(neighbor);
-                        
-                        Handles.DrawLine(startPos, endPos, 3f);
-                    }
-                }
-            }
-        }
-
         void DrawDragLine()
         {
             if (!isDragging || startNode == null) return;
@@ -195,8 +196,15 @@ namespace Editor
                 Node nodeUnderMouse = GetNodeUnderMouse(currentMousePos);
                 if (nodeUnderMouse != null && nodeUnderMouse != startNode)
                 {
-                    Vector3 targetPos = GetNodeWorldPosition(nodeUnderMouse);
-                    Handles.DrawWireDisc(targetPos, Vector3.forward, NodeRadius, 4f);
+                    RectTransform rectTransform = nodeUnderMouse.GetComponent<RectTransform>();
+                    if (rectTransform != null)
+                    {
+                        Vector3[] corners = new Vector3[4];
+                        rectTransform.GetWorldCorners(corners);
+                        
+                        Handles.color = new Color(0, 1, 0, 0.3f);
+                        Handles.DrawSolidRectangleWithOutline(corners, new Color(0, 1, 0, 0.2f), Color.green);
+                    }
                 }
             }
         }
@@ -206,28 +214,46 @@ namespace Editor
             Node[] allNodes = FindObjectsByType<Node>(FindObjectsSortMode.None);
             
             Ray ray = HandleUtility.GUIPointToWorldRay(mouseGUIPos);
-            Plane plane = new Plane(Vector3.forward, Vector3.zero);
             
-            if (!plane.Raycast(ray, out float distance))
-            {
-                return null;
-            }
-            
-            Vector3 worldPoint = ray.GetPoint(distance);
-            
-            float closestDistance = float.MaxValue;
             Node closestNode = null;
+            float closestDistance = float.MaxValue;
             
             foreach (Node node in allNodes)
             {
-                Vector3 nodeWorldPos = GetNodeWorldPosition(node);
-                float dist = Vector3.Distance(worldPoint, nodeWorldPos);
+                RectTransform rectTransform = node.GetComponent<RectTransform>();
+                if (rectTransform == null) continue;
                 
-                if (dist < NodeRadius && dist < closestDistance)
+                Vector3[] corners = new Vector3[4];
+                rectTransform.GetWorldCorners(corners);
+                
+                Vector3 min = new Vector3(
+                    Mathf.Min(corners[0].x, corners[1].x, corners[2].x, corners[3].x),
+                    Mathf.Min(corners[0].y, corners[1].y, corners[2].y, corners[3].y),
+                    Mathf.Min(corners[0].z, corners[1].z, corners[2].z, corners[3].z)
+                );
+                
+                Vector3 max = new Vector3(
+                    Mathf.Max(corners[0].x, corners[1].x, corners[2].x, corners[3].x),
+                    Mathf.Max(corners[0].y, corners[1].y, corners[2].y, corners[3].y),
+                    Mathf.Max(corners[0].z, corners[1].z, corners[2].z, corners[3].z)
+                );
+                
+                Bounds bounds = new Bounds();
+                bounds.SetMinMax(min, max);
+                
+                if (bounds.IntersectRay(ray, out float hitDistance))
                 {
-                    closestDistance = dist;
-                    closestNode = node;
+                    if (hitDistance < closestDistance)
+                    {
+                        closestDistance = hitDistance;
+                        closestNode = node;
+                    }
                 }
+            }
+            
+            if (debugMode && closestNode != null)
+            {
+                Debug.Log($"GetNodeUnderMouse found: {closestNode.name}");
             }
             
             return closestNode;
@@ -264,7 +290,13 @@ namespace Editor
             EditorUtility.SetDirty(nodeB);
 
             Debug.Log($"✅ Connected: {nodeA.name} ↔ {nodeB.name}");
-        
+
+            // NEW: Sync Edge prefabs in editor
+            NodeConnectionRenderer rendererA = nodeA.GetComponent<NodeConnectionRenderer>();
+            //NodeConnectionRenderer rendererB = nodeB.GetComponent<NodeConnectionRenderer>();
+            if (rendererA != null) rendererA.SyncConnections();
+            //if (rendererB != null) rendererB.SyncConnections();
+
             RippleAllUnlockedNodes();
             SceneView.RepaintAll();
         }
@@ -278,7 +310,13 @@ namespace Editor
             EditorUtility.SetDirty(nodeB);
 
             Debug.Log($"🔗 Disconnected: {nodeA.name} ↮ {nodeB.name}");
-        
+
+            // NEW: Sync Edge prefabs in editor
+            NodeConnectionRenderer rendererA = nodeA.GetComponent<NodeConnectionRenderer>();
+            NodeConnectionRenderer rendererB = nodeB.GetComponent<NodeConnectionRenderer>();
+            if (rendererA != null) rendererA.SyncConnections();
+            if (rendererB != null) rendererB.SyncConnections();
+
             RippleAllUnlockedNodes();
             SceneView.RepaintAll();
         }
@@ -316,15 +354,14 @@ namespace Editor
             
             EditorGUILayout.LabelField("Connection Settings", EditorStyles.boldLabel);
             
-            EditorGUI.BeginChangeCheck();
-            float newRadius = EditorGUILayout.Slider("Detection Radius", NodeRadius, 20f, 200f);
-            if (EditorGUI.EndChangeCheck())
+            debugMode = EditorGUILayout.Toggle("Debug Mode", debugMode);
+            
+            if (debugMode)
             {
-                NodeRadius = newRadius;
-                SceneView.RepaintAll();
+                EditorGUILayout.HelpBox("Debug mode enabled. Check Scene View for visual bounds and Console for logs.", MessageType.Warning);
             }
             
-            EditorGUILayout.HelpBox($"Detection radius: {NodeRadius:F0} units\n\n✨ HOW TO USE:\n• CONNECT: Hold SHIFT + drag from node to node\n• DISCONNECT: Select a node, then right-click a connected node", MessageType.Info);
+            EditorGUILayout.HelpBox("✨ HOW TO USE:\n• CONNECT: Hold SHIFT + click and drag anywhere within a node, then release on another node\n• DISCONNECT: Select a node, then right-click a connected node", MessageType.Info);
 
             EditorGUILayout.Space(5);
             EditorGUILayout.LabelField("Node Connections", EditorStyles.boldLabel);
@@ -369,11 +406,8 @@ namespace Editor
                 EditorGUILayout.HelpBox("🟢 Dragging... Release on target node to connect!", MessageType.Warning);
             }
             
-            EditorGUILayout.Space(5);
-            
-            if (GUILayout.Button("Reset Detection Radius to Default"))
+            if (GUILayout.Button("Refresh Scene View"))
             {
-                NodeRadius = DEFAULT_RADIUS;
                 SceneView.RepaintAll();
             }
         }

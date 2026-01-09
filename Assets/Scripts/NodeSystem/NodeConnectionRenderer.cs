@@ -1,34 +1,29 @@
+using System;
 using Helpers;
 using UnityEngine;
+using Plugins.Radishmouse;
 
 namespace NodeSystem
 {
     [RequireComponent(typeof(Node))]
     public class NodeConnectionRenderer : MonoBehaviour
     {
-        [Header("Line Settings")]
-        [SerializeField] float lineWidth = 0.1f;
+        [Header("Prefab")]
+        [SerializeField] GameObject edgePrefab;
 
+        [Header("Line Settings")]
+        [SerializeField] float lineWidth = 10f;
         [SerializeField] Color lineColor = Color.black;
-        [SerializeField] Material lineMaterial;
-        [SerializeField] int sortingOrder = -1;
-        [SerializeField] string sortingLayerName = "Default";
 
         Node _node;
         NodeStateMachine _stateMachine;
-        LineRenderer[] _lineRenderers;
-        Node[] _lineNeighbors;
+        RectTransform _rectTransform;
+        Canvas _canvas;
+        RectTransform _canvasRectTransform;
 
         void Awake()
         {
-            _node = GetComponent<Node>();
-            _stateMachine = GetComponent<NodeStateMachine>();
-        }
-
-        void Start()
-        {
-            CreateLineRenderers();
-            UpdateLineVisibility();
+            InitializeComponents();
         }
 
         void OnEnable()
@@ -43,84 +38,87 @@ namespace NodeSystem
 
         void OnValidate()
         {
-            if (Application.isPlaying && _lineRenderers != null)
+            InitializeComponents();
+        }
+
+        void InitializeComponents()
+        {
+            _node = GetComponent<Node>();
+            _stateMachine = GetComponent<NodeStateMachine>();
+            _rectTransform = GetComponent<RectTransform>();
+            _canvas = GetComponentInParent<Canvas>();
+            
+            if (_canvas != null)
             {
-                UpdateLineAppearance();
+                _canvasRectTransform = _canvas.GetComponent<RectTransform>();
             }
         }
 
         void OnAnyNodeStateChanged()
         {
-            UpdateLineVisibility();
+            UpdateAllEdgesVisibility();
         }
 
-        void CreateLineRenderers()
+        public void SyncConnections()
         {
-            if (_node == null) return;
-
-            ClearExistingLines();
-
-            int connectionCount = 0;
-            foreach (Node neighbor in _node.neighborNodes)
-            {
-                if (neighbor == null) continue;
-
-                if (ShouldCreateLine(_node, neighbor))
-                {
-                    connectionCount++;
-                }
-            }
-
-            _lineRenderers = new LineRenderer[connectionCount];
-            _lineNeighbors = new Node[connectionCount];
-            int index = 0;
+            if (_node == null || edgePrefab == null) return;
 
             foreach (Node neighbor in _node.neighborNodes)
             {
-                if (neighbor == null) continue;
-
-                if (ShouldCreateLine(_node, neighbor))
+                Vector2 targetPos = neighbor.transform.position;
+                GameObject edgeInstance = Instantiate(edgePrefab, transform);
+                UILineRenderer lineRenderer = edgeInstance.GetComponent<UILineRenderer>();
+                
+                if (lineRenderer != null)
                 {
-                    GameObject lineObj = new GameObject($"Line_{gameObject.name}_to_{neighbor.gameObject.name}");
-                    lineObj.transform.SetParent(transform);
-                    lineObj.transform.localPosition = Vector3.zero;
-                    lineObj.layer = gameObject.layer;
-
-                    LineRenderer lr = lineObj.AddComponent<LineRenderer>();
-                    lr.positionCount = 2;
-                    lr.startWidth = lineWidth;
-                    lr.endWidth = lineWidth;
-                    lr.startColor = lineColor;
-                    lr.endColor = lineColor;
-                    lr.sortingLayerName = sortingLayerName;
-                    lr.sortingOrder = sortingOrder;
-                    lr.useWorldSpace = true;
-
-                    if (lineMaterial != null)
-                    {
-                        lr.material = lineMaterial;
-                    }
-                    else
-                    {
-                        lr.material = new Material(Shader.Find("Sprites/Default"));
-                    }
-
-                    lr.SetPosition(0, transform.position);
-                    lr.SetPosition(1, neighbor.transform.position);
-
-                    _lineRenderers[index] = lr;
-                    _lineNeighbors[index] = neighbor;
-                    index++;
+                    lineRenderer.points[1] = targetPos.normalized;
                 }
-            }
-
-            if (Application.isPlaying)
-            {
-                Debug.Log($"[{gameObject.name}] Created {connectionCount} line renderer(s) in Play Mode");
             }
         }
 
-        bool ShouldCreateLine(Node nodeA, Node nodeB)
+        void CreateEdge(Node targetNode)
+        {
+            if (edgePrefab == null || targetNode == null) return;
+
+            GameObject edgeInstance = Instantiate(edgePrefab, transform);
+            edgeInstance.name = $"Edge_to_{targetNode.gameObject.name}";
+
+            RectTransform edgeRect = edgeInstance.GetComponent<RectTransform>();
+            if (edgeRect != null)
+            {
+                edgeRect.anchorMin = Vector2.zero;
+                edgeRect.anchorMax = Vector2.one;
+                edgeRect.sizeDelta = Vector2.zero;
+                edgeRect.anchoredPosition = Vector2.zero;
+            }
+
+            UILineRenderer lineRenderer = edgeInstance.GetComponent<UILineRenderer>();
+            if (lineRenderer != null)
+            {
+                lineRenderer.thickness = lineWidth;
+                lineRenderer.color = lineColor;
+                lineRenderer.raycastTarget = false;
+                lineRenderer.center = false;
+                lineRenderer.points = new Vector2[2];
+            }
+
+            EdgeController edgeController = edgeInstance.AddComponent<EdgeController>();
+            edgeController.Initialize(_rectTransform, targetNode.GetComponent<RectTransform>(), _canvasRectTransform);
+        }
+
+        void ClearAllEdges()
+        {
+            EdgeController[] edges = GetComponentsInChildren<EdgeController>();
+            foreach (EdgeController edge in edges)
+            {
+                if (edge != null)
+                {
+                    Destroy(edge.gameObject);
+                }
+            }
+        }
+
+        bool ShouldCreateEdge(Node nodeA, Node nodeB)
         {
             string idA = nodeA.NodeID;
             string idB = nodeB.NodeID;
@@ -128,43 +126,29 @@ namespace NodeSystem
             return string.Compare(idA, idB, System.StringComparison.Ordinal) < 0;
         }
 
-        void LateUpdate()
+        void UpdateAllEdgesVisibility()
         {
-            UpdateLinePositions();
-        }
+            if (_stateMachine == null) return;
 
-        void UpdateLinePositions()
-        {
-            if (_lineRenderers == null || _lineNeighbors == null) return;
-
-            for (int i = 0; i < _lineRenderers.Length; i++)
+            EdgeController[] edges = GetComponentsInChildren<EdgeController>();
+            foreach (EdgeController edge in edges)
             {
-                if (_lineRenderers[i] != null && _lineNeighbors[i] != null)
+                if (edge != null && edge.TargetRect != null)
                 {
-                    _lineRenderers[i].SetPosition(0, transform.position);
-                    _lineRenderers[i].SetPosition(1, _lineNeighbors[i].transform.position);
-                }
-            }
-        }
-
-        void UpdateLineVisibility()
-        {
-            if (_lineRenderers == null || _lineNeighbors == null || _stateMachine == null) return;
-
-            for (int i = 0; i < _lineRenderers.Length; i++)
-            {
-                if (_lineRenderers[i] != null && _lineNeighbors[i] != null)
-                {
-                    NodeStateMachine neighborStateMachine = _lineNeighbors[i].GetComponent<NodeStateMachine>();
-                
-                    if (neighborStateMachine != null)
+                    Node targetNode = edge.TargetRect.GetComponent<Node>();
+                    if (targetNode != null)
                     {
-                        bool shouldShowLine = ShouldShowLine(_stateMachine, neighborStateMachine);
-                        _lineRenderers[i].enabled = shouldShowLine;
-                    
-                        if (shouldShowLine)
+                        NodeStateMachine targetStateMachine = targetNode.GetComponent<NodeStateMachine>();
+                        if (targetStateMachine != null)
                         {
-                            UpdateLineColor(_lineRenderers[i], _stateMachine, neighborStateMachine);
+                            bool shouldShow = ShouldShowLine(_stateMachine, targetStateMachine);
+                            edge.SetVisibility(shouldShow);
+
+                            if (shouldShow)
+                            {
+                                Color edgeColor = GetLineColor(_stateMachine, targetStateMachine);
+                                edge.SetColor(edgeColor);
+                            }
                         }
                     }
                 }
@@ -217,79 +201,19 @@ namespace NodeSystem
                    (node.state == NodeState.Locked && node.nodeImage != null && node.nodeImage.enabled);
         }
 
-        void UpdateLineColor(LineRenderer lr, NodeStateMachine nodeA, NodeStateMachine nodeB)
+        Color GetLineColor(NodeStateMachine nodeA, NodeStateMachine nodeB)
         {
             Color fullColor = lineColor;
-            Color transparentColor = new Color(lineColor.r, lineColor.g, lineColor.b, 0f);
 
             bool nodeAIsHidden = IsNodeHidden(nodeA);
             bool nodeBIsHidden = IsNodeHidden(nodeB);
 
-            if (nodeAIsHidden && nodeA.degreesFromNonHoverable == 1)
+            if (nodeAIsHidden || nodeBIsHidden)
             {
-                lr.startColor = transparentColor;
-                lr.endColor = fullColor;
-            }
-            else if (nodeBIsHidden && nodeB.degreesFromNonHoverable == 1)
-            {
-                lr.startColor = fullColor;
-                lr.endColor = transparentColor;
-            }
-            else
-            {
-                lr.startColor = fullColor;
-                lr.endColor = fullColor;
-            }
-        }
-
-        void UpdateLineAppearance()
-        {
-            if (_lineRenderers == null) return;
-
-            foreach (LineRenderer lr in _lineRenderers)
-            {
-                if (lr != null)
-                {
-                    lr.startWidth = lineWidth;
-                    lr.endWidth = lineWidth;
-                    lr.sortingLayerName = sortingLayerName;
-                    lr.sortingOrder = sortingOrder;
-
-                    if (lineMaterial != null)
-                    {
-                        lr.material = lineMaterial;
-                    }
-                }
-            }
-        
-            UpdateLineVisibility();
-        }
-
-        void ClearExistingLines()
-        {
-            if (_lineRenderers != null)
-            {
-                foreach (LineRenderer lr in _lineRenderers)
-                {
-                    if (lr != null)
-                    {
-                        Destroy(lr.gameObject);
-                    }
-                }
+                return new Color(fullColor.r, fullColor.g, fullColor.b, 0.5f);
             }
 
-            foreach (Transform child in transform)
-            {
-                if (child.name.StartsWith("Line_"))
-                {
-                    Destroy(child.gameObject);
-                }
-            }
-        }
-
-        void OnDestroy()
-        {
-            ClearExistingLines();
+            return fullColor;
         }
     }
 }
