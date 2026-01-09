@@ -12,13 +12,13 @@ namespace NodeSystem
 
         [Header("Line Settings")]
         [SerializeField] float lineWidth = 10f;
-        [SerializeField] Color lineColor = Color.black;
 
         Node _node;
         NodeStateMachine _stateMachine;
         RectTransform _rectTransform;
         Canvas _canvas;
         RectTransform _canvasRectTransform;
+        Transform _edgesContainer;
 
         void Awake()
         {
@@ -61,6 +61,30 @@ namespace NodeSystem
             {
                 _canvasRectTransform = _canvas.GetComponent<RectTransform>();
             }
+
+            if (_edgesContainer == null)
+            {
+                _edgesContainer = FindEdgesContainer();
+            }
+        }
+
+        Transform FindEdgesContainer()
+        {
+            Transform nodesParent = transform.parent;
+            if (nodesParent == null)
+            {
+                Debug.LogError($"[NodeConnectionRenderer] {gameObject.name} has no parent. Cannot find Edges Container.");
+                return null;
+            }
+
+            Transform container = nodesParent.Find("Edges Container");
+            
+            if (container == null)
+            {
+                Debug.LogError($"[NodeConnectionRenderer] 'Edges Container' not found under {nodesParent.name}. Please create it.");
+            }
+            
+            return container;
         }
 
         void OnAnyNodeStateChanged()
@@ -73,6 +97,12 @@ namespace NodeSystem
             if (_node == null || edgePrefab == null) return;
 
             InitializeComponents();
+
+            if (_edgesContainer == null)
+            {
+                Debug.LogError($"[NodeConnectionRenderer] Edges Container not found. Cannot create edges.");
+                return;
+            }
 
             ClearAllEdges();
 
@@ -91,14 +121,29 @@ namespace NodeSystem
 
         void CreateEdge(Node targetNode)
         {
-            if (edgePrefab == null || targetNode == null) return;
+            if (edgePrefab == null || targetNode == null || _edgesContainer == null) return;
 
-            GameObject edgeInstance = Instantiate(edgePrefab, transform);
-            
-            edgeInstance.name = $"Edge_to_{targetNode.gameObject.name}";
+            GameObject edgeInstance = Instantiate(edgePrefab, _edgesContainer);
+            edgeInstance.name = $"Edge_{_node.name}_to_{targetNode.gameObject.name}";
+
+            RectTransform edgeRect = edgeInstance.GetComponent<RectTransform>();
+            if (edgeRect != null)
+            {
+                edgeRect.anchorMin = Vector2.zero;
+                edgeRect.anchorMax = Vector2.one;
+                edgeRect.sizeDelta = Vector2.zero;
+                edgeRect.anchoredPosition = Vector2.zero;
+            }
+
+            UILineRenderer lineRenderer = edgeInstance.GetComponent<UILineRenderer>();
+            if (lineRenderer != null)
+            {
+                lineRenderer.thickness = lineWidth;
+                lineRenderer.raycastTarget = false;
+                lineRenderer.center = false;
+            }
 
             EdgeController edgeController = edgeInstance.GetComponent<EdgeController>();
-            
             if (edgeController != null)
             {
                 edgeController.Initialize(_rectTransform, targetNode.GetComponent<RectTransform>(), _canvasRectTransform);
@@ -107,10 +152,12 @@ namespace NodeSystem
 
         void ClearAllEdges()
         {
-            EdgeController[] edges = GetComponentsInChildren<EdgeController>();
+            if (_edgesContainer == null) return;
+
+            EdgeController[] edges = _edgesContainer.GetComponentsInChildren<EdgeController>();
             foreach (EdgeController edge in edges)
             {
-                if (edge != null)
+                if (edge != null && edge.StartRect == _rectTransform)
                 {
                     DestroyImmediate(edge.gameObject);
                 }
@@ -127,13 +174,15 @@ namespace NodeSystem
 
         void UpdateAllEdgesVisibility()
         {
-            if (_stateMachine == null) return;
+            if (_stateMachine == null || _edgesContainer == null) return;
 
-            EdgeController[] edges = GetComponentsInChildren<EdgeController>();
+            EdgeController[] edges = _edgesContainer.GetComponentsInChildren<EdgeController>();
             foreach (EdgeController edge in edges)
             {
-                if (edge != null && edge.TargetRect != null)
+                if (edge != null && edge.TargetRect != null && edge.StartRect != null)
                 {
+                    if (edge.StartRect != _rectTransform) continue;
+
                     Node targetNode = edge.TargetRect.GetComponent<Node>();
                     if (targetNode != null)
                     {
@@ -145,8 +194,8 @@ namespace NodeSystem
 
                             if (shouldShow)
                             {
-                                Color edgeColor = GetLineColor(_stateMachine, targetStateMachine);
-                                edge.SetColor(edgeColor);
+                                float alpha = GetLineAlpha(_stateMachine, targetStateMachine);
+                                edge.SetAlpha(alpha);
                             }
                         }
                     }
@@ -200,19 +249,17 @@ namespace NodeSystem
                    (node.state == NodeState.Locked && node.nodeImage != null && node.nodeImage.enabled);
         }
 
-        Color GetLineColor(NodeStateMachine nodeA, NodeStateMachine nodeB)
+        float GetLineAlpha(NodeStateMachine nodeA, NodeStateMachine nodeB)
         {
-            Color fullColor = lineColor;
-
             bool nodeAIsHidden = IsNodeHidden(nodeA);
             bool nodeBIsHidden = IsNodeHidden(nodeB);
 
             if (nodeAIsHidden || nodeBIsHidden)
             {
-                return new Color(fullColor.r, fullColor.g, fullColor.b, 0.5f);
+                return 0.5f;
             }
 
-            return fullColor;
+            return 1f;
         }
     }
 }

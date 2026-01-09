@@ -10,8 +10,10 @@ namespace NodeSystem
         RectTransform _targetRect;
         RectTransform _canvasRect;
         UILineRenderer _lineRenderer;
+        Material _materialInstance;
 
         public RectTransform TargetRect => _targetRect;
+        public RectTransform StartRect => _startRect;
 
         UILineRenderer LineRenderer
         {
@@ -30,11 +32,25 @@ namespace NodeSystem
             _lineRenderer = GetComponent<UILineRenderer>();
         }
 
+        void OnDestroy()
+        {
+            if (_materialInstance != null)
+            {
+                Destroy(_materialInstance);
+            }
+        }
+
         public void Initialize(RectTransform startRect, RectTransform targetRect, RectTransform canvasRect)
         {
             _startRect = startRect;
             _targetRect = targetRect;
             _canvasRect = canvasRect;
+            
+            if (LineRenderer != null && LineRenderer.material != null)
+            {
+                _materialInstance = new Material(LineRenderer.material);
+                LineRenderer.material = _materialInstance;
+            }
             
             UpdateLinePosition();
         }
@@ -48,7 +64,6 @@ namespace NodeSystem
         {
             if (LineRenderer == null)
             {
-                Debug.LogError("[EdgeController] UILineRenderer component not found!");
                 return;
             }
             
@@ -60,15 +75,15 @@ namespace NodeSystem
             if (!LineRenderer.enabled)
                 return;
 
-            Vector2 startPos = GetLocalPosition(_startRect);
-            Vector2 endPos = GetLocalPosition(_targetRect);
-
             if (LineRenderer.points == null || LineRenderer.points.Length < 2)
             {
                 LineRenderer.points = new Vector2[2];
             }
 
-            LineRenderer.points[0] = Vector2.zero;
+            Vector2 startPos = GetLocalPosition(_startRect);
+            Vector2 endPos = GetLocalPosition(_targetRect);
+
+            LineRenderer.points[0] = startPos;
             LineRenderer.points[1] = endPos;
             LineRenderer.SetVerticesDirty();
         }
@@ -90,6 +105,17 @@ namespace NodeSystem
             if (LineRenderer != null)
             {
                 LineRenderer.enabled = visible;
+            }
+        }
+
+        public void SetAlpha(float alpha)
+        {
+            if (LineRenderer != null)
+            {
+                Color color = LineRenderer.color;
+                color.a = alpha;
+                LineRenderer.color = color;
+                LineRenderer.SetVerticesDirty();
             }
         }
 

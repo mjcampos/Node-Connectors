@@ -485,7 +485,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   edgePrefab: {fileID: 2726305735584069239, guid: f692fd8d178eebe4796128d6ae31eb6c, type: 3}
-  lineWidth: 10
+  lineWidth: 5
   lineColor: {r: 0, g: 0, b: 0, a: 1}
 --- !u!1 &8656575847330340295
 GameObject:
