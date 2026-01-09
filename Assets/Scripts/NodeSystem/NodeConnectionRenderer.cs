@@ -83,9 +83,9 @@ namespace NodeSystem
 
         public void SyncConnections()
         {
-            if (_node == null || edgePrefab == null) return;
-
             InitializeComponents();
+            
+            if (_node == null || edgePrefab == null) return;
 
             if (_edgesContainer == null)
             {
@@ -134,6 +134,7 @@ namespace NodeSystem
 
         void CreateEdge(Node targetNode)
         {
+            Debug.Log("Create edge");
             if (edgePrefab == null || targetNode == null || _edgesContainer == null) return;
 
             GameObject edgeInstance = Instantiate(edgePrefab, _edgesContainer);
