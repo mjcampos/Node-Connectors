@@ -1,0 +1,17 @@
+# Node Connectors
+
+#### A node graph consisting of 5 different node types
+
+## Node Types
+<ul>
+  <li><strong>Unlocked</strong> - <em>Red</em>. This node type is already unlocked and nothing more needs to be done.</li>
+  <li><strong>Visible</strong> - <em>Blue</em>. Node that can be seen within Hoverable range. They can be clicked and made to Unlocked node. They also carry data that can be viewed when mouse hovers over this node type.</li>
+  <li><strong>Non-Hoverable</strong> - <em>Green</em>. Node that can be seen within Non-Hoverable range. While they can be seen like Visible nodes player cannot see data when hovering over it. They can automatically convert to Visible node when within range of Hoverable Range.</li>
+  <li><strong>Hidden</strong> - <em>Grey</em>. Node that exists outside the Non-Hoverable range. This type of node cannot be seen until it is within Hoverable or Non-Hoverable range.</li>
+  <li><strong>Locked</strong> - <em>Black</em>. When visible this Node type cannot be interacted with. It will not convert to any other node type, even when within range of Hoverable and Non-Hoverable. </li>
+</ul>
+
+## Demo On YouTube
+<a href="https://youtu.be/uyghS28SfnU" target="_blank">
+  <img src="https://img.youtube.com/vi/uyghS28SfnU/0.jpg" alt="Demo Video" />
+</a>
