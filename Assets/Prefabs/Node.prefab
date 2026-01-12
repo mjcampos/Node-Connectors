@@ -379,7 +379,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a791c2491c1b17849bb19796d993ee82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Node
-  nodeID: 9538e8c2-e338-436f-8dcf-69f40e134673
+  nodeID: 081f3143-9eb1-422c-887d-1a2c77429d90
   neighborNodes: []
 --- !u!114 &2516602287958699124
 MonoBehaviour:
@@ -485,8 +485,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   edgePrefab: {fileID: 2726305735584069239, guid: f692fd8d178eebe4796128d6ae31eb6c, type: 3}
-  lineWidth: 5
-  lineColor: {r: 0, g: 0, b: 0, a: 1}
 --- !u!1 &8656575847330340295
 GameObject:
   m_ObjectHideFlags: 0
