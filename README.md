@@ -4,7 +4,7 @@
 
 ## Node Types
 <ul>
-  <li>**Unlocked** - *Red*. This node type is already unlocked and nothing more needs to be done.</li>
+  <li><strong>Unlocked</strong> - *Red*. This node type is already unlocked and nothing more needs to be done.</li>
   <li>**Visible** - *Blue*. Node that can be seen within Hoverable range. They can be clicked and made to Unlocked node. They also carry data that can be viewed when mouse hovers over this node type.</li>
   <li>**Non-Hoverable** - *Green*. Node that can be seen within Non-Hoverable range. While they can be seen like Visible nodes player cannot see data when hovering over it. They can automatically convert to Visible node when within range of Hoverable Range.</li>
   <li>**Hidden** - *Grey*. Node that exists outside the Non-Hoverable range. This type of node cannot be seen until it is within Hoverable or Non-Hoverable range.</li>
