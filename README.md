@@ -11,4 +11,6 @@
   <li>Locked - Black. When visible this Node type cannot be interacted with. It will not convert to any other node type, even when within range of Hoverable and Non-Hoverable. </li>
 </ul>
 
-[![Demo Video](https://youtu.be/uyghS28SfnU)](https://youtu.be/uyghS28SfnU)
+<a href="https://youtu.be/uyghS28SfnU" target="_blank">
+  <img src="https://img.youtube.com/vi/uyghS28SfnU/0.jpg" alt="Demo Video" />
+</a>
